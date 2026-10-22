@@ -14,8 +14,21 @@ Last updated: 2026-10-22. Git history (project-level repo, created 2026-10-22) h
 | 6. Scenarios, risk, recommendations | ✅ Done | `src/scenario_simulator.py`, `src/confidence_engine.py` |
 | 7. Database | ✅ Done | `database/models.py`, `database/migrations.py` (new), `database/connection.py`, `src/persistence.py` (new), `src/build_database.py` |
 | 8. Dashboard | ✅ Done | `dashboard/app.py`, `dashboard/common.py` (new), `dashboard/pages/01–08` |
-| 9. Testing | ✅ Done | `tests/` — 93 tests passing |
+| 9. Testing | ✅ Done | `tests/` — 109 tests passing (after final QA) |
 | 10. Documentation | ✅ Done | `README.md`, this file |
+
+## Final QA (2026-10-22) — see FINAL_QA_REPORT.md
+
+Independent verification (brute-force optimizer check, cost recomputation, metric recomputation, read-only database
+inspection, interactive tests on a database copy) confirmed the documented behaviour, and found and fixed:
+
+1. Prediction range "90%" measured only 59% coverage (Same Day 6%) — now whole-day bounds; measured 100%, shown on pages.
+2. Hard-coded statistics on pages (7 products, 97%, ~70%, 0.002) — now computed from data (`src/data_stats.py`).
+3. Three dropdowns not drivable by headless tests — plain-label mapping; interaction tests added.
+4. Refresh/save did not clear the model/context cache — `clear_caches()` now clears everything.
+5. Three `run_id` foreign keys not enforced by the migrated SQLite schema — documented; `integrity_report()` added (0 orphans).
+
+Not done: browser-based visual inspection (no browser control available) — manual checklist in FINAL_QA_REPORT.md.
 
 ## Key decisions
 

@@ -31,7 +31,7 @@ and at what risk. They also want recommendations they can trust, explain and tes
 |---|---|
 | **Dates** | `Ship Date − Order Date` is 904–1,642 days and **is not a lead time**. The dates are disguised: the Order Date year was relabelled (the Order ID carries the original year, 2021–2024), and Ship Date is shifted by exactly **2,000 days**. |
 | **Recovered lead time** | Rule: `Ship Date − 2,000 days − (Order Date with the Order ID year)`. It gives 0–8 days that match ship mode (Same Day ≈ 0, First 1–3, Second 1–5, Standard 3–7; ship mode explains 67% of the variance). This is a **derived** value, never a measured one. Evidence: `reports/PHASE1_AUDIT.md` §2 and the dashboard's Data Management → Date forensics tab. |
-| **Geography vs lead time** | Correlation between distance and recovered lead time is **0.002**. The data **cannot** show that a nearer factory delivers faster. Lead-time benefits of a move come from an editable **transit-time assumption**. |
+| **Geography vs lead time** | Correlation between distance and recovered lead time is **0.006** (all rows; 0.002 for US rows only). The data **cannot** show that a nearer factory delivers faster. Lead-time benefits of a move come from an editable **transit-time assumption**. |
 | **Costs, capacity, compatibility** | **Not in the data.** Unit cost is constant per product. Freight rate, alternative-factory cost, capacity and product–factory compatibility are configurable **analyst assumptions**. |
 | **Distances** | Straight-line miles to **state/province centroids**. No customer addresses are geocoded. Canadian centroids are coarse. |
 | **Sparse products** | 7 products have fewer than 30 order lines (e.g. Fun Dip, Everlasting Gobstopper: 3 each). Their estimates are flagged as weak. |
@@ -59,7 +59,7 @@ src/scenario_simulator.py   5 scenarios on one shared candidate table
 src/persistence.py   save/read runs, recommendations, predictions, scenarios, registry, DQ reports
 database/            SQLAlchemy models, additive migrations (SQLite: data/nassau.db)
 dashboard/           Streamlit: home + 8 pages (dashboard/common.py = shared helpers)
-tests/               93 pytest tests (unit, edge cases, temporary-DB persistence, every dashboard page)
+tests/               109 pytest tests (unit, edge cases, temporary-DB persistence, every dashboard page, interactive workflows)
 ```
 
 ## 4. Technology stack
@@ -147,7 +147,7 @@ streamlit run dashboard/app.py
 | 4 Recommendations | Ranked recommendations from saved runs, filters, rationale, status workflow (proposed → under review → approved/rejected → implemented) with history |
 | 5 Risk & Impact | Data-quality risk, prediction uncertainty, risk components per option, profit-vs-risk of every move, freight sensitivity |
 | 6 Factory Map | Factories, destination demand, current routes, distance matrix, coverage, alternative-factory distances, demand clusters |
-| 7 Model Analytics | All models: CV / validation / test metrics, permutation importance, residuals by ship mode, intervals, registry, legacy model note |
+| 7 Model Analytics | All models: CV / validation / test metrics, permutation importance, residuals by ship mode, whole-day prediction ranges with measured coverage, registry, legacy model note |
 | 8 Data Management | Dataset and column status, data-quality report, date forensics, CSV validation, DB statistics, safe refresh, assumption editing, exports |
 
 ## 10. Testing
@@ -156,7 +156,7 @@ streamlit run dashboard/app.py
 python -m pytest -v
 ```
 
-The suite has 93 tests and takes about 40 s. Areas covered:
+The suite has 109 tests and takes about 60 s. Areas covered:
 
 - data loading and preprocessing
 - missing values and invalid dates
@@ -170,6 +170,8 @@ The suite has 93 tests and takes about 40 s. Areas covered:
 - all five scenarios
 - persistence on a temporary database (idempotency, status workflow, additive migration, rebuild guard)
 - every dashboard page rendered headlessly
+- interactive workflows on a temporary database copy (scenario selection, saved-run selection, decision filters, status updates, saving defaults, refresh and cache clearing)
+- whole-day prediction-range coverage, including Same Day; dataset statistics computed (not hard-coded); orphan-record integrity check
 
 Edge cases include empty input, missing columns, invalid dates, unknown factories, destinations and products,
 infeasible allocations, and invalid or negative values. The test suite never writes to `data/nassau.db`.
@@ -181,10 +183,10 @@ There are 10,194 order lines with 18 columns and no missing cells:
 - 8,549 distinct Order IDs (each embeds the customer and product)
 - 5,044 customers
 - 15 products in 3 divisions
-- 59 US states and Canadian provinces, in 4 regions (Atlantic, Gulf, Interior, Pacific)
+- 59 destinations: 49 US states (including DC) and 10 Canadian provinces, in 4 regions (Atlantic, Gulf, Interior, Pacific)
 - 4 ship modes
 
-Chocolate is 97% of order lines.
+Chocolate is 96.6% of order lines.
 
 ## 12. Methodology
 
@@ -249,6 +251,11 @@ The overall score is their mean (Low < 0.35 ≤ Medium < 0.60 ≤ High). These a
 | Gradient boosting | 0.839 | 0.844 | 0.819 | 0.696 |
 
 Final model (refit on train+validation), evaluated once on the test set: MAE 0.806 days, RMSE 0.986, R² 0.698.
+**Prediction ranges.** Each prediction carries a whole-day range built from the 5th–95th percentile of validation
+residuals: Same Day 0–1, First Class 1–3, Second Class 2–5, Standard Class 4–7 days. The range is *nominally* 90%,
+but its **measured coverage on the untouched test set is 100%**. Lead times take only a few whole-day values, so the
+range spans almost all observed values. (An earlier version used real-valued edges and covered only 59%; fixed in QA.)
+
 The ML models do not beat the per-ship-mode average, and permutation importance gives distance, factory, region
 and the other features ≈ 0. The earlier models (test R² 0.01–0.04) predicted a target that mostly encoded the
 date disguise, and selected the best model using the test set.
@@ -300,6 +307,13 @@ Clustering: destination demand k=2 (silhouette 0.51, East/West), route profiles 
 - Seven products have very little history.
 - "Orders" counts Order IDs (order+product), not customer baskets.
 - Risk scores are heuristics, not calibrated probabilities.
+- Three foreign keys declared in code (`run_id` on recommendations, scenario_simulations and shipping_predictions →
+  optimization_runs) are **not enforced by the existing SQLite database**: they were added as columns by the additive
+  migration, and SQLite cannot add a foreign key to an existing column without rebuilding the table (deliberately not
+  done). They are enforced in code and monitored by `persistence.integrity_report()` (Data Management → Database:
+  currently 0 orphan rows). A database created fresh from the models enforces them.
+- The dashboard's visual layout has not been inspected in a browser by the developer tooling; interactive behaviour is
+  covered by headless tests. See FINAL_QA_REPORT.md for the manual checklist.
 
 ## 16. Future improvements
 
@@ -310,4 +324,4 @@ Clustering: destination demand k=2 (silhouette 0.51, East/West), route profiles 
 - User authentication and audit for the recommendation workflow; migration to a server database.
 
 ---
-Development history: `DEVELOPMENT_PROGRESS.md`. Full audit: `reports/PHASE1_AUDIT.md`.
+Development history: `DEVELOPMENT_PROGRESS.md`. Full audit: `reports/PHASE1_AUDIT.md`. QA verification: `FINAL_QA_REPORT.md`. One-page overview: `FINAL_PROJECT_SUMMARY.md`.
