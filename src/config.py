@@ -17,6 +17,28 @@ DATE_FORMAT = "%d-%m-%Y"  # established empirically in Phase 1 profiling (0 pars
 
 RANDOM_STATE = 42
 
+# Columns the raw file must contain. Validation fails loudly if any are missing.
+REQUIRED_COLUMNS = [
+    "Row ID", "Order ID", "Order Date", "Ship Date", "Ship Mode", "Customer ID", "Country/Region",
+    "City", "State/Province", "Postal Code", "Division", "Region", "Product ID", "Product Name",
+    "Sales", "Units", "Gross Profit", "Cost",
+]
+
+# Values observed in the source data (used for UI choices and validation).
+REGIONS = ["Atlantic", "Gulf", "Interior", "Pacific"]
+SHIP_MODES = ["Same Day", "First Class", "Second Class", "Standard Class"]
+
+# Date forensics (see reports/PHASE1_AUDIT.md section 2 and src/data_validation.py).
+# Ship Date - (Order Date with its year replaced by the Order ID year) = DATE_SHIFT + lead time.
+# The shift is re-estimated from the data on every run; this value is only the expected one and a
+# warning is logged if the estimate differs.
+EXPECTED_DATE_SHIFT_DAYS = 2000
+# Recovered lead times outside this window are treated as implausible and set to missing.
+RECOVERED_LEAD_TIME_VALID_RANGE = (0, 14)
+
+# Below this many historical order lines a product's estimates are flagged as weakly supported.
+MIN_SUPPORT_ROWS = 30
+
 # Factory master data — EXACT coordinates supplied in the master prompt. Do not alter.
 FACTORIES = [
     {"factory_name": "Lot's O' Nuts",     "latitude": 32.881893,  "longitude": -111.768036},
@@ -37,7 +59,9 @@ PRODUCT_FACTORY_BASELINE = [
     {"division": "Sugar",     "product_name": "SweeTARTS",                         "factory_name": "Sugar Shack"},
     {"division": "Sugar",     "product_name": "Nerds",                             "factory_name": "Sugar Shack"},
     {"division": "Sugar",     "product_name": "Fun Dip",                           "factory_name": "Sugar Shack"},
-    {"division": "Other",     "product_name": "Fizzy Lifting Drinks",              "factory_name": "Sugar Shack"},
+    # Division corrected from "Other" to "Sugar" (2026-10-22): all 6 source rows say "Sugar".
+    # The factory assignment itself is unchanged.
+    {"division": "Sugar",     "product_name": "Fizzy Lifting Drinks",              "factory_name": "Sugar Shack"},
     {"division": "Sugar",     "product_name": "Everlasting Gobstopper",            "factory_name": "Secret Factory"},
     {"division": "Sugar",     "product_name": "Hair Toffee",                       "factory_name": "The Other Factory"},
     {"division": "Other",     "product_name": "Lickable Wallpaper",                "factory_name": "Secret Factory"},
@@ -56,11 +80,29 @@ FINANCIAL_ASSUMPTIONS = {
         "is_configurable": True,
     },
     "shipping_cost_per_mile_per_unit": {
-        "value": 0.015,
+        # Changed from 0.015 (2026-10-22): 0.015 gives ~$15 freight per unit over 1,000 miles,
+        # about 4x the ~$3.50 selling price of a Wonka Bar, which makes every route loss-making.
+        # 0.0005 gives ~$0.50 per unit per 1,000 miles. Still illustrative only.
+        "value": 0.0005,
         "unit": "USD per mile per unit shipped",
         "source": "ANALYST ASSUMPTION: no logistics/freight cost data supplied. Illustrative placeholder "
-                   "derived from typical US LTL per-mile rates; must be replaced with real freight contracts "
-                   "before any financial decision is made on this number.",
+                   "(about $0.50 per unit per 1,000 straight-line miles); must be replaced with real freight "
+                   "contracts before any financial decision is made on this number.",
+        "is_configurable": True,
+    },
+    "transit_days_per_1000_miles": {
+        "value": 2.0,
+        "unit": "estimated transit days per 1,000 straight-line miles",
+        "source": "ANALYST ASSUMPTION: rule of thumb of roughly 500 truck miles per day. The source data "
+                   "shows NO measurable link between distance and recovered lead time (correlation ~0.002), "
+                   "so any lead-time benefit of moving production comes from this assumption, not from data.",
+        "is_configurable": True,
+    },
+    "factory_capacity_headroom_pct": {
+        "value": -1.0,
+        "unit": "% extra units a factory may take on above its current historical volume (-1 = no limit)",
+        "source": "ANALYST ASSUMPTION: no factory capacity data supplied. Disabled by default (-1). "
+                   "When set to 0 or more, each factory's capacity = its current units x (1 + headroom/100).",
         "is_configurable": True,
     },
     "minimum_profit_threshold": {
@@ -100,3 +142,28 @@ STATE_CENTROIDS = {
     "Virginia": (37.769337, -78.169968), "Washington": (47.400902, -121.490494), "West Virginia": (38.491226, -80.954453),
     "Wisconsin": (44.268543, -89.616508), "Wyoming": (42.755966, -107.302490), "District of Columbia": (38.907192, -77.036873),
 }
+
+# Approximate geographic centres of the 10 Canadian provinces in the data (200 rows).
+# These are coarse approximations: for large provinces (e.g. Ontario, Quebec) the geographic centre
+# can be hundreds of miles from where customers actually are (Toronto, Montreal), so Canadian
+# distances are less reliable than US state-centroid distances. Flagged in the data-quality report.
+CANADA_PROVINCE_CENTROIDS = {
+    "Alberta": (55.0, -115.0), "British Columbia": (53.7, -127.6), "Manitoba": (56.4, -98.7),
+    "New Brunswick": (46.5, -66.2), "Newfoundland and Labrador": (53.1, -57.7), "Nova Scotia": (45.0, -63.0),
+    "Ontario": (50.0, -85.0), "Prince Edward Island": (46.25, -63.0), "Quebec": (52.9, -73.5),
+    "Saskatchewan": (52.9, -106.5),
+}
+
+# All destination centroids (US states + Canadian provinces).
+DESTINATION_CENTROIDS = {**STATE_CENTROIDS, **CANADA_PROVINCE_CENTROIDS}
+
+# Product-factory compatibility rules. None of these come from source data; the default is derived
+# from the 15 baseline assignments (a factory "has demonstrated" a division if it currently makes at
+# least one product of that division).
+COMPATIBILITY_RULES = {
+    "demonstrated_division": "A factory may make a product if it already makes another product of the same "
+                             "division (derived from the baseline assignments; unverified with the business).",
+    "any_factory": "Any factory may make any product (most permissive; no evidence supports this).",
+    "baseline_only": "Only the current factory is allowed (no reallocation possible).",
+}
+DEFAULT_COMPATIBILITY_RULE = "demonstrated_division"

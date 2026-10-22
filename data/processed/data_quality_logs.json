@@ -1,9 +1,205 @@
 [
   {
-    "source_file": "/home/claude/nassau-candy-optimization/data/raw/nassau_candy_distributor.csv",
     "issue_type": "systemic_lead_time_anomaly",
-    "issue_description": "Ship Date - Order Date ranges ~900-1640 days across the ENTIRE dataset and does not vary meaningfully by Ship Mode (Same Day mean ~1333 days vs Standard Class ~1314 days). This is inconsistent with real shipping lead times and indicates Ship Date was generated/shifted independently of the rest of the record (e.g. a synthetic dataset). The raw field is retained for transparency but is NOT treated as a valid real-world delivery-duration signal. The model target used downstream is a de-trended relative index, documented in prediction_engine.py.",
+    "issue_description": "Ship Date - Order Date is 904-1642 days for every row and ship mode explains only 0.1% of its variance. This raw gap is NOT a delivery lead time and is never used as one.",
     "affected_records": 10194,
-    "severity": "critical"
+    "severity": "critical",
+    "evidence": {
+      "order_date_range": [
+        "2024-01-02",
+        "2025-12-31"
+      ],
+      "ship_date_range": [
+        "2026-06-30",
+        "2030-06-28"
+      ],
+      "raw_gap_days": {
+        "min": 904.0,
+        "max": 1642.0,
+        "mean": 1320.8419
+      },
+      "raw_gap_mean_by_ship_mode": {
+        "First Class": 1338.2758,
+        "Same Day": 1333.4424,
+        "Second Class": 1323.8454,
+        "Standard Class": 1314.3346
+      },
+      "eta2_ship_mode_on_raw_gap": 0.0012
+    }
+  },
+  {
+    "issue_type": "date_fields_disguised",
+    "issue_description": "The Order ID year (2021-2024) is the original order year: Order Date years were relabelled (two original years per new year) and Ship Date is the original ship date shifted by a constant 2000 days. Dates in this file are therefore synthetic/disguised and calendar values (year, weekday) of Order Date and Ship Date must not be interpreted literally.",
+    "affected_records": 10194,
+    "severity": "critical",
+    "evidence": {
+      "order_id_year_vs_order_date_year": {
+        "2021": {
+          "2024": 2051,
+          "2025": 0
+        },
+        "2022": {
+          "2024": 2130,
+          "2025": 0
+        },
+        "2023": {
+          "2024": 0,
+          "2025": 2634
+        },
+        "2024": {
+          "2024": 0,
+          "2025": 3379
+        }
+      },
+      "order_id_year_vs_ship_date_year": {
+        "2021": {
+          "2026": 711,
+          "2027": 1340,
+          "2028": 0,
+          "2029": 0,
+          "2030": 0
+        },
+        "2022": {
+          "2026": 0,
+          "2027": 749,
+          "2028": 1381,
+          "2029": 0,
+          "2030": 0
+        },
+        "2023": {
+          "2026": 0,
+          "2027": 0,
+          "2028": 986,
+          "2029": 1648,
+          "2030": 0
+        },
+        "2024": {
+          "2026": 0,
+          "2027": 0,
+          "2028": 0,
+          "2029": 1251,
+          "2030": 2128
+        }
+      },
+      "estimated_shift_days": 2000,
+      "corr_ship_date_vs_row_id": 0.9943
+    }
+  },
+  {
+    "issue_type": "lead_time_recovered_derived",
+    "issue_description": "lead_time_recovered_days = Ship Date - shift - (Order Date with Order ID year). It is a DERIVED value under a testable rule (ship mode explains 67% of its variance; Same Day rows are ~0 days), not a measured delivery duration. 10194 rows recovered; 0 set to missing.",
+    "affected_records": 0,
+    "severity": "high",
+    "evidence": {
+      "recovered_lead_value_counts": {
+        "0": 523,
+        "1": 369,
+        "2": 1362,
+        "3": 1026,
+        "4": 2837,
+        "5": 2238,
+        "6": 1205,
+        "7": 630,
+        "8": 2,
+        "11": 2
+      },
+      "recovered_lead_mean_by_ship_mode": {
+        "First Class": 2.1822,
+        "Same Day": 0.0439,
+        "Second Class": 3.2375,
+        "Standard Class": 4.9964
+      },
+      "recovered_lead_range_by_ship_mode": {
+        "First Class": [
+          1.0,
+          3.0
+        ],
+        "Same Day": [
+          0.0,
+          1.0
+        ],
+        "Second Class": [
+          2.0,
+          5.0
+        ],
+        "Standard Class": [
+          4.0,
+          7.0
+        ]
+      },
+      "eta2_ship_mode_on_recovered_lead": 0.6737,
+      "rebuilt_order_date_failures": 0
+    }
+  },
+  {
+    "issue_type": "sparse_product_history",
+    "issue_description": "7 products have fewer than 30 order lines: Laffy Taffy (10), SweeTARTS (10), Fizzy Lifting Drinks (6), Nerds (4), Hair Toffee (4), Everlasting Gobstopper (3), Fun Dip (3). Estimates for these products rest on very little data.",
+    "affected_records": 40,
+    "severity": "high",
+    "evidence": {
+      "Laffy Taffy": 10,
+      "SweeTARTS": 10,
+      "Fizzy Lifting Drinks": 6,
+      "Nerds": 4,
+      "Hair Toffee": 4,
+      "Everlasting Gobstopper": 3,
+      "Fun Dip": 3
+    }
+  },
+  {
+    "issue_type": "canadian_centroid_approximation",
+    "issue_description": "Canadian rows use approximate province geographic centres; for large provinces these can be hundreds of miles from customers' cities, so their distances are less reliable than US state-centroid distances.",
+    "affected_records": 200,
+    "severity": "medium",
+    "evidence": {}
+  },
+  {
+    "issue_type": "customer_multiple_destinations",
+    "issue_description": "28 customers ship to more than one state/province. Geography is taken from each order line, not from the customer record.",
+    "affected_records": 199,
+    "severity": "medium",
+    "evidence": {}
+  },
+  {
+    "issue_type": "possible_duplicate_lines",
+    "issue_description": "Rows identical in every column except Row ID. They may be genuine repeat lines or duplicates; the source gives no way to tell, so they are kept and flagged, not removed.",
+    "affected_records": 313,
+    "severity": "low",
+    "evidence": {}
+  },
+  {
+    "issue_type": "order_id_is_order_plus_product",
+    "issue_description": "Order ID embeds Customer ID and Product ID, so it identifies an order line group, not a basket: 8549 distinct Order IDs for 10194 lines (3018 lines share an ID). 'Orders' counts in this system mean distinct Order IDs.",
+    "affected_records": 3018,
+    "severity": "low",
+    "evidence": {}
+  },
+  {
+    "issue_type": "postal_code_leading_zero_lost",
+    "issue_description": "US postal codes with 4 digits (leading zero lost, e.g. New England). Postal codes are not used for distance, so this does not affect calculations.",
+    "affected_records": 449,
+    "severity": "low",
+    "evidence": {}
+  },
+  {
+    "issue_type": "missing_values",
+    "issue_description": "0 missing or blank cells across 18 columns.",
+    "affected_records": 0,
+    "severity": "info",
+    "evidence": {}
+  },
+  {
+    "issue_type": "gross_profit_consistency",
+    "issue_description": "Gross Profit = Sales - Cost holds for 10194 of 10194 rows.",
+    "affected_records": 0,
+    "severity": "info",
+    "evidence": {}
+  },
+  {
+    "issue_type": "no_factory_cost_capacity_compatibility_data",
+    "issue_description": "The source has no factory-specific production cost, freight rate, factory capacity or product-factory compatibility data. Unit cost is constant per product. All such inputs are configurable analyst assumptions.",
+    "affected_records": 0,
+    "severity": "info",
+    "evidence": {}
   }
 ]
