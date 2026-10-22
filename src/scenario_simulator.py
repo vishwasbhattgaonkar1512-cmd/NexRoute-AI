@@ -1,111 +1,140 @@
 """
-Phase 6: Factory reallocation scenario simulator (master prompt section 10).
+What-if scenario simulator.
+
+Every scenario is evaluated on the SAME candidate table (same demand, same assumptions, same model), so
+scenarios differ only in how the factory for each product is chosen:
+
+  current      Current factory allocation (baseline). All impacts are 0 by definition.
+  alternative  Each product forced to its best-scoring COMPATIBLE alternative factory (shows the cost of
+               moving; ignores capacity). Products with no compatible alternative stay put.
+  distance     Minimise demand-weighted distance (nearest compatible factory), subject to capacity.
+  cost         Maximise estimated profit (= minimise production + freight cost), subject to capacity.
+  balanced     The recommendation objective: profit, lead time and risk with weights, reassignment penalty
+               and minimum-profit threshold (src/optimization_engine.py).
+
+All results are ESTIMATES under analyst assumptions over the historical demand period.
 """
-import joblib
+from __future__ import annotations
+
+import numpy as np
 import pandas as pd
-from src.config import FACTORIES, PRODUCT_FACTORY_BASELINE, MODELS_TRAINED_DIR
-from src.geographic_engine import distance_factory_to_state
-from src.confidence_engine import confidence_label
-from src.profit_engine import estimate_scenario_profit
 
-FACTORY_NAMES = [f["factory_name"] for f in FACTORIES]
+from src.assumptions import Assumptions, load_assumptions, load_weights
+from src.optimization_engine import (
+    build_context, evaluate_candidates, score_candidates, solve_allocation, factory_capacities, recommend,
+)
+
+SCENARIOS = {
+    "current": "Current factory allocation",
+    "alternative": "Best alternative factory (forced move)",
+    "distance": "Distance-based allocation",
+    "cost": "Cost-focused allocation",
+    "balanced": "Balanced cost, lead time and risk",
+}
+
+DETAIL_COLS = ["product_name", "division", "current_factory", "factory_name", "is_current", "compatibility_basis",
+               "units", "lines", "cost_impact", "cost_impact_pct", "profit_impact", "profit_impact_pct_of_revenue",
+               "lead_time_impact_days", "processing_impact_days", "distance_impact_miles", "weighted_distance_miles",
+               "estimated_lead_days", "risk_level", "overall_risk", "confidence", "score"]
 
 
-def _load_best_model():
-    meta = joblib.load(MODELS_TRAINED_DIR / "model_meta.joblib")
-    best_name = meta["best_model_name"]
-    model = joblib.load(MODELS_TRAINED_DIR / f"{best_name}.joblib")
-    return model, meta
+def _rows_for_assignment(ev: pd.DataFrame, assignment: dict) -> pd.DataFrame:
+    sel = ev[[assignment.get(p) == f for p, f in zip(ev["product_name"], ev["factory_name"])]]
+    return sel.copy()
 
 
-def eligible_factories(product_name: str):
-    """
-    Compatibility rule (documented assumption, see DEVELOPMENT_PROGRESS.md):
-    - the baseline factory is always 'confirmed compatible'.
-    - any other factory is 'unverified - assumed compatible within same Division' (lower confidence),
-      since no compatibility data beyond the 15 baseline assignments was supplied.
-    """
-    baseline = next(p for p in PRODUCT_FACTORY_BASELINE if p["product_name"] == product_name)
-    current_factory = baseline["factory_name"]
-    division = baseline["division"]
+def _explain_row(r, scenario: str) -> str:
+    if r["is_current"]:
+        return {"current": "Baseline: current factory.",
+                "alternative": "No compatible alternative factory; stays at current factory.",
+                }.get(scenario, "Current factory is best under this scenario's objective (or the move is not allowed).")
+    return (f"Move to {r['factory_name']}: demand-weighted distance {r['distance_impact_miles']:+,.0f} mi, "
+            f"estimated cost {r['cost_impact']:+,.2f} USD, profit {r['profit_impact']:+,.2f} USD, lead time "
+            f"{r['lead_time_impact_days']:+.2f} d (transit assumption), risk {r['risk_level']}. "
+            f"Compatibility: {r['compatibility_basis']}.")
 
-    result = []
-    for fname in FACTORY_NAMES:
-        if fname == current_factory:
-            result.append({"factory_name": fname, "is_current": True, "compatibility": "confirmed (baseline assignment)"})
+
+def simulate_scenarios(a: Assumptions | None = None, weights: dict | None = None, ctx: dict | None = None,
+                       scenarios: list | None = None, capacities: dict | None = None) -> dict:
+    a = a or load_assumptions()
+    weights = weights or load_weights()
+    ctx = ctx or build_context()
+    scenarios = scenarios or list(SCENARIOS)
+    unknown = [s for s in scenarios if s not in SCENARIOS]
+    if unknown:
+        raise ValueError(f"unknown scenarios: {unknown}")
+
+    ev = evaluate_candidates(a, ctx)
+    ev["score"] = score_candidates(ev, weights, a)
+    caps = capacities if capacities is not None else factory_capacities(ctx, a)
+    current_assign = dict(zip(ev.loc[ev["is_current"], "product_name"], ev.loc[ev["is_current"], "factory_name"]))
+
+    details, summary = [], []
+    for s in scenarios:
+        status, message, reasons = "optimal", "", {}
+        if s == "current":
+            assign = current_assign
+        elif s == "alternative":
+            assign = dict(current_assign)
+            alts = ev[~ev["is_current"] & ev["compatible"]].sort_values("score", ascending=False)
+            for p, g in alts.groupby("product_name", sort=False):
+                assign[p] = g.iloc[0]["factory_name"]
+            message = "Capacity not applied (forced-move comparison)."
+        elif s in ("distance", "cost"):
+            obj = -ev["weighted_distance_miles"].fillna(1e9) if s == "distance" else ev["profit_impact"]
+            sol = solve_allocation(ev, obj, ev["compatible"], caps)
+            status, message = sol["status"], sol["message"]
+            assign = sol["assignment"] or current_assign
+        else:  # balanced
+            rec = recommend(a, weights, ctx, capacities=caps, ev=ev)
+            status, message = rec["run"]["solver_status"], rec["run"]["solver_message"]
+            assign = {r["product_name"]: r["recommended_factory"] for r in rec["recommendations"]}
+            reasons = {r["product_name"]: r["recommendation_reason"] for r in rec["recommendations"]}
+
+        rows = _rows_for_assignment(ev, assign)[DETAIL_COLS].rename(columns={"factory_name": "proposed_factory"})
+        rows.insert(0, "scenario", s)
+        rows.insert(1, "scenario_name", SCENARIOS[s])
+        if status != "optimal" and s in ("distance", "cost", "balanced"):
+            rows["explanation"] = f"INFEASIBLE: {message} Showing current allocation."
         else:
-            result.append({"factory_name": fname, "is_current": False,
-                            "compatibility": "unverified - assumed compatible within same Division (ANALYST ASSUMPTION)"})
-    return result, current_factory, division
+            rows["explanation"] = [reasons.get(p) or _explain_row(r.rename({"proposed_factory": "factory_name"}), s)
+                                   for p, (_, r) in zip(rows["product_name"], rows.iterrows())]
+        details.append(rows)
 
-
-def predict_lead_time_index(model, meta, division, factory, region, state, ship_mode,
-                             distance_miles, units, sales, order_month=6, order_dow=2, order_year=2025):
-    row = pd.DataFrame([{
-        "Division": division, "current_factory": factory, "Region": region,
-        "State/Province": state, "Ship Mode": ship_mode, "order_year": order_year,
-        "distance_miles": distance_miles, "Units": units, "Sales": sales,
-        "order_month": order_month, "order_dow": order_dow,
-    }])
-    pred = model.predict(row)[0]
-    residual_std = meta["residual_std"]
-    return float(pred), float(residual_std)
-
-
-def simulate_product_scenario(product_name: str, destination_state: str, destination_region: str,
-                               ship_mode: str, units: int = 3, sales: float = 14.0, cost: float = 5.0):
-    model, meta = _load_best_model()
-    factories, current_factory, division = eligible_factories(product_name)
-
-    scenarios = []
-    for f in factories:
-        fname = f["factory_name"]
-        distance = distance_factory_to_state(fname, destination_state)
-        pred_index, residual_std = predict_lead_time_index(
-            model, meta, division, fname, destination_region, destination_state, ship_mode,
-            distance, units, sales,
-        )
-        conf = confidence_label(fname)
-        profit = estimate_scenario_profit(
-            sales=sales, current_cost=cost, units=units,
-            current_factory=current_factory, proposed_factory=fname,
-            state_province=destination_state,
-        )
-
-        scenarios.append({
-            "factory_name": fname,
-            "is_current": f["is_current"],
-            "compatibility": f["compatibility"],
-            "distance_miles": round(distance, 1) if distance == distance else None,
-            "predicted_lead_time_index": round(pred_index, 1),
-            "prediction_interval_95": [round(pred_index - 1.96 * residual_std, 1),
-                                        round(pred_index + 1.96 * residual_std, 1)],
-            "confidence": conf,
-            "profit": profit,
+        units = rows["units"].sum()
+        summary.append({
+            "scenario": s, "scenario_name": SCENARIOS[s], "solver_status": status, "note": message,
+            "products_moved": int((~rows["is_current"]).sum()),
+            "estimated_cost_impact": float(rows["cost_impact"].sum()),
+            "estimated_profit_impact": float(rows["profit_impact"].sum()),
+            "profit_impact_pct_of_current_estimated_profit":
+                100 * float(rows["profit_impact"].sum()) / float(ev.loc[ev["is_current"], "estimated_profit"].sum()),
+            "units_weighted_lead_time_impact_days": float((rows["lead_time_impact_days"] * rows["units"]).sum() / units) if units else np.nan,
+            "units_weighted_distance_impact_miles": float((rows["distance_impact_miles"] * rows["units"]).sum() / units) if units else np.nan,
+            "high_risk_moves": int(((rows["risk_level"] == "High") & ~rows["is_current"]).sum()),
+            "mean_risk_of_moved_products": float(rows.loc[~rows["is_current"], "overall_risk"].mean()) if (~rows["is_current"]).any() else 0.0,
         })
 
-    baseline_scenario = next(s for s in scenarios if s["is_current"])
-    for s in scenarios:
-        s["lead_time_improvement"] = round(baseline_scenario["predicted_lead_time_index"] - s["predicted_lead_time_index"], 1)
-        denom = abs(baseline_scenario["predicted_lead_time_index"]) or 1e-6
-        s["lead_time_reduction_pct"] = round(100 * s["lead_time_improvement"] / denom, 1)
+    return {"details": pd.concat(details, ignore_index=True), "summary": pd.DataFrame(summary),
+            "candidates": ev, "assumptions": a, "weights": weights, "capacities": caps,
+            "model_version": ctx["meta"]["model_version"]}
 
-        # risk classification combines confidence + profit classification
-        if s["confidence"]["label"] == "unsupported":
-            s["risk_status"] = "high_risk_unsupported"
-        elif s["profit"]["classification"] == "negative_financial_impact":
-            s["risk_status"] = "high_risk_negative_profit"
-        elif s["confidence"]["label"] == "low":
-            s["risk_status"] = "moderate_risk_low_confidence"
-        else:
-            s["risk_status"] = "standard_risk"
 
-    return {
-        "product_name": product_name,
-        "division": division,
-        "current_factory": current_factory,
-        "destination_state": destination_state,
-        "destination_region": destination_region,
-        "ship_mode": ship_mode,
-        "scenarios": scenarios,
-    }
+def product_comparison(product_name: str, a: Assumptions | None = None, ctx: dict | None = None,
+                       weights: dict | None = None) -> pd.DataFrame:
+    """All five factories for one product (used by the Factory Optimization page)."""
+    a = a or load_assumptions()
+    ev = evaluate_candidates(a, ctx or build_context())
+    ev["score"] = score_candidates(ev, weights or load_weights(), a)
+    out = ev[ev["product_name"] == product_name]
+    if out.empty:
+        raise ValueError(f"unknown product or no demand: {product_name!r}")
+    return out.reset_index(drop=True)
+
+
+if __name__ == "__main__":
+    res = simulate_scenarios()
+    pd.set_option("display.width", 200)
+    print(res["summary"][["scenario", "solver_status", "products_moved", "estimated_cost_impact",
+                          "estimated_profit_impact", "units_weighted_lead_time_impact_days", "high_risk_moves"]]
+          .round(2).to_string(index=False))

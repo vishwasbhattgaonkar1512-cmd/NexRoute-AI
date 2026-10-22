@@ -79,12 +79,12 @@ FINANCIAL_ASSUMPTIONS = {
                    "Default assumes equal manufacturing cost at any compatible factory; override per scenario.",
         "is_configurable": True,
     },
-    "shipping_cost_per_mile_per_unit": {
-        # Changed from 0.015 (2026-10-22): 0.015 gives ~$15 freight per unit over 1,000 miles,
-        # about 4x the ~$3.50 selling price of a Wonka Bar, which makes every route loss-making.
-        # 0.0005 gives ~$0.50 per unit per 1,000 miles. Still illustrative only.
+    "freight_cost_per_unit_mile": {
+        # Replaces the legacy 'shipping_cost_per_mile_per_unit' (0.015). 0.015 gives ~$15 freight per unit
+        # over 1,000 miles, about 4x the ~$3.50 selling price of a Wonka Bar, so every route was loss-making.
+        # New name so the old database row is left untouched. Still illustrative only.
         "value": 0.0005,
-        "unit": "USD per mile per unit shipped",
+        "unit": "USD per unit per straight-line mile",
         "source": "ANALYST ASSUMPTION: no logistics/freight cost data supplied. Illustrative placeholder "
                    "(about $0.50 per unit per 1,000 straight-line miles); must be replaced with real freight "
                    "contracts before any financial decision is made on this number.",
@@ -107,18 +107,35 @@ FINANCIAL_ASSUMPTIONS = {
     },
     "minimum_profit_threshold": {
         "value": 0.0,
-        "unit": "USD estimated profit impact",
+        "unit": "USD estimated profit impact over the historical period, per product",
         "source": "ANALYST ASSUMPTION: optimization will not recommend a reallocation whose estimated profit "
                    "impact falls below this threshold. Default = no reallocation may reduce profit.",
         "is_configurable": True,
     },
-    "reassignment_penalty": {
-        "value": 0.25,
-        "unit": "index points subtracted from score for any change from current factory",
-        "source": "ANALYST ASSUMPTION: discourages unnecessary churn; tunable.",
+    "reassignment_penalty_points": {
+        # Replaces legacy 'reassignment_penalty' (0.25 on the old tanh-scaled score, no longer meaningful).
+        "value": 2.0,
+        "unit": "score points (same % scale as the objective) subtracted for any change of factory",
+        "source": "ANALYST ASSUMPTION: stands in for unknown one-off switching costs and discourages "
+                   "reallocations with marginal benefit; tunable.",
         "is_configurable": True,
     },
 }
+
+# Database rows with these names come from an earlier version and are kept but no longer used.
+LEGACY_ASSUMPTIONS = {
+    "shipping_cost_per_mile_per_unit": "replaced by freight_cost_per_unit_mile",
+    "reassignment_penalty": "replaced by reassignment_penalty_points",
+}
+
+# Objective weights. Score = w_profit * profit gain % + w_speed * lead-time gain % - w_risk * risk increase (points)
+#                           - reassignment penalty (if the factory changes)
+WEIGHT_PRESETS = {
+    "balanced": {"profit_weight": 0.4, "speed_weight": 0.4, "risk_weight": 0.2},
+    "cost_focused": {"profit_weight": 1.0, "speed_weight": 0.0, "risk_weight": 0.0},
+    "speed_focused": {"profit_weight": 0.2, "speed_weight": 0.7, "risk_weight": 0.1},
+}
+DEFAULT_WEIGHT_PRESET = "balanced"
 
 # Public, static state-centroid coordinates (lat/long of US state geographic centroids).
 # Used ONLY because customer-level lat/long is not in the source data and no geocoding
