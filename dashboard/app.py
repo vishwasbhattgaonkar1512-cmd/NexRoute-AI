@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import setup_page, require_database, lead_time_warning, estimate_note  # noqa: E402
+from common import setup_page, require_database, lead_time_warning, estimate_note, guard, load_pipeline, headline  # noqa: E402
 
 import streamlit as st  # noqa: E402
 
@@ -22,16 +22,18 @@ with c1:
 with c2:
     estimate_note()
 
+S = headline()
 st.subheader("What the data can and cannot tell us")
-st.markdown("""
+st.markdown(f"""
 | | Status |
 |---|---|
 | Orders, products, sales, units, cost, destinations | **Observed** in the source file |
 | Ship Date − Order Date (904–1,642 days) | **Unusable** — dates are disguised; never shown as a lead time |
 | Lead time 0–8 days by ship mode | **Derived** with a stated, tested rule (Data Management → Date forensics) |
-| Effect of distance / factory on lead time | **Not measurable** in the data (correlation ≈ 0.002) |
+| Effect of distance / factory on lead time | **Not measurable** in the data (correlation {S['corr_distance_lead_all']:.3f}) |
 | Freight rates, factory costs, capacity, compatibility | **Not in the data** — editable analyst assumptions |
-| Distances | **Approximate**: straight line to state/province centroids |
+| Distances | **Approximate**: straight line to state/province centroids; {S['n_destinations']} destinations ({S['n_us_states']} US states incl. DC, {S['n_canadian_provinces']} Canadian provinces) |
+| Product history | {S['n_sparse_products']} of {S['n_products']} products have fewer than {S['min_support_rows']} order lines |
 """)
 
 st.subheader("Pages")

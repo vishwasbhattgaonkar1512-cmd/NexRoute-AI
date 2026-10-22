@@ -195,3 +195,11 @@ def measured_interval_coverage():
     if not path.exists():
         return None
     return interval_coverage(pd.read_csv(path), meta)
+
+
+@st.cache_data(show_spinner=False)
+def headline():
+    """Dataset statistics computed from the data (src/data_stats.py)."""
+    from src.data_stats import headline_stats
+    df, _ = load_pipeline()
+    return headline_stats(df)

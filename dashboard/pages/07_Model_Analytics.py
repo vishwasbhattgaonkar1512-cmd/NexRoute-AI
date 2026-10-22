@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from common import setup_page, require_database, guard, style, show, lead_time_warning, measured_interval_coverage  # noqa: E402
+from common import setup_page, require_database, guard, style, show, lead_time_warning, measured_interval_coverage, headline  # noqa: E402
 
 import json  # noqa: E402
 import pandas as pd  # noqa: E402
@@ -32,7 +32,8 @@ st.success(
     f"**Finding:** a simple average per ship mode predicts the derived lead time as well as any ML model "
     f"(validation MAE {meta['results']['baseline_ship_mode_mean']['validation']['mae']:.3f} d vs "
     f"{meta['results'][meta['best_ml_model']]['validation']['mae']:.3f} d for the best ML model, "
-    f"{meta['best_ml_model'].replace('_', ' ')}). Ship mode explains ~70% of the variance; distance, factory, "
+    f"{meta['best_ml_model'].replace('_', ' ')}). Ship mode alone explains {headline()['ship_mode_eta2_pct']:.0f}% of "
+    f"the variance in the full dataset (selected model's test R² {meta['final_test']['r2']:.2f}); distance, factory, "
     "region, product division, order size and season add nothing measurable. Per the selection rule the "
     "simpler model is used.", icon="✅")
 

@@ -94,7 +94,8 @@ FINANCIAL_ASSUMPTIONS = {
         "value": 2.0,
         "unit": "estimated transit days per 1,000 straight-line miles",
         "source": "ANALYST ASSUMPTION: rule of thumb of roughly 500 truck miles per day. The source data "
-                   "shows NO measurable link between distance and recovered lead time (correlation ~0.002), "
+                   "shows NO measurable link between distance and recovered lead time (correlation near zero; see the "
+                   "dashboard's Data Management -> Date forensics tab for the computed value), "
                    "so any lead-time benefit of moving production comes from this assumption, not from data.",
         "is_configurable": True,
     },

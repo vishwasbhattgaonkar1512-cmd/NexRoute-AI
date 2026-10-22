@@ -3,7 +3,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from common import (setup_page, require_database, guard, load_pipeline, current_assumptions, current_weights,  # noqa: E402
-                    clear_caches, style, show)
+                    clear_caches, style, show, headline)
 
 import json  # noqa: E402
 import pandas as pd  # noqa: E402
@@ -67,6 +67,8 @@ with tabs[2]:
 3. Ship Date − (Order Date with the Order ID year) = **{ev2['estimated_shift_days']:,} days + k**, with k = 0–8 days.
 4. k behaves like a real lead time: ship mode explains **{100 * ev['eta2_ship_mode_on_recovered_lead']:.0f}%** of its variance and
    Same Day orders are ~0 days. k is published as `lead_time_recovered_days` — **derived, not measured**.
+5. Correlation between distance (current factory → destination centroid) and recovered lead time:
+   **{headline()['corr_distance_lead_all']:.4f}** for all rows, **{headline()['corr_distance_lead_us']:.4f}** for US rows only.
 """)
     c1, c2 = st.columns(2)
     with c1:
