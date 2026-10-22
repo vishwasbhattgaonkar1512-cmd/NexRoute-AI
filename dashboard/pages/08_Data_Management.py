@@ -109,6 +109,20 @@ with tabs[4]:
     if not runs.empty:
         st.dataframe(runs[["run_id", "run_type", "created_at", "solver_status", "model_version"]], hide_index=True,
                      width="stretch")
+    st.markdown("**Integrity check** (read-only)")
+    integ = P.integrity_report()
+    orphans = sum(integ["orphan_run_rows"].values())
+    (st.success if integ["ok"] else st.error)(
+        f"Orphan run records: {orphans} · SQLite foreign-key violations: {integ['sqlite_foreign_key_violations']}")
+    st.dataframe(pd.DataFrame({"table": list(integ["orphan_run_rows"]),
+                               "orphan rows (run_id without a run)": list(integ["orphan_run_rows"].values()),
+                               "rows without run_id (legacy)": list(integ["legacy_rows_without_run"].values())}),
+                 hide_index=True, width="stretch")
+    if integ["unenforced_foreign_keys"]:
+        st.caption("Declared in code but **not enforced by the database** (SQLite cannot add a foreign key to a column "
+                   "added later; rebuilding the tables was deliberately avoided). Enforced in code instead — runs are "
+                   "always saved before their rows — and monitored by this check: "
+                   + ", ".join(f"`{x}`" for x in integ["unenforced_foreign_keys"]))
     st.markdown("**Safe operations**")
     st.caption("Refresh derived columns and add a new data-quality report from the raw file. Inserts missing rows "
                "only; never deletes. (A full rebuild is only available from the command line, with explicit "

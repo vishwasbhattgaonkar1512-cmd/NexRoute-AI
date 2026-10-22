@@ -340,3 +340,40 @@ def database_statistics(engine=None) -> pd.DataFrame:
     names = inspect(eng).get_table_names()
     with eng.connect() as c:
         return pd.DataFrame([{"table": n, "rows": c.execute(text(f'SELECT COUNT(*) FROM "{n}"')).scalar()} for n in names])
+
+
+# ----------------------------------------------------------------------------------------------
+# Integrity
+# ----------------------------------------------------------------------------------------------
+RUN_LINKED_TABLES = ["recommendations", "scenario_simulations", "shipping_predictions"]
+
+
+def integrity_report(engine=None) -> dict:
+    """
+    Read-only integrity check.
+      * orphan_run_rows: rows whose run_id is set but has no optimization_runs row.
+      * legacy_rows_without_run: rows with run_id NULL (written before runs existed).
+      * unenforced_foreign_keys: foreign keys declared in database/models.py that the live SQLite schema does not
+        enforce. SQLite cannot add a FOREIGN KEY to an existing column (ALTER TABLE ADD COLUMN is used by the
+        additive migrations), so these are enforced in code instead: persistence always writes the run first.
+      * sqlite_foreign_key_violations: violations of the constraints SQLite does enforce.
+    """
+    from sqlalchemy import text
+    from database.models import Base
+    eng = engine or get_engine()
+    out = {"orphan_run_rows": {}, "legacy_rows_without_run": {}, "unenforced_foreign_keys": [],
+           "sqlite_foreign_key_violations": 0}
+    with eng.connect() as c:
+        for t in RUN_LINKED_TABLES:
+            out["orphan_run_rows"][t] = c.execute(text(
+                f'SELECT COUNT(*) FROM "{t}" WHERE run_id IS NOT NULL AND run_id NOT IN (SELECT run_id FROM optimization_runs)')).scalar()
+            out["legacy_rows_without_run"][t] = c.execute(text(f'SELECT COUNT(*) FROM "{t}" WHERE run_id IS NULL')).scalar()
+        out["sqlite_foreign_key_violations"] = len(c.execute(text("PRAGMA foreign_key_check")).fetchall())
+        for table in Base.metadata.sorted_tables:
+            live = {(r[3], r[2]) for r in c.execute(text(f'PRAGMA foreign_key_list("{table.name}")')).fetchall()}
+            for fk in table.foreign_keys:
+                key = (fk.parent.name, fk.column.table.name)
+                if key not in live:
+                    out["unenforced_foreign_keys"].append(f"{table.name}.{fk.parent.name} -> {fk.column.table.name}")
+    out["ok"] = (sum(out["orphan_run_rows"].values()) == 0 and out["sqlite_foreign_key_violations"] == 0)
+    return out

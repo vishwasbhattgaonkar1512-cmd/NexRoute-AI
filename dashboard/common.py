@@ -139,7 +139,13 @@ def current_weights():
 
 
 def clear_caches():
-    st.cache_data.clear()
+    """Drop every cached result so refreshed data, settings or a new model show without restarting Streamlit."""
+    from src.prediction_engine import load_active_model
+    from src.preprocessing import _cached_pipeline
+    st.cache_data.clear()        # pipeline, evaluations, scenarios, recommendations, statistics, coverage
+    st.cache_resource.clear()    # model + historical-demand context
+    load_active_model.cache_clear()
+    _cached_pipeline.cache_clear()
 
 
 # ----------------------------------------------------------------------------------------- charts

@@ -30,8 +30,8 @@ if runs.empty:
     st.info("No saved recommendation run yet. Click **Run optimization now & save**.")
     st.stop()
 with c1:
-    run_id = st.selectbox("Saved run", runs["run_id"],
-                          format_func=lambda r: f"{r} · {runs.set_index('run_id').loc[r, 'solver_status']}")
+    _run_labels = {f"{r.run_id} · {r.solver_status}": r.run_id for r in runs.itertuples()}
+    run_id = _run_labels[st.selectbox("Saved run", list(_run_labels), key="saved_run")]
 run = runs.set_index("run_id").loc[run_id]
 recs = guard(P.get_recommendations, run_id, what="recommendations")
 
@@ -43,7 +43,8 @@ k[2].metric("Est. profit impact", usd(recs["estimated_profit_impact"].sum(), Tru
 k[3].metric("Model version", run["model_version"] or "—")
 
 f1, f2, f3 = st.columns(3)
-dec = f1.multiselect("Decision", sorted(recs["decision"].unique()), format_func=DECISION_LABELS.get)
+_dec_labels = {DECISION_LABELS.get(d, d): d for d in sorted(recs["decision"].unique())}
+dec = [_dec_labels[x] for x in f1.multiselect("Decision", list(_dec_labels), key="decision_filter")]
 risk = f2.multiselect("Risk", ["Low", "Medium", "High"])
 stat = f3.multiselect("Status", RECOMMENDATION_STATUSES)
 view = recs.copy()

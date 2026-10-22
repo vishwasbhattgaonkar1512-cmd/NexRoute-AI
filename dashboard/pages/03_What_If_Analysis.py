@@ -92,7 +92,10 @@ with c2:
     show(style(fig, 320, "Estimated lead-time change vs current (negative = faster)", legend=False))
 
 st.subheader("Product-level detail")
-pick = st.selectbox("Scenario", list(SCENARIOS), format_func=SCENARIOS.get, index=list(SCENARIOS).index("cost"))
+# Plain text options (label -> key) so the control is testable headlessly; looks the same in the browser.
+_label_to_key = {v: k for k, v in SCENARIOS.items()}
+pick = _label_to_key[st.selectbox("Scenario", list(_label_to_key), index=list(SCENARIOS).index("cost"),
+                                  key="scenario_detail")]
 d = details[details["scenario"] == pick].copy()
 d["risk_level"] = d["risk_level"].map(risk_badge)
 st.dataframe(d[["product_name", "current_factory", "proposed_factory", "cost_impact", "profit_impact",
