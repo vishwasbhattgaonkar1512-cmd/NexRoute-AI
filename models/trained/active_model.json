@@ -1,0 +1,6 @@
+{
+  "model_version": "lt-20261022-215253",
+  "model_path": "models/trained/lt-20261022-215253/model.joblib",
+  "meta_path": "models/trained/lt-20261022-215253/meta.json",
+  "eval_dir": "models/evaluation/lt-20261022-215253"
+}

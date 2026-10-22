@@ -1,0 +1,210 @@
+{
+  "model_version": "lt-20261022-215253",
+  "selected_model": "baseline_ship_mode_mean",
+  "trained_at": "2026-10-22T21:52:53",
+  "target": "lead_time_recovered_days",
+  "target_label": "Recovered lead time (days, derived \u2014 not measured)",
+  "categorical": [
+    "Ship Mode",
+    "Region",
+    "Division",
+    "current_factory"
+  ],
+  "numeric": [
+    "distance_miles",
+    "Units",
+    "Sales",
+    "order_month",
+    "order_dow_rebuilt"
+  ],
+  "split": {
+    "method": "chronological on order_date_rebuilt",
+    "fractions": [
+      0.7,
+      0.15,
+      0.15
+    ],
+    "train_rows": 7135,
+    "validation_rows": 1529,
+    "test_rows": 1530,
+    "train_period": [
+      "2021-01-03",
+      "2024-03-09"
+    ],
+    "validation_period": [
+      "2024-03-09",
+      "2024-09-11"
+    ],
+    "test_period": [
+      "2024-09-11",
+      "2024-12-30"
+    ]
+  },
+  "best_ml_model": "linear_regression",
+  "selection_rule": "lowest validation MAE; simpler model preferred within 1%",
+  "results": {
+    "baseline_mean": {
+      "train": {
+        "mae": 1.3073462294157767,
+        "rmse": 1.7261704338253117,
+        "r2": 0.0
+      },
+      "validation": {
+        "mae": 1.360796614667239,
+        "rmse": 1.7739483735208388,
+        "r2": -0.004901356398261836
+      },
+      "cv_mae_mean": 1.330592490972665,
+      "cv_mae_std": 0.05847557627931713,
+      "test": {
+        "mae": 1.3814829776806774,
+        "rmse": 1.7981101062156155,
+        "r2": -0.0034978807943901735
+      }
+    },
+    "baseline_ship_mode_mean": {
+      "train": {
+        "mae": 0.7977108767759482,
+        "rmse": 0.9947891781777591,
+        "r2": 0.6678802082180207
+      },
+      "validation": {
+        "mae": 0.8284067707653091,
+        "rmse": 1.0138338217070053,
+        "r2": 0.6717724509282665
+      },
+      "cv_mae_mean": 0.8111508440072239,
+      "cv_mae_std": 0.012954869140346654,
+      "test": {
+        "mae": 0.8068131463834987,
+        "rmse": 0.985892296101306,
+        "r2": 0.6983225546821492
+      }
+    },
+    "linear_regression": {
+      "train": {
+        "mae": 0.8020178457729646,
+        "rmse": 0.9937526459419952,
+        "r2": 0.6685719598548697
+      },
+      "validation": {
+        "mae": 0.8303195592482774,
+        "rmse": 1.0143812174568385,
+        "r2": 0.6714179177377414
+      },
+      "cv_mae_mean": 0.8225262490491101,
+      "cv_mae_std": 0.01713549998219399,
+      "test": {
+        "mae": 0.8119373250323577,
+        "rmse": 0.9844943252604983,
+        "r2": 0.699177490394214
+      }
+    },
+    "random_forest": {
+      "train": {
+        "mae": 0.7614800643993389,
+        "rmse": 0.9396944598548848,
+        "r2": 0.7036492808464186
+      },
+      "validation": {
+        "mae": 0.8459409189307839,
+        "rmse": 1.0196832131012745,
+        "r2": 0.667974057237219
+      },
+      "cv_mae_mean": 0.8328683062958767,
+      "cv_mae_std": 0.01383408594352153,
+      "test": {
+        "mae": 0.8166708609078206,
+        "rmse": 0.9886917239923926,
+        "r2": 0.6966069042698276
+      }
+    },
+    "gradient_boosting": {
+      "train": {
+        "mae": 0.7806105007113481,
+        "rmse": 0.9565409974448542,
+        "r2": 0.6929282740549227
+      },
+      "validation": {
+        "mae": 0.844239500904882,
+        "rmse": 1.0178815673288968,
+        "r2": 0.6691463128244941
+      },
+      "cv_mae_mean": 0.8394656085748664,
+      "cv_mae_std": 0.020932594999095,
+      "test": {
+        "mae": 0.8194510327468074,
+        "rmse": 0.9890943380692524,
+        "r2": 0.6963597590795374
+      }
+    }
+  },
+  "final_test": {
+    "mae": 0.8064552925874815,
+    "rmse": 0.9858532378206081,
+    "r2": 0.6983464574329494
+  },
+  "final_fit": "selected model refit on train+validation",
+  "residual_interval_quantiles": [
+    0.05,
+    0.95
+  ],
+  "residual_intervals": {
+    "_all": [
+      -1.2316630355846043,
+      2.011433798307798
+    ],
+    "First Class": [
+      -1.209279368213228,
+      0.7907206317867721
+    ],
+    "Same Day": [
+      -0.02956989247311828,
+      0.9704301075268817
+    ],
+    "Second Class": [
+      -1.2316630355846043,
+      1.7683369644153957
+    ],
+    "Standard Class": [
+      -0.9885662016922021,
+      2.011433798307798
+    ]
+  },
+  "support_rows_by_factory": {
+    "Lot's O' Nuts": 3994,
+    "Secret Factory": 141,
+    "Sugar Shack": 23,
+    "The Other Factory": 75,
+    "Wicked Choccy's": 2902
+  },
+  "support_rows_by_product": {
+    "Everlasting Gobstopper": 3,
+    "Fizzy Lifting Drinks": 6,
+    "Fun Dip": 3,
+    "Hair Toffee": 4,
+    "Kazookles": 96,
+    "Laffy Taffy": 10,
+    "Lickable Wallpaper": 94,
+    "Nerds": 4,
+    "SweeTARTS": 10,
+    "Wonka Bar - Fudge Mallows": 1818,
+    "Wonka Bar - Milk Chocolate": 2137,
+    "Wonka Bar - Nutty Crunch Surprise": 1810,
+    "Wonka Bar - Triple Dazzle Caramel": 2015,
+    "Wonka Bar -Scrumdiddlyumptious": 2064,
+    "Wonka Gum": 120
+  },
+  "data_file_sha256": "6ae9208e77ce410e90073b19813d29f89853ce9f3cce43d41f9643781696e94f",
+  "library_versions": {
+    "python": "3.10.1",
+    "sklearn": "1.7.2",
+    "pandas": "2.3.3",
+    "numpy": "2.2.6"
+  },
+  "limitations": [
+    "Target is derived from disguised dates via a stated rule; it is not a measured delivery time.",
+    "Each product is made at one factory only, so alternative-factory predictions are extrapolations.",
+    "The data shows no measurable relationship between distance and lead time."
+  ]
+}

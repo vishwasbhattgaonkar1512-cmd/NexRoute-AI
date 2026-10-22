@@ -1,0 +1,19 @@
+model,feature,importance_mae_increase,importance_std
+baseline_ship_mode_mean,Ship Mode,0.9508048381247228,0.016682571294268218
+baseline_ship_mode_mean,Region,0.0,0.0
+baseline_ship_mode_mean,Division,0.0,0.0
+baseline_ship_mode_mean,current_factory,0.0,0.0
+baseline_ship_mode_mean,distance_miles,0.0,0.0
+baseline_ship_mode_mean,Units,0.0,0.0
+baseline_ship_mode_mean,Sales,0.0,0.0
+baseline_ship_mode_mean,order_month,0.0,0.0
+baseline_ship_mode_mean,order_dow_rebuilt,0.0,0.0
+linear_regression,Ship Mode,0.9504110497021179,0.0165985980527706
+linear_regression,Region,0.00032438075474967577,0.0006552446126875546
+linear_regression,order_month,0.00022550075195992836,0.00024339849408595648
+linear_regression,distance_miles,6.090261438810307e-05,4.4862788791888135e-05
+linear_regression,current_factory,4.772046875277658e-05,0.00016523337621068154
+linear_regression,order_dow_rebuilt,-4.019671631355637e-05,8.713998310313283e-05
+linear_regression,Sales,-0.0002121106388001559,0.00011749844061017399
+linear_regression,Units,-0.00023767070965288183,6.937272776151589e-05
+linear_regression,Division,-0.00024070246009622043,0.00018468263027152568
