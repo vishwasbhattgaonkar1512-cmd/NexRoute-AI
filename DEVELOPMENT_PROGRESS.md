@@ -1,53 +1,72 @@
-# Development Progress — Nassau Candy Factory Reallocation System
+# Development Progress — NexRoute AI
 
-Last updated: 2026-10-22
+Last updated: 2026-10-22. Git history (project-level repo, created 2026-10-22) has one commit per phase.
 
-## CRITICAL DATA-QUALITY FINDING (read this first)
+## Status
 
-**Ship Date − Order Date is NOT a usable "shipping lead time" signal.**
-
-- Order Date range: 2024-01-02 → 2025-12-31
-- Ship Date range: 2026-06-30 → 2030-06-28
-- Resulting "lead time": **904 to 1642 days** (2.5 to 4.5 years)
-- This does **not** vary meaningfully by Ship Mode: "Same Day" orders show a mean gap of 1333 days, "Standard Class" shows 1314 days — statistically indistinguishable. A real Same-Day/Standard split would show a gap of hours vs. days.
-- Order IDs embed a year prefix (e.g. `US-2021-103800-...`) that matches *neither* the Order Date year nor the Ship Date year, suggesting Ship Date was regenerated/shifted independently from the rest of the record (consistent with a synthetic teaching dataset, not a real WMS export).
-
-**Decision taken (documented, configurable):** The raw `lead_time_days` field is treated as **structurally unreliable** and is *not* used as-is as an ML regression target representing real-world delivery performance. Per the master prompt's own rule ("do not pretend the model predicts real-world delivery times if dates are unreliable"), the system:
-1. Surfaces this finding prominently in the Executive Dashboard and Risk Panel as a Critical data-quality warning.
-2. Still computes and stores the raw lead time (for transparency/audit) but labels every chart/KPI derived from it as **"Raw field — not validated as real delivery duration."**
-3. Builds the predictive model on a **de-trended lead-time signal**: `lead_time_days − per-(Ship Mode) median`, i.e. the model learns relative variation across routes/products/regions (which still correlates with geography, division, region) rather than claiming to predict literal calendar delivery dates. This is explained in the Model Analytics page and the research paper's Limitations section.
-4. All scenario/recommendation outputs are labeled **"Relative lead-time index," not "days."**
-
-This is the single most important judgment call in the project and is treated as such throughout — not silently patched.
-
-## Phase status
-
-| Phase | Status | Notes |
+| Phase | Status | Main files |
 |---|---|---|
-| 1. Repo & dataset inspection | ✅ Done | `reports/eda/data_profile.json`, finding above |
-| 2. Database design | ✅ Done | SQLite, `database/schema.py`, `database/models.py` |
-| 3. EDA & data prep | ✅ Done | `src/preprocessing.py`, `reports/eda/` |
-| 4. Machine learning | ✅ Done | `src/prediction_engine.py`, 3 models trained & compared |
-| 5. Clustering | ✅ Done | `src/clustering_engine.py` |
-| 6. Scenario simulation | ✅ Done | `src/scenario_simulator.py` |
-| 7. Optimization | ✅ Done | `src/optimization_engine.py` (SciPy linear_sum_assignment + constraints) |
-| 8. Streamlit dashboard | ✅ Done (core modules) | `dashboard/app.py` + 6 pages |
-| 9. Testing | ✅ Partial | `tests/` — smoke tests on pipeline, DB, predictions |
-| 10. Documentation | ✅ Done | README, this file, `reports/` |
+| 1. Audit | ✅ Done | `reports/PHASE1_AUDIT.md` |
+| 2. Architecture | ✅ Done | audit §5, README §3 |
+| 3. Data engineering | ✅ Done | `src/data_validation.py` (new), `src/preprocessing.py`, `src/geographic_engine.py`, `src/config.py` |
+| 4. Machine learning | ✅ Done | `src/prediction_engine.py`, `src/model_components.py` (new), `models/trained/<version>/` |
+| 5. Optimization, geography, cost | ✅ Done | `src/optimization_engine.py`, `src/profit_engine.py`, `src/compatibility.py` (new), `src/assumptions.py` (new), `src/clustering_engine.py` |
+| 6. Scenarios, risk, recommendations | ✅ Done | `src/scenario_simulator.py`, `src/confidence_engine.py` |
+| 7. Database | ✅ Done | `database/models.py`, `database/migrations.py` (new), `database/connection.py`, `src/persistence.py` (new), `src/build_database.py` |
+| 8. Dashboard | ✅ Done | `dashboard/app.py`, `dashboard/common.py` (new), `dashboard/pages/01–08` |
+| 9. Testing | ✅ Done | `tests/` — 93 tests passing |
+| 10. Documentation | ✅ Done | `README.md`, this file |
 
-## Known simplifications vs. the full master-prompt spec
+## Key decisions
 
-- Customer-level lat/long: not in the data and no geocoding API is available offline, so **State/Province centroid coordinates** (public, static table) are used for Haversine distance instead of per-ZIP geocoding. Documented as an assumption in `src/geographic_engine.py`.
-- Factory capacity, alternative-factory manufacturing cost, and shipping-cost-per-mile are **not in the source data**. These are implemented as **configurable assumptions** in `financial_assumptions` table with `is_configurable=True` and a visible source label ("ANALYST ASSUMPTION — not from source data"), per the master prompt's own instruction not to invent business facts silently.
-- Product-factory compatibility: only the 15 supplied baseline assignments are "confirmed compatible" with their current factory. Compatibility with *alternative* factories defaults to "unverified — assumed compatible within same Division" (configurable toggle), clearly flagged in every scenario as lower confidence.
-- Clustering, optimization and research paper are implemented at working-prototype depth, not exhaustively tuned.
+1. **Lead-time target: recovered lead time.** The Phase 1 forensics showed two things. The Order Date year was
+   relabelled (the Order ID year is the original year), and Ship Date is shifted by exactly 2,000 days. Removing
+   both gives a 0–8 day value that matches ship-mode semantics. It is used as the ML target, labelled "derived"
+   everywhere. The raw gap is kept for audit only. The previous target, `lead_time_index`, is kept in the database
+   but no longer used, because it mostly encoded the date disguise.
+2. **Model selection on validation only**, with a parsimony rule (a simpler model wins within 1%). The
+   per-ship-mode average was selected, because no ML model beat it.
+3. **Symmetric cost model.** The old profit engine charged freight only to alternative factories, so every
+   alternative lost by construction. This is fixed.
+4. **Exact optimization.** The SciPy `milp` assignment handles compatibility, the profit threshold and an
+   optional capacity limit. Infeasibility is reported.
+5. **Additive database changes only.** The user approved this approach. Backup:
+   `data/nassau_backup_2026-10-22_pre_phase7.db`. Every original row was preserved. The four previously empty
+   tables (model_registry, shipping_predictions, scenario_simulations, recommendations) are now written to by
+   real workflows.
+6. **New assumption names where the meaning or scale changed.** `freight_cost_per_unit_mile` and
+   `reassignment_penalty_points` were added, so the legacy database rows were not overwritten.
+7. **Config fix:** Fizzy Lifting Drinks division "Other" → "Sugar" (as in all 6 source rows).
 
-## How to run
+## Bugs fixed (from the audit)
+
+- Model selected on test R²; leftover-loop-variable bug in the diagnostics export; disguised-date features in the model.
+- Asymmetric profit comparison; percentage blow-up dividing by a near-zero index.
+- Eligibility docstring said "same division" while the code allowed every factory.
+- The What-If sliders were never passed to the simulator; the nested "Save" button could never fire; the region
+  list contained regions that are not in the data.
+- Pages 4, 5 and 8 re-ran the optimization on every load (results are now cached and persisted).
+- The global data-quality log grew on every pipeline call; the data-quality log path pointed to another machine.
+- The documented commands (`python src/...`, `src/train_models.py`) did not run.
+- `build_database.py` deleted order data on every run; `--rebuild` had no safeguard.
+- No Canadian coordinates (200 rows had no distance).
+- Customer geography was misattributed for 28 multi-state customers (geography now comes from the order).
+
+## Verified commands
 
 ```
-pip install -r requirements.txt
-python notebooks/profile_dataset.py        # Phase 1 report
-python src/build_database.py               # Phase 2: build nassau.db
-python src/train_models.py                 # Phase 4: train & save models
-streamlit run dashboard/app.py             # Phase 8: launch dashboard
+python -m src.prediction_engine
+python -m src.build_database
+python -m src.clustering_engine
+python -m pytest -v
+streamlit run dashboard/app.py
 ```
+
+## Remaining limitations
+
+See README §15. The main ones:
+
+- The lead time is derived, not measured.
+- Alternative-factory effects are counterfactual.
+- Every cost, capacity and compatibility input is an assumption.
+- Seven products have very little history.
