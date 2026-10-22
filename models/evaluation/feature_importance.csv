@@ -1,0 +1,26 @@
+feature,importance
+order_year_2025,0.5157104727332271
+order_year_2024,0.30662656523209597
+order_dow,0.11620136452858182
+order_month,0.01880747839847127
+Sales,0.003542294585442392
+Ship Mode_Second Class,0.0027985466684163907
+Ship Mode_Same Day,0.0026628407533384694
+distance_miles,0.0020650116354831664
+Ship Mode_First Class,0.0017042298028106
+State/Province_Indiana,0.0016383727268246195
+State/Province_Massachusetts,0.0014101009909629424
+State/Province_Washington,0.0014003475898820145
+State/Province_Arkansas,0.001308720675854415
+State/Province_Mississippi,0.0012453876213044876
+State/Province_Oregon,0.0011995058684669273
+Units,0.0011540738177625144
+Ship Mode_Standard Class,0.0011014163612814872
+State/Province_Illinois,0.0010449985175322403
+State/Province_New York,0.0010446601045689045
+current_factory_Secret Factory,0.0010237896871199258
+State/Province_North Carolina,0.000880764917569644
+State/Province_Virginia,0.0008209650254609326
+State/Province_Kentucky,0.0008150798252848202
+State/Province_South Carolina,0.0008107269567208046
+State/Province_Oklahoma,0.0007740257529182683

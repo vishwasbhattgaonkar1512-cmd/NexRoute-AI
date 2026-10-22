@@ -1,0 +1,54 @@
+current_factory,Region,Product Name,mean_distance,mean_lead_time_index,total_units,total_sales,n_orders,cluster,cluster_label,potential_congestion_indicator
+Lot's O' Nuts,Atlantic,Wonka Bar - Fudge Mallows,2014.3715814689785,47.93978102189781,2008,7228.8,548,0,performance_similarity_cluster_0,False
+Lot's O' Nuts,Atlantic,Wonka Bar - Nutty Crunch Surprise,2011.8001706484902,87.27142857142857,1857,6480.93,490,0,performance_similarity_cluster_0,False
+Lot's O' Nuts,Atlantic,Wonka Bar -Scrumdiddlyumptious,2020.2896231643397,32.195826645264845,2349,8456.4,623,0,performance_similarity_cluster_0,False
+Lot's O' Nuts,Gulf,Wonka Bar - Fudge Mallows,1670.7639009305494,31.42611683848797,1082,3895.2000000000003,291,4,performance_similarity_cluster_4,False
+Lot's O' Nuts,Gulf,Wonka Bar - Nutty Crunch Surprise,1653.448825427444,49.358108108108105,1088,3797.1200000000003,296,4,performance_similarity_cluster_4,False
+Lot's O' Nuts,Gulf,Wonka Bar -Scrumdiddlyumptious,1672.4783946431446,41.23548387096774,1203,4330.8,310,4,performance_similarity_cluster_4,False
+Lot's O' Nuts,Interior,Wonka Bar - Fudge Mallows,1142.7176318481527,38.30731707317073,1595,5742.0,410,2,performance_similarity_cluster_2,False
+Lot's O' Nuts,Interior,Wonka Bar - Nutty Crunch Surprise,1155.7369502385984,56.60176991150443,1694,5912.06,452,2,performance_similarity_cluster_2,False
+Lot's O' Nuts,Interior,Wonka Bar -Scrumdiddlyumptious,1118.8421231557202,56.52287581699346,1723,6202.8,459,2,performance_similarity_cluster_2,False
+Lot's O' Nuts,Pacific,Wonka Bar - Fudge Mallows,596.2491092766401,41.17047451669596,2229,8024.400000000001,569,2,performance_similarity_cluster_2,False
+Lot's O' Nuts,Pacific,Wonka Bar - Nutty Crunch Surprise,601.4687424774961,31.262237762237763,2116,7384.84,572,2,performance_similarity_cluster_2,False
+Lot's O' Nuts,Pacific,Wonka Bar -Scrumdiddlyumptious,590.4463247472936,58.15327380952381,2468,8884.8,672,2,performance_similarity_cluster_2,False
+Secret Factory,Atlantic,Lickable Wallpaper,717.3225114832532,114.77142857142857,139,2780.0,35,1,performance_similarity_cluster_1,False
+Secret Factory,Atlantic,Wonka Gum,722.303549485156,39.4054054054054,169,211.25,37,1,performance_similarity_cluster_1,False
+Secret Factory,Gulf,Everlasting Gobstopper,1070.1680746937993,-1.0,4,40.0,1,1,performance_similarity_cluster_1,False
+Secret Factory,Gulf,Lickable Wallpaper,596.7297714061908,36.0,37,740.0,10,1,performance_similarity_cluster_1,False
+Secret Factory,Gulf,Wonka Gum,746.3316480209198,70.53846153846153,120,150.0,26,1,performance_similarity_cluster_1,False
+Secret Factory,Interior,Everlasting Gobstopper,816.3534738129943,367.0,3,30.0,1,3,performance_similarity_cluster_3,True
+Secret Factory,Interior,Lickable Wallpaper,332.3923961044578,48.266666666666666,71,1420.0,15,1,performance_similarity_cluster_1,False
+Secret Factory,Interior,Wonka Gum,452.83827557349485,-12.689655172413794,112,140.0,29,1,performance_similarity_cluster_1,False
+Secret Factory,Pacific,Everlasting Gobstopper,793.8114370646458,-2.0,6,60.0,1,1,performance_similarity_cluster_1,False
+Secret Factory,Pacific,Lickable Wallpaper,1470.2426127780598,32.3235294117647,146,2920.0,34,4,performance_similarity_cluster_4,False
+Secret Factory,Pacific,Wonka Gum,1428.8978293916664,39.0,77,96.25,28,4,performance_similarity_cluster_4,False
+Sugar Shack,Atlantic,Fizzy Lifting Drinks,1088.4174242476688,182.5,9,33.75,2,3,performance_similarity_cluster_3,True
+Sugar Shack,Atlantic,Fun Dip,1109.0323774620806,1.0,4,6.0,1,1,performance_similarity_cluster_1,False
+Sugar Shack,Atlantic,Laffy Taffy,1093.0028529079482,183.33333333333334,14,27.86,6,3,performance_similarity_cluster_3,True
+Sugar Shack,Atlantic,Nerds,1098.7249008548747,0.0,10,15.0,4,1,performance_similarity_cluster_1,False
+Sugar Shack,Atlantic,SweeTARTS,1108.1200181051377,73.8,24,36.0,5,1,performance_similarity_cluster_1,False
+Sugar Shack,Gulf,Fizzy Lifting Drinks,1606.677263384194,-365.0,4,15.0,1,5,performance_similarity_cluster_5,False
+Sugar Shack,Gulf,Fun Dip,982.4058261468217,-1.0,1,1.5,1,1,performance_similarity_cluster_1,False
+Sugar Shack,Gulf,Laffy Taffy,1606.677263384194,-182.0,11,21.89,2,5,performance_similarity_cluster_5,False
+Sugar Shack,Interior,Fizzy Lifting Drinks,647.3283572451177,0.5,5,18.75,2,1,performance_similarity_cluster_1,False
+Sugar Shack,Interior,Fun Dip,643.6147664235315,-2.0,3,4.5,1,1,performance_similarity_cluster_1,False
+Sugar Shack,Interior,Laffy Taffy,651.0419480667039,0.0,1,1.99,1,1,performance_similarity_cluster_1,False
+Sugar Shack,Interior,SweeTARTS,1048.742939038434,91.0,13,19.5,4,1,performance_similarity_cluster_1,False
+Sugar Shack,Pacific,Fizzy Lifting Drinks,1268.7862890197378,0.0,3,11.25,1,1,performance_similarity_cluster_1,False
+Sugar Shack,Pacific,Laffy Taffy,1171.2972579221907,364.0,1,1.99,1,3,performance_similarity_cluster_3,True
+Sugar Shack,Pacific,SweeTARTS,1452.8934973509943,365.0,4,6.0,1,3,performance_similarity_cluster_3,True
+The Other Factory,Atlantic,Hair Toffee,943.7070243196733,365.0,5,22.5,1,3,performance_similarity_cluster_3,True
+The Other Factory,Atlantic,Kazookles,902.1299444506355,-0.13513513513513514,149,484.25,37,1,performance_similarity_cluster_1,False
+The Other Factory,Gulf,Hair Toffee,573.5041386993003,366.0,2,9.0,1,3,performance_similarity_cluster_3,True
+The Other Factory,Gulf,Kazookles,453.8023373038734,-20.333333333333332,78,253.5,18,1,performance_similarity_cluster_1,False
+The Other Factory,Interior,Kazookles,485.49016861674335,-66.81818181818181,39,126.75,11,1,performance_similarity_cluster_1,False
+The Other Factory,Pacific,Hair Toffee,1444.1066853479447,0.5,10,45.0,2,4,performance_similarity_cluster_4,False
+The Other Factory,Pacific,Kazookles,1623.6495103819386,36.4,105,341.25,30,4,performance_similarity_cluster_4,False
+Wicked Choccy's,Atlantic,Wonka Bar - Milk Chocolate,707.1409583269774,36.03755868544601,2336,7592.0,639,2,performance_similarity_cluster_2,False
+Wicked Choccy's,Atlantic,Wonka Bar - Triple Dazzle Caramel,691.268969842159,50.354838709677416,2086,7822.5,558,2,performance_similarity_cluster_2,False
+Wicked Choccy's,Gulf,Wonka Bar - Milk Chocolate,355.207828978098,16.513513513513512,1356,4407.0,333,2,performance_similarity_cluster_2,False
+Wicked Choccy's,Gulf,Wonka Bar - Triple Dazzle Caramel,342.9011657568346,55.33030303030303,1223,4586.25,330,2,performance_similarity_cluster_2,False
+Wicked Choccy's,Interior,Wonka Bar - Milk Chocolate,878.7508575891961,58.70941883767535,1869,6074.25,499,2,performance_similarity_cluster_2,False
+Wicked Choccy's,Interior,Wonka Bar - Triple Dazzle Caramel,886.4066177522789,43.05543237250554,1692,6345.0,451,2,performance_similarity_cluster_2,False
+Wicked Choccy's,Pacific,Wonka Bar - Milk Chocolate,2136.8319696242856,52.753753753753756,2706,8794.5,666,0,performance_similarity_cluster_0,False
+Wicked Choccy's,Pacific,Wonka Bar - Triple Dazzle Caramel,2148.2827536193518,58.93195266272189,2595,9731.25,676,0,performance_similarity_cluster_0,False

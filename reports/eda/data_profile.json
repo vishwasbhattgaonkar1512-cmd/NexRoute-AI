@@ -1,0 +1,220 @@
+{
+  "n_rows": 10194,
+  "n_cols": 18,
+  "columns": [
+    "Row ID",
+    "Order ID",
+    "Order Date",
+    "Ship Date",
+    "Ship Mode",
+    "Customer ID",
+    "Country/Region",
+    "City",
+    "State/Province",
+    "Postal Code",
+    "Division",
+    "Region",
+    "Product ID",
+    "Product Name",
+    "Sales",
+    "Units",
+    "Gross Profit",
+    "Cost"
+  ],
+  "missing_values": {
+    "Row ID": 0,
+    "Order ID": 0,
+    "Order Date": 0,
+    "Ship Date": 0,
+    "Ship Mode": 0,
+    "Customer ID": 0,
+    "Country/Region": 0,
+    "City": 0,
+    "State/Province": 0,
+    "Postal Code": 0,
+    "Division": 0,
+    "Region": 0,
+    "Product ID": 0,
+    "Product Name": 0,
+    "Sales": 0,
+    "Units": 0,
+    "Gross Profit": 0,
+    "Cost": 0
+  },
+  "duplicate_rows_full": 0,
+  "duplicate_row_id": 0,
+  "unique_counts": {
+    "Order ID": 8549,
+    "Customer ID": 5044,
+    "Product ID": 15,
+    "Product Name": 15,
+    "Division": 3,
+    "Region": 4,
+    "Country/Region": 2,
+    "State/Province": 59,
+    "City": 542,
+    "Ship Mode": 4,
+    "Postal Code": 654
+  },
+  "orders_total": 8549,
+  "rows_per_order_distribution": {
+    "1": 7176,
+    "2": 1152,
+    "3": 178,
+    "4": 35,
+    "5": 8
+  },
+  "date_format_test": {
+    "dd-mm-yyyy_order_fail": 0,
+    "dd-mm-yyyy_ship_fail": 0,
+    "mm-dd-yyyy_order_fail": 6064,
+    "mm-dd-yyyy_ship_fail": 6173
+  },
+  "chosen_date_format": "%d-%m-%Y",
+  "order_date_range": [
+    "2024-01-02 00:00:00",
+    "2025-12-31 00:00:00"
+  ],
+  "ship_date_range": [
+    "2026-06-30 00:00:00",
+    "2030-06-28 00:00:00"
+  ],
+  "order_date_parse_failures": 0,
+  "ship_date_parse_failures": 0,
+  "lead_time_stats": {
+    "min": 904.0,
+    "max": 1642.0,
+    "mean": 1320.8418677653522,
+    "median": 1274.0,
+    "std": 262.4320189242999,
+    "negative_count": 0,
+    "zero_count": 0,
+    "over_365_count": 10194,
+    "over_30_count": 10194,
+    "null_count": 0
+  },
+  "lead_time_percentiles": {
+    "1": 905.0,
+    "5": 907.0,
+    "10": 908.0,
+    "25": 1271.0,
+    "50": 1274.0,
+    "75": 1638.0,
+    "90": 1640.0,
+    "95": 1641.0,
+    "99": 1642.0
+  },
+  "order_year_counts": {
+    "2024": 4181,
+    "2025": 6013
+  },
+  "ship_year_counts": {
+    "2026": 711,
+    "2027": 2089,
+    "2028": 2367,
+    "2029": 2899,
+    "2030": 2128
+  },
+  "year_gap_distribution": {
+    "2": 711,
+    "3": 3075,
+    "4": 4280,
+    "5": 2128
+  },
+  "numeric_stats": {
+    "Sales": {
+      "min": 1.25,
+      "max": 260.0,
+      "mean": 13.908537374926428,
+      "median": 10.8,
+      "null_count": 0,
+      "negative_count": 0
+    },
+    "Units": {
+      "min": 1.0,
+      "max": 14.0,
+      "mean": 3.791838336276241,
+      "median": 3.0,
+      "null_count": 0,
+      "negative_count": 0
+    },
+    "Gross Profit": {
+      "min": 0.25,
+      "max": 130.0,
+      "mean": 9.1664508534432,
+      "median": 7.47,
+      "null_count": 0,
+      "negative_count": 0
+    },
+    "Cost": {
+      "min": 0.6,
+      "max": 130.0,
+      "mean": 4.742086521483226,
+      "median": 3.6,
+      "null_count": 0,
+      "negative_count": 0
+    }
+  },
+  "division_counts": {
+    "Chocolate": 9844,
+    "Other": 310,
+    "Sugar": 40
+  },
+  "region_counts": {
+    "Pacific": 3253,
+    "Atlantic": 2986,
+    "Interior": 2335,
+    "Gulf": 1620
+  },
+  "ship_mode_counts": {
+    "Standard Class": 6120,
+    "Second Class": 1979,
+    "First Class": 1548,
+    "Same Day": 547
+  },
+  "product_name_counts": {
+    "Wonka Bar - Milk Chocolate": 2137,
+    "Wonka Bar -Scrumdiddlyumptious": 2064,
+    "Wonka Bar - Triple Dazzle Caramel": 2015,
+    "Wonka Bar - Fudge Mallows": 1818,
+    "Wonka Bar - Nutty Crunch Surprise": 1810,
+    "Wonka Gum": 120,
+    "Kazookles": 96,
+    "Lickable Wallpaper": 94,
+    "Laffy Taffy": 10,
+    "SweeTARTS": 10,
+    "Fizzy Lifting Drinks": 6,
+    "Nerds": 4,
+    "Hair Toffee": 4,
+    "Everlasting Gobstopper": 3,
+    "Fun Dip": 3
+  },
+  "country_counts": {
+    "United States": 9994,
+    "Canada": 200
+  },
+  "state_counts": {
+    "California": 2001,
+    "New York": 1128,
+    "Texas": 985,
+    "Pennsylvania": 587,
+    "Washington": 506,
+    "Illinois": 492,
+    "Ohio": 469,
+    "Florida": 383,
+    "Michigan": 255,
+    "North Carolina": 249,
+    "Virginia": 224,
+    "Arizona": 224,
+    "Georgia": 184,
+    "Tennessee": 183,
+    "Colorado": 182,
+    "Indiana": 149,
+    "Kentucky": 139,
+    "Massachusetts": 135,
+    "New Jersey": 130,
+    "Oregon": 124
+  },
+  "expected_products_not_found": [],
+  "actual_products_not_expected": []
+}
