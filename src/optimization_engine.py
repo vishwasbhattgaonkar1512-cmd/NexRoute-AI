@@ -76,7 +76,7 @@ def build_context(df: pd.DataFrame | None = None) -> dict:
 
 
 def _predict_processing(ctx: dict) -> pd.DataFrame:
-    """Mean predicted processing lead time (and per-order 90% range) for each (product, factory)."""
+    """Mean predicted processing lead time (and mean of per-order whole-day ranges) for each (product, factory)."""
     df = ctx["df"]
     frames = []
     for f in FACTORY_NAMES:

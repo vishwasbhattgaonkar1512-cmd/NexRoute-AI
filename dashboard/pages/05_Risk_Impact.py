@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from common import (setup_page, require_database, guard, load_pipeline, current_assumptions, current_weights,  # noqa: E402
                     evaluate, recommend_cached, scenarios, style, show, usd, RISK_COLORS, FACTORY_COLORS,
-                    lead_time_warning, estimate_note)
+                    lead_time_warning, estimate_note, measured_interval_coverage)
 
 import pandas as pd  # noqa: E402
 import plotly.express as px  # noqa: E402
@@ -41,9 +41,14 @@ k = st.columns(4)
 k[0].metric("Selected model", sel.replace("_", " "))
 k[1].metric("Validation MAE", f"{meta['results'][sel]['validation']['mae']:.2f} days")
 k[2].metric("Test MAE (final)", f"{meta['final_test']['mae']:.2f} days")
-iv = meta["residual_intervals"]
-k[3].metric("Typical 90% range", f"{iv['_all'][0]:+.1f} to {iv['_all'][1]:+.1f} d",
-            help="Empirical 5th–95th percentile of validation residuals.")
+cov = measured_interval_coverage()
+k[3].metric("Prediction range coverage (test)", "—" if cov is None else f"{100 * cov['overall']:.1f}%",
+            help="Share of test-set shipments whose actual (derived) lead time fell inside the predicted whole-day "
+                 "range. The range is nominally 90% (5th–95th percentile of validation residuals); because lead "
+                 "times take only a few whole-day values, its measured coverage differs from 90%.")
+if cov is not None:
+    st.caption("Whole-day prediction ranges by ship mode (test coverage): " + "; ".join(
+        f"{m} {int(b[0])}–{int(b[1])} d ({100 * cov['by_ship_mode'][m]:.0f}%)" for m, b in cov["bounds_by_ship_mode"].items()))
 st.caption("Alternative-factory predictions are extrapolations: each product has only ever been made at one "
            "factory, and the data shows no measurable distance effect on lead time.")
 

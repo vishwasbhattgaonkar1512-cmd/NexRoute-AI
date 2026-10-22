@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from common import setup_page, require_database, guard, style, show, lead_time_warning  # noqa: E402
+from common import setup_page, require_database, guard, style, show, lead_time_warning, measured_interval_coverage  # noqa: E402
 
 import json  # noqa: E402
 import pandas as pd  # noqa: E402
@@ -93,11 +93,23 @@ if tp.exists():
     st.caption("Residuals reflect the spread of lead time within each ship mode (e.g. Standard Class 3–7 days), "
                "which none of the available features explain.")
 
-st.subheader("Prediction intervals")
-iv = pd.DataFrame([{"ship mode": k_, "low": v[0], "high": v[1]} for k_, v in meta["residual_intervals"].items()])
-st.dataframe(iv.round(2), hide_index=True)
-st.caption("Empirical 5th–95th percentiles of validation residuals added to each prediction (90% range). "
-           "They are not calibrated for alternative factories, which are extrapolations.")
+st.subheader("Prediction ranges and measured coverage")
+cov = measured_interval_coverage()
+if cov is None:
+    st.info("No saved test predictions for this model version, so coverage cannot be measured.")
+else:
+    tbl = pd.DataFrame([{"ship mode": m, "range (days)": f"{int(b[0])}–{int(b[1])}",
+                         "test coverage": cov["by_ship_mode"][m]} for m, b in cov["bounds_by_ship_mode"].items()])
+    c1, c2 = st.columns([1, 2])
+    c1.metric("Overall test coverage", f"{100 * cov['overall']:.1f}%", help=f"{cov['n']:,} test shipments")
+    c2.dataframe(tbl, hide_index=True, width="stretch",
+                 column_config={"test coverage": st.column_config.NumberColumn(format="%.1%")})
+    st.caption(f"Ranges are built from the 5th–95th percentile of validation residuals (nominally "
+               f"{cov['nominal'].split(' ')[0]}), then converted to whole days because recovered lead times are "
+               "whole days (edges within 0.1 d of a whole number are snapped; others rounded outward). The "
+               f"**measured** coverage on the untouched test set is {100 * cov['overall']:.1f}% — with so few distinct "
+               "values per ship mode the range spans most of the observed values, so it is wider than a true 90% "
+               "range would be. Not calibrated for alternative factories, which are extrapolations.")
 
 st.subheader("Model registry & metadata")
 reg = P.get_model_registry()

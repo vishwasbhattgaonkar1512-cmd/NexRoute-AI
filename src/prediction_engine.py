@@ -235,6 +235,9 @@ def train_and_evaluate(df: pd.DataFrame | None = None, save: bool = True, regist
                              "actual": y_te.to_numpy(), "predicted": test_pred})
         diag["residual"] = diag["actual"] - diag["predicted"]
         diag.to_csv(eval_dir / "test_predictions.csv", index=False)
+        meta["interval_coverage_test"] = interval_coverage(diag, meta)
+        with open(model_dir / "meta.json", "w") as f:
+            json.dump(meta, f, indent=2)
         importance.to_csv(eval_dir / "feature_importance.csv", index=False)
         with open(ACTIVE_POINTER, "w") as f:
             json.dump({"model_version": version,
@@ -281,22 +284,62 @@ def load_active_model():
     return model, meta
 
 
+INTERVAL_SNAP_TOLERANCE = 0.1  # days
+
+
+def whole_day_bounds(low, high):
+    """
+    Convert real-valued interval edges to whole-day bounds. The recovered lead time only takes whole-day values,
+    so a real interval [0.011, 1.011] would wrongly exclude a 0-day shipment.
+      * an edge within INTERVAL_SNAP_TOLERANCE of a whole number is snapped to it (the gap is floating-point
+        noise from refitting the model on train+validation after computing residuals);
+      * otherwise the edge is rounded OUTWARD (floor for the lower edge, ceil for the upper edge).
+    Lower bounds are never below 0 days.
+    """
+    low, high = np.asarray(low, dtype=float), np.asarray(high, dtype=float)
+    lo_r, hi_r = np.round(low), np.round(high)
+    lo = np.where(np.abs(low - lo_r) <= INTERVAL_SNAP_TOLERANCE, lo_r, np.floor(low))
+    hi = np.where(np.abs(high - hi_r) <= INTERVAL_SNAP_TOLERANCE, hi_r, np.ceil(high))
+    return np.maximum(lo, 0), np.maximum(hi, np.maximum(lo, 0))
+
+
+def interval_bounds(pred, ship_modes, meta) -> tuple[np.ndarray, np.ndarray]:
+    iv = meta["residual_intervals"]
+    lo = np.array([iv.get(m, iv["_all"])[0] for m in ship_modes])
+    hi = np.array([iv.get(m, iv["_all"])[1] for m in ship_modes])
+    return whole_day_bounds(np.asarray(pred) + lo, np.asarray(pred) + hi)
+
+
+def interval_coverage(diag: pd.DataFrame, meta: dict) -> dict:
+    """
+    Measured coverage of the whole-day interval on a frame with columns ship_mode, actual, predicted
+    (e.g. the saved test_predictions.csv). Returns overall and per-ship-mode share of actuals inside.
+    """
+    if diag.empty:
+        return {"overall": float("nan"), "by_ship_mode": {}, "n": 0}
+    lo, hi = interval_bounds(diag["predicted"].to_numpy(), diag["ship_mode"], meta)
+    inside = pd.Series((diag["actual"].to_numpy() >= lo) & (diag["actual"].to_numpy() <= hi), index=diag.index)
+    bounds = (pd.DataFrame({"ship_mode": diag["ship_mode"], "low": lo, "high": hi})
+                .groupby("ship_mode").agg(low=("low", "min"), high=("high", "max")))
+    return {"overall": float(inside.mean()), "n": int(len(diag)),
+            "by_ship_mode": inside.groupby(diag["ship_mode"]).mean().astype(float).to_dict(),
+            "bounds_by_ship_mode": {m: [float(r.low), float(r.high)] for m, r in bounds.iterrows()},
+            "nominal": f"{round(100 * (INTERVAL_QUANTILES[1] - INTERVAL_QUANTILES[0]))}% (validation residual quantiles)"}
+
+
 def predict_lead_time(rows: pd.DataFrame) -> pd.DataFrame:
     """
-    rows: DataFrame with FEATURES columns. Returns columns predicted_lead_days, interval_low, interval_high
-    (empirical 90% interval from validation residuals, per ship mode when available).
+    rows: DataFrame with FEATURES columns. Returns predicted_lead_days and a whole-day range
+    (interval_low, interval_high) built from the 5th-95th percentile of validation residuals per ship mode.
+    The range is NOMINALLY 90%; its measured coverage is reported by interval_coverage().
     """
     model, meta = load_active_model()
     missing = [c for c in FEATURES if c not in rows.columns]
     if missing:
         raise ValueError(f"prediction input missing columns: {missing}")
     pred = model.predict(rows[FEATURES])
-    iv = meta["residual_intervals"]
-    lo = np.array([iv.get(m, iv["_all"])[0] for m in rows["Ship Mode"]])
-    hi = np.array([iv.get(m, iv["_all"])[1] for m in rows["Ship Mode"]])
-    return pd.DataFrame({"predicted_lead_days": pred,
-                         "interval_low": np.maximum(pred + lo, 0), "interval_high": pred + hi},
-                        index=rows.index)
+    lo, hi = interval_bounds(pred, rows["Ship Mode"], meta)
+    return pd.DataFrame({"predicted_lead_days": pred, "interval_low": lo, "interval_high": hi}, index=rows.index)
 
 
 if __name__ == "__main__":

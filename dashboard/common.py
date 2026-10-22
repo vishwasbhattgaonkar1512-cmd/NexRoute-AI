@@ -182,3 +182,16 @@ def risk_badge(level: str) -> str:
 
 DECISION_LABELS = {"REALLOCATE": "Reallocate", "KEEP_CURRENT_FACTORY": "Keep current",
                    "INFEASIBLE": "Infeasible", "NO_DATA": "No data"}
+
+
+@st.cache_data(show_spinner=False)
+def measured_interval_coverage():
+    """Measured coverage of the whole-day prediction range on the active model's saved test set."""
+    from src.config import PROJECT_ROOT
+    from src.prediction_engine import ACTIVE_POINTER, load_active_model, interval_coverage
+    ptr = json.loads(ACTIVE_POINTER.read_text())
+    _, meta = load_active_model()
+    path = PROJECT_ROOT / ptr["eval_dir"] / "test_predictions.csv"
+    if not path.exists():
+        return None
+    return interval_coverage(pd.read_csv(path), meta)
