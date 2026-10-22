@@ -1,0 +1,6 @@
+scenario,scenario_name,solver_status,note,products_moved,estimated_cost_impact,estimated_profit_impact,profit_impact_pct_of_current_estimated_profit,units_weighted_lead_time_impact_days,units_weighted_distance_impact_miles,high_risk_moves,mean_risk_of_moved_products
+current,Current factory allocation,optimal,,0,0.0,0.0,0.0,0.0,0.0,0,0.0
+alternative,Best alternative factory (forced move),optimal,Capacity not applied (forced-move comparison).,15,-760.0039,760.0039,1.0953,-0.0786,-39.3234,0,0.5465
+distance,Distance-based allocation,optimal,Optimal allocation found.,11,-1690.2946,1690.2946,2.4359,-0.1749,-87.4577,0,0.5484
+cost,Cost-focused allocation,optimal,Optimal allocation found.,11,-1690.2946,1690.2946,2.4359,-0.1749,-87.4577,0,0.5484
+balanced,"Balanced cost, lead time and risk",optimal,Optimal allocation found.,2,-8.0852,8.0852,0.0117,-0.0008,-0.4183,0,0.559

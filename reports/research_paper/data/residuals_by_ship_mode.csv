@@ -1,0 +1,5 @@
+ship_mode,n,mae,bias
+First Class,260,0.671,0.017
+Same Day,98,0.096,0.021
+Second Class,299,1.031,0.039
+Standard Class,873,0.85,0.047

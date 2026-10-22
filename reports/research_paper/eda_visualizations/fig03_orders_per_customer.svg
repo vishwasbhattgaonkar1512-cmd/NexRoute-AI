@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="286" viewBox="0 0 760 286" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Figure 3. Customers by number of distinct order IDs">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="16.5" font-weight="600" fill="#0b0b0b">Figure 3. Customers by number of distinct order IDs</text>
+<text x="0" y="45" font-size="12" fill="#52514e">5,044 customers (observed). An order ID groups lines of one product for one customer.</text>
+<line x1="157" y1="70" x2="157" y2="240" stroke="#e1e0d9"/>
+<text x="147" y="91.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">1 order ID</text>
+<path d="M157,76 H638.4 Q642.4,76 642.4,80 V94 Q642.4,98 638.4,98 H157 Z" fill="#2a78d6"/>
+<text x="649.4" y="91.3" font-size="12" fill="#0b0b0b">2,811 (55.7%)</text>
+<text x="147" y="125.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">2 order IDs</text>
+<path d="M157,110 H386.28900747065103 Q390.28900747065103,110 390.28900747065103,114 V128 Q390.28900747065103,132 386.28900747065103,132 H157 Z" fill="#2a78d6"/>
+<text x="397.28900747065103" y="125.3" font-size="12" fill="#0b0b0b">1,351 (26.8%)</text>
+<text x="147" y="159.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">3 order IDs</text>
+<path d="M157,144 H256.95261472785484 Q260.95261472785484,144 260.95261472785484,148 V162 Q260.95261472785484,166 256.95261472785484,166 H157 Z" fill="#2a78d6"/>
+<text x="267.95261472785484" y="159.3" font-size="12" fill="#0b0b0b">602 (11.9%)</text>
+<text x="147" y="193.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">4 order IDs</text>
+<path d="M157,178 H191.50736392742795 Q195.50736392742795,178 195.50736392742795,182 V196 Q195.50736392742795,200 191.50736392742795,200 H157 Z" fill="#2a78d6"/>
+<text x="202.50736392742795" y="193.3" font-size="12" fill="#0b0b0b">223 (4.4%)</text>
+<text x="147" y="227.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">5 or more order IDs</text>
+<path d="M157,212 H162.84268943436498 Q166.84268943436498,212 166.84268943436498,216 V230 Q166.84268943436498,234 162.84268943436498,234 H157 Z" fill="#2a78d6"/>
+<text x="173.84268943436498" y="227.3" font-size="12" fill="#0b0b0b">57 (1.1%)</text>
+<text x="0" y="274" font-size="11" fill="#898781">Source: Customer ID and Order ID columns.</text></svg>

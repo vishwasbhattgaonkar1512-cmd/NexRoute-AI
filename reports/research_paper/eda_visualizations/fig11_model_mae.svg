@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="356" viewBox="0 0 760 356" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Figure 11. Model error: validation vs test MAE (days, lower is better)">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="16.5" font-weight="600" fill="#0b0b0b">Figure 11. Model error: validation vs test MAE (days, lower is better)</text>
+<text x="0" y="45" font-size="12" fill="#52514e">Target: reconstructed lead time. Model chosen on validation MAE only; test set used for reporting.</text>
+<rect x="0" y="60" width="12" height="12" rx="2" fill="#2a78d6"/><text x="18" y="70.5" font-size="12" fill="#0b0b0b">Validation MAE</text>
+<rect x="128" y="60" width="12" height="12" rx="2" fill="#eb6834"/><text x="146" y="70.5" font-size="12" fill="#0b0b0b">Test MAE</text>
+<line x1="227" y1="90" x2="227" y2="310" stroke="#e1e0d9"/>
+<text x="217" y="116.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Overall mean (baseline)</text>
+<path d="M227,96 H688.917409769067 Q692.917409769067,96 692.917409769067,100 V107 Q692.917409769067,111 688.917409769067,111 H227 Z" fill="#2a78d6"/>
+<text x="699.917409769067" y="107.8" font-size="12" fill="#0b0b0b">1.361</text>
+<path d="M227,113 H696.0 Q700.0,113 700.0,117 V124 Q700.0,128 696.0,128 H227 Z" fill="#eb6834"/>
+<text x="707.0" y="124.8" font-size="12" fill="#0b0b0b">1.381</text>
+<text x="217" y="160.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Per-ship-mode mean (selected)</text>
+<path d="M227,140 H506.6346961924251 Q510.6346961924251,140 510.6346961924251,144 V151 Q510.6346961924251,155 506.6346961924251,155 H227 Z" fill="#2a78d6"/>
+<text x="517.634696192425" y="151.8" font-size="12" fill="#0b0b0b">0.828</text>
+<path d="M227,157 H499.2412197616619 Q503.2412197616619,157 503.2412197616619,161 V168 Q503.2412197616619,172 499.2412197616619,172 H227 Z" fill="#eb6834"/>
+<text x="510.2412197616619" y="168.8" font-size="12" fill="#0b0b0b">0.807</text>
+<text x="217" y="204.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Linear Regression</text>
+<path d="M227,184 H507.28968000330076 Q511.28968000330076,184 511.28968000330076,188 V195 Q511.28968000330076,199 507.28968000330076,199 H227 Z" fill="#2a78d6"/>
+<text x="518.2896800033008" y="195.8" font-size="12" fill="#0b0b0b">0.830</text>
+<path d="M227,201 H500.9956039994701 Q504.9956039994701,201 504.9956039994701,205 V212 Q504.9956039994701,216 500.9956039994701,216 H227 Z" fill="#eb6834"/>
+<text x="511.9956039994701" y="212.8" font-size="12" fill="#0b0b0b">0.812</text>
+<text x="217" y="248.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Random Forest</text>
+<path d="M227,228 H512.6380867517009 Q516.6380867517009,228 516.6380867517009,232 V239 Q516.6380867517009,243 512.6380867517009,243 H227 Z" fill="#2a78d6"/>
+<text x="523.6380867517009" y="239.8" font-size="12" fill="#0b0b0b">0.846</text>
+<path d="M227,245 H502.61645782105177 Q506.61645782105177,245 506.61645782105177,249 V256 Q506.61645782105177,260 502.61645782105177,260 H227 Z" fill="#eb6834"/>
+<text x="513.6164578210518" y="256.8" font-size="12" fill="#0b0b0b">0.817</text>
+<text x="217" y="292.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Gradient Boosting</text>
+<path d="M227,272 H512.0556887055432 Q516.0556887055432,272 516.0556887055432,276 V283 Q516.0556887055432,287 512.0556887055432,287 H227 Z" fill="#2a78d6"/>
+<text x="523.0556887055432" y="283.8" font-size="12" fill="#0b0b0b">0.844</text>
+<path d="M227,289 H503.5682900187697 Q507.5682900187697,289 507.5682900187697,293 V300 Q507.5682900187697,304 503.5682900187697,304 H227 Z" fill="#eb6834"/>
+<text x="514.5682900187696" y="300.8" font-size="12" fill="#0b0b0b">0.819</text>
+<text x="0" y="344" font-size="11" fill="#898781">Chronological split: train 2021-01 → 2024-03, validation → 2024-09, test → 2024-12 (rebuilt order dates).</text></svg>

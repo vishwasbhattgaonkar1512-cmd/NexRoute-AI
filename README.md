@@ -1,327 +1,235 @@
-# NexRoute AI — Intelligent Factory Reallocation & Shipping Optimization
+# NexRoute AI — Factory Reallocation & Shipping Optimization Recommendation System for Nassau Candy Distributor
 
-A local, offline decision-support prototype for **Nassau Candy Distributor**. It answers one question:
-**which of the five factories should make each of the 15 products?** To answer it, the system combines:
+NexRoute AI is a decision-support prototype that answers one question for Nassau Candy Distributor: **which of the
+five factories should make each of the 15 products?** It combines historical order analysis, data-quality forensics,
+lead-time prediction, geographic distance analysis, scenario simulation and mathematical optimization. Every
+recommendation comes with an explanation, a risk rating and the assumptions behind it.
 
-- historical order data
-- factory-to-destination geography
-- a lead-time model
-- transparent cost and profit estimates
-- risk scoring
-- constrained optimization
-
-It is a prototype for analysis, not a production system, and every estimate is labelled as one.
+> **Transparency first.**
+> - Lead times are **reconstructed** from disguised dates; they are not observed delivery times.
+> - Costs, freight rates, capacity and compatibility are **configurable assumptions**.
+> - All savings are **simulation estimates**, not realised results.
 
 ---
 
-## 1. Problem statement
+## Official Project Submission Links
 
-Nassau Candy ships 15 products from 5 factories to customers across the US and Canada. Each product is currently
-made at exactly one factory. Management wants to know whether moving a product to a different factory would:
+The submission form requires four public HTTPS links. Current status (verified 2026-10-22, details in
+[SUBMISSION_README_VERIFICATION.md](SUBMISSION_README_VERIFICATION.md)):
 
-- reduce shipping cost
-- shorten delivery
-- improve profit
+| # | Submission field | Status | Public HTTPS URL |
+|---|---|---|---|
+| 1 | GitHub Repository Link | ⏳ **Repository created, not yet pushed** — publishing on hold until dataset redistribution permission is confirmed | https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI (currently empty) |
+| 2 | Research Paper Link | ⏳ **Pending** — paper complete locally; not committed or hosted; not published | *Not available yet* |
+| 3 | Deployed Project Link | ⏳ **Not yet deployed** — dashboard runs locally only | *Not available yet* |
+| 4 | Project Feedback Video Link | ⏳ **Not yet completed** — no video found | *Not available yet* |
 
-and at what risk. They also want recommendations they can trust, explain and test under different assumptions.
+### 1. GitHub Repository
 
-## 2. Read this first: what the data can and cannot support
+- **URL:** https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI. It exists and is public, but it is **still empty**: nothing has been pushed yet.
+- **Status:** publishing is on hold. The project history contains the original dataset, and permission to redistribute it is not yet confirmed. See [GITHUB_PRE_PUSH_SECURITY_AUDIT.md](GITHUB_PRE_PUSH_SECURITY_AUDIT.md) for details and options.
+- **What the repository contains:**
+  - the full source code (`src/`, `database/`, `dashboard/`);
+  - 109 automated tests;
+  - trained model artifacts;
+  - the SQLite database;
+  - documentation and the research deliverables.
 
-| Topic | Finding |
+> ⚠️ **Data notice.** The repository includes the Nassau Candy dataset and a database built from it. Confirm you are
+> allowed to publish this data before making the repository public.
+
+### 2. Research Paper
+
+| Document | Repository path |
 |---|---|
-| **Dates** | `Ship Date − Order Date` is 904–1,642 days and **is not a lead time**. The dates are disguised: the Order Date year was relabelled (the Order ID carries the original year, 2021–2024), and Ship Date is shifted by exactly **2,000 days**. |
-| **Recovered lead time** | Rule: `Ship Date − 2,000 days − (Order Date with the Order ID year)`. It gives 0–8 days that match ship mode (Same Day ≈ 0, First 1–3, Second 1–5, Standard 3–7; ship mode explains 67% of the variance). This is a **derived** value, never a measured one. Evidence: `reports/PHASE1_AUDIT.md` §2 and the dashboard's Data Management → Date forensics tab. |
-| **Geography vs lead time** | Correlation between distance and recovered lead time is **0.006** (all rows; 0.002 for US rows only). The data **cannot** show that a nearer factory delivers faster. Lead-time benefits of a move come from an editable **transit-time assumption**. |
-| **Costs, capacity, compatibility** | **Not in the data.** Unit cost is constant per product. Freight rate, alternative-factory cost, capacity and product–factory compatibility are configurable **analyst assumptions**. |
-| **Distances** | Straight-line miles to **state/province centroids**. No customer addresses are geocoded. Canadian centroids are coarse. |
-| **Sparse products** | 7 products have fewer than 30 order lines (e.g. Fun Dip, Everlasting Gobstopper: 3 each). Their estimates are flagged as weak. |
+| Research paper (PDF, 23 pages) | [reports/research_paper/NexRoute_AI_Research_Paper.pdf](reports/research_paper/NexRoute_AI_Research_Paper.pdf) |
+| Research paper (Markdown) | [reports/research_paper/NexRoute_AI_Research_Paper.md](reports/research_paper/NexRoute_AI_Research_Paper.md) |
+| EDA methodology and findings | [reports/research_paper/EDA_Methodology_and_Findings.md](reports/research_paper/EDA_Methodology_and_Findings.md) |
+| EDA metrics (83 values with sources) | [reports/research_paper/EDA_Metrics_Summary.csv](reports/research_paper/EDA_Metrics_Summary.csv) |
+| EDA figures (14 SVG charts) | [reports/research_paper/eda_visualizations/](reports/research_paper/eda_visualizations/) |
+| Research paper verification | [reports/research_paper/RESEARCH_PAPER_VERIFICATION.md](reports/research_paper/RESEARCH_PAPER_VERIFICATION.md) |
+| Executive summary for government stakeholders (PDF) | [reports/executive_summary/NexRoute_AI_Executive_Summary_Government_Stakeholders.pdf](reports/executive_summary/NexRoute_AI_Executive_Summary_Government_Stakeholders.pdf) |
+| Reproducible EDA scripts (used instead of a notebook) | [reports/research_paper/scripts/](reports/research_paper/scripts/) |
 
-## 3. Architecture
+- **Publication / approval status:** **not published, not approved, and not peer-reviewed.** No evidence of
+  publication or approval exists in the project.
+- **Public link:** pending. These files are **not yet pushed**. After publishing, the PDF will be at
+  `https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI/blob/main/reports/research_paper/NexRoute_AI_Research_Paper.pdf`.
+  This link does not work until the push happens.
+- **EDA notebook:** an executed EDA notebook (`notebooks/09_NexRoute_AI_EDA_Research.ipynb` and its `.html`) was
+  referred to earlier but **does not exist** in the project. The EDA is reproduced by the scripts linked above instead.
 
-```
-data/raw/*.csv (read-only)
-   │
-   ▼
-src/data_validation.py   schema checks, date forensics, recovered lead time, data-quality report
-src/preprocessing.py     cleaning + features (observed vs derived columns), cached pipeline
-src/geographic_engine.py Haversine, distance matrix, nearest factory, coverage
-   │
-   ├─► src/prediction_engine.py   lead-time models: baselines + LR/RF/GB, chronological split, versioned artifacts
-   ├─► src/clustering_engine.py   destination demand clusters, route profile clusters
-   │
-src/assumptions.py   assumptions & weights (session override > database > config), with provenance
-src/compatibility.py product–factory eligibility rules
-src/profit_engine.py symmetric cost/profit model (same formula for current and alternative factories)
-src/confidence_engine.py five documented 0–1 risk components (heuristics, not probabilities)
-src/optimization_engine.py  evaluate 15×5 options → balanced score → exact assignment (SciPy MILP)
-src/scenario_simulator.py   5 scenarios on one shared candidate table
-   │
-src/persistence.py   save/read runs, recommendations, predictions, scenarios, registry, DQ reports
-database/            SQLAlchemy models, additive migrations (SQLite: data/nassau.db)
-dashboard/           Streamlit: home + 8 pages (dashboard/common.py = shared helpers)
-tests/               109 pytest tests (unit, edge cases, temporary-DB persistence, every dashboard page, interactive workflows)
-```
+### 3. Deployed Project
 
-## 4. Technology stack
+- **Deployment status:** **NOT YET DEPLOYED.** No public URL exists, and no deployment configuration is present.
+- **Runs locally:** `streamlit run dashboard/app.py` → http://localhost:8501. This is local only and is *not* a submission link.
+- **Required before a link can be submitted:**
+  - push the repository to GitHub;
+  - deploy `dashboard/app.py` (for example on Streamlit Community Cloud, with Python 3.10 and `requirements.txt`);
+  - confirm the resulting `https://…` URL opens all pages.
 
-Python 3.10 · pandas · NumPy · scikit-learn · SciPy (`milp`) · SQLAlchemy 2 + SQLite · Streamlit · Plotly ·
-joblib · pytest. Everything runs locally and offline. It uses no paid APIs and no external AI services.
+  The app needs the committed `data/nassau.db` and `models/trained/` files.
+- **Dashboard:** a home page plus eight pages. See [Streamlit Dashboard](#9-streamlit-dashboard).
 
-## 5. Directory structure
+### 4. Project Feedback Video
 
-```
-data/raw/            original CSV (never modified)
-data/processed/      cleaned_featured.csv, data_quality_logs.json (regenerated)
-data/nassau.db       SQLite database (+ nassau_backup_*.db backups)
-src/                 business logic (see architecture)
-database/            models.py, connection.py, migrations.py
-dashboard/           app.py, common.py, pages/01..08
-models/trained/<version>/      model.joblib + meta.json; active_model.json points to the active version
-models/evaluation/<version>/   model_comparison.json, test_predictions.csv, feature_importance.csv
-models/trained/*.joblib, models/evaluation/*.json|csv   legacy models (previous target), kept for reference
-models_backup_before_retrain/  older backup, untouched
-reports/PHASE1_AUDIT.md        full audit and date forensics
-reports/eda/                   profiling and clustering outputs
-notebooks/profile_dataset.py   original profiling script
-```
+- **Status:** **NOT YET COMPLETED.** No video file or video URL exists in the project.
+- **Required action:** record the video, upload it to a public platform (for example YouTube or Google Drive with
+  link sharing), and enter its `https://` URL here.
+- A suggested outline is in [SUBMISSION_README_VERIFICATION.md](SUBMISSION_README_VERIFICATION.md).
 
-## 6. Installation
+---
 
-Run all commands from the project folder (`nassau-candy-optimization/`), using the existing virtual environment:
+## 3. Project Overview
 
-```bash
-# Windows (PowerShell)
-..\venv\Scripts\Activate.ps1
-# Windows (Git Bash) / macOS / Linux
-source ../venv/Scripts/activate      # or: source ../venv/bin/activate
-
-pip install -r requirements.txt
-```
-
-> Modules are run with `python -m src.<module>` from the project folder. `python src/<module>.py` does not work
-> (the imports need the project root on the path).
-
-## 7. Database setup
-
-```bash
-python -m src.build_database
-```
-
-This is the safe default and can be re-run at any time. It:
-
-- upgrades the schema additively (adds missing tables, columns and indexes);
-- inserts any missing rows;
-- refreshes only *derived* columns;
-- writes a new data-quality report (older reports are kept and marked not current);
-- registers the active model.
-
-It **never deletes data**.
-
-A full rebuild is destructive. It makes a timestamped backup first and requires explicit confirmation:
-
-```bash
-python -m src.build_database --rebuild --yes-delete-all-data
-```
-
-## 8. Model training
-
-```bash
-python -m src.prediction_engine        # trains, evaluates, saves models/trained/<version>/, registers in DB
-python -m src.clustering_engine        # optional: writes reports/eda/*clusters*.csv
-python -m src.preprocessing            # optional: regenerates data/processed/
-```
-
-Each training run creates a new versioned folder (it never overwrites one) and moves `active_model.json` to point at it.
-
-## 9. Dashboard
-
-```bash
-streamlit run dashboard/app.py
-```
-
-| Page | Contents |
+| | |
 |---|---|
-| 1 Executive Dashboard | Observed KPIs, current allocation, optimization summary, scenario impact, data-quality banner |
-| 2 Factory Optimization | One product × 5 factories: eligibility, distance, cost breakdown, lead time (processing + assumed transit), risk breakdown, recommendation and reason |
-| 3 What-If Analysis | Five scenarios, editable assumptions and weights, before/after comparison, product detail, save to DB |
-| 4 Recommendations | Ranked recommendations from saved runs, filters, rationale, status workflow (proposed → under review → approved/rejected → implemented) with history |
-| 5 Risk & Impact | Data-quality risk, prediction uncertainty, risk components per option, profit-vs-risk of every move, freight sensitivity |
-| 6 Factory Map | Factories, destination demand, current routes, distance matrix, coverage, alternative-factory distances, demand clusters |
-| 7 Model Analytics | All models: CV / validation / test metrics, permutation importance, residuals by ship mode, whole-day prediction ranges with measured coverage, registry, legacy model note |
-| 8 Data Management | Dataset and column status, data-quality report, date forensics, CSV validation, DB statistics, safe refresh, assumption editing, exports |
+| **Business problem** | Each of 15 products is made at one of 5 factories. Products made far from their customers may cost more to ship and take longer to arrive. Management needs evidence before moving production. |
+| **Objective** | Evaluate every product–factory option and recommend whether to keep or reallocate each product, with cost, delivery-time and risk trade-offs made explicit. |
+| **Approach** | Data validation and date forensics → lead-time prediction → symmetric cost model → heuristic risk scoring → exact optimization (SciPy MILP) → five-scenario simulation → explained recommendations in a dashboard backed by a database. |
 
-## 10. Testing
+## 4. Key Features
 
-```bash
-python -m pytest -v
-```
+- **Data-quality engine:** 12 automated checks, plus forensic reconstruction of the disguised shipping dates.
+- **Honest ML evaluation:** chronological train/validation/test split, selection on validation data only, baselines included, and measured prediction-range coverage.
+- **Symmetric cost model:** the same formula for the current and every alternative factory.
+- **Exact optimizer:** compatibility, minimum-profit and optional capacity constraints; reports infeasibility instead of failing.
+- **Five scenarios** under one shared, editable assumption set.
+- **Explained recommendations:** a written reason for every product, a risk breakdown, and a review workflow (proposed → approved → implemented).
+- **SQLite persistence** with additive migrations, run history and an integrity check.
+- **Eight-page Streamlit dashboard** and **109 automated tests**.
 
-The suite has 109 tests and takes about 60 s. Areas covered:
+## 5. Dataset Overview
 
-- data loading and preprocessing
-- missing values and invalid dates
-- recovered lead time
-- geography and compatibility
-- assumptions validation
-- the symmetric cost model
-- risk scores
-- the prediction pipeline and selection rule
-- optimization constraints (compatibility, threshold, capacity, infeasibility)
-- all five scenarios
-- persistence on a temporary database (idempotency, status workflow, additive migration, rebuild guard)
-- every dashboard page rendered headlessly
-- interactive workflows on a temporary database copy (scenario selection, saved-run selection, decision filters, status updates, saving defaults, refresh and cache clearing)
-- whole-day prediction-range coverage, including Same Day; dataset statistics computed (not hard-coded); orphan-record integrity check
+Source: `data/raw/nassau_candy_distributor.csv` (read-only). All values below are observed, verified against the current pipeline.
 
-Edge cases include empty input, missing columns, invalid dates, unknown factories, destinations and products,
-infeasible allocations, and invalid or negative values. The test suite never writes to `data/nassau.db`.
+| Metric | Value |
+|---|---:|
+| Order lines | 10,194 (18 columns, 0 missing values) |
+| Distinct order IDs | 8,549 |
+| Customers | 5,044 |
+| Products · divisions | 15 · 3 (Chocolate 9,844 · Other 310 · Sugar 40 lines) |
+| Factories | 5 |
+| Destinations | 59 (49 US states incl. DC · 10 Canadian provinces) |
+| Regions | 4 (Pacific · Atlantic · Interior · Gulf) |
+| Shipping modes | 4 (Standard · Second · First Class · Same Day) |
+| Sales · gross profit | $141,783.63 · $93,442.80 |
 
-## 11. Dataset
+## 6. EDA and Research Findings
 
-There are 10,194 order lines with 18 columns and no missing cells:
+1. **The recorded dates are disguised.** Ship Date − Order Date is 904–1,642 days for every order. The Order ID
+   carries the original year (2021–2024), the Order Date year was relabelled, and the Ship Date was shifted by exactly
+   2,000 days. Reversing this gives a **reconstructed lead time** of 0–8 days (all but 2 lines).
+2. **Ship mode, not distance, drives lead time.** Ship mode explains 67.4% of the variance. Distance shows no measurable
+   relationship (r = 0.006).
+3. **Demand is concentrated.** Chocolate is 96.6% of order lines, and two factories handle 96.6% of lines. Seven
+   products have fewer than 30 order lines, so estimates for them are weak.
 
-- 8,549 distinct Order IDs (each embeds the customer and product)
-- 5,044 customers
-- 15 products in 3 divisions
-- 59 destinations: 49 US states (including DC) and 10 Canadian provinces, in 4 regions (Atlantic, Gulf, Interior, Pacific)
-- 4 ship modes
+## 7. Machine Learning Results
 
-Chocolate is 96.6% of order lines.
+All metrics refer to the **reconstructed** lead time, not observed delivery times.
 
-## 12. Methodology
-
-**Cost model.** The same formula applies to every factory, including the current one:
-
-- revenue = historical sales
-- production cost = historical cost × (1 at the current factory, or the alternative-factory multiplier elsewhere)
-- freight = units × centroid distance × freight rate
-- estimated profit = revenue − production − freight
-- profit impact = estimated profit (alternative) − estimated profit (current)
-
-**Lead time.** Estimated lead time = processing (model prediction on the product's actual order lines) +
-transit (distance × transit-days assumption).
-
-**Objective (balanced).** The current factory scores 0. Every other option scores:
-
-```
-score = w_profit × profit gain (% of revenue)
-      + w_speed  × lead-time gain (%)
-      − w_risk   × risk increase (points)
-      − reassignment penalty
-```
-
-**Constraints.** The model is solved as an exact assignment with `scipy.optimize.milp`, under these constraints:
-
-- one factory per product;
-- incompatible factories are excluded (default rule: a factory may take a product only if it already makes that
-  product's division);
-- moves below the minimum-profit threshold are excluded;
-- optional capacity: the factory's current units × (1 + headroom).
-
-Keeping the current factory is always feasible. Infeasible settings are reported, not crashed on.
-
-**Scenarios** (all use the same candidate table and assumptions):
-
-- *current*
-- *alternative* (forced best compatible move)
-- *distance* (nearest compatible factory)
-- *cost* (maximum estimated profit)
-- *balanced* (the recommendation objective)
-
-**Risk.** Five components, each on a 0–1 scale:
-
-- model uncertainty
-- data quality
-- missing information
-- compatibility
-- operational
-
-The overall score is their mean (Low < 0.35 ≤ Medium < 0.60 ≤ High). These are documented heuristics, **not probabilities**.
-
-## 13. Results (current data and default assumptions)
-
-**Lead-time model** (target: recovered lead time; chronological 70/15/15 split; selected on validation MAE):
-
-| Model | CV MAE (train) | Validation MAE | Test MAE | Test R² |
-|---|---:|---:|---:|---:|
-| Global mean (baseline) | 1.331 | 1.361 | 1.381 | −0.003 |
-| **Per-ship-mode mean (baseline) — selected** | 0.811 | 0.828 | 0.807 | 0.698 |
-| Linear regression | 0.823 | 0.830 | 0.812 | 0.699 |
-| Random forest | 0.833 | 0.846 | 0.817 | 0.697 |
-| Gradient boosting | 0.839 | 0.844 | 0.819 | 0.696 |
-
-Final model (refit on train+validation), evaluated once on the test set: MAE 0.806 days, RMSE 0.986, R² 0.698.
-**Prediction ranges.** Each prediction carries a whole-day range built from the 5th–95th percentile of validation
-residuals: Same Day 0–1, First Class 1–3, Second Class 2–5, Standard Class 4–7 days. The range is *nominally* 90%,
-but its **measured coverage on the untouched test set is 100%**. Lead times take only a few whole-day values, so the
-range spans almost all observed values. (An earlier version used real-valued edges and covered only 59%; fixed in QA.)
-
-The ML models do not beat the per-ship-mode average, and permutation importance gives distance, factory, region
-and the other features ≈ 0. The earlier models (test R² 0.01–0.04) predicted a target that mostly encoded the
-date disguise, and selected the best model using the test set.
-
-**Scenarios.** These are estimated over the historical demand period, at $0.0005 per unit-mile freight and equal
-production cost at every factory:
-
-| Scenario | Products moved | Est. profit impact | Est. lead-time change |
+| Model | Validation MAE | Test MAE | Test R² |
 |---|---:|---:|---:|
-| Current | 0 | $0 | 0 d |
-| Best alternative (forced) | 15 | +$760 (+1.1%) | −0.08 d |
-| Distance-based | 11 | +$1,690 (+2.4%) | −0.17 d |
-| Cost-focused | 11 | +$1,690 (+2.4%) | −0.17 d |
-| Balanced (recommendation) | 2 | +$8 | ≈ 0 d |
+| Overall mean (baseline) | 1.361 | 1.381 | −0.003 |
+| **Per-ship-mode mean (selected)** | **0.828** | 0.807 | 0.698 |
+| Linear Regression | 0.830 | 0.812 | 0.699 |
+| Random Forest | 0.846 | 0.817 | 0.697 |
+| Gradient Boosting | 0.844 | 0.819 | 0.696 |
 
-What the scenarios show:
+The selected model was refit on train + validation and evaluated once on the test set: **MAE 0.806 days, RMSE 0.986
+days, R² 0.698**.
 
-- **Distance and cost give the same result** while production cost is equal everywhere, because freight then
-  depends only on distance.
-- **Most of the potential saving comes from moving the three Lot's O' Nuts Wonka Bars to Wicked Choccy's** (about
-  +$500–630 each), because much of their demand is in the East.
-- **The balanced objective does not recommend those three moves.** The added risk (an unverified production move,
-  an extrapolated lead time and assumed costs) outweighs a roughly 2% estimated gain. Instead it recommends moving
-  Fun Dip and Laffy Taffy, two very small products whose estimates rest on 3 and 10 order lines.
+The ML models do not beat the simple per-ship-mode average, so the simpler model is used. The whole-day prediction
+ranges (for example, Standard Class 4–7 days) have a measured test coverage of 100%.
 
-Changing the weights, penalty or assumptions on the What-If page shows how sensitive these conclusions are.
+## 8. Factory Optimization Results
 
-Clustering: destination demand k=2 (silhouette 0.51, East/West), route profiles k=6 (silhouette 0.48). Both are descriptive only.
+These are simulation estimates over the historical period under default assumptions ($0.0005 per unit-mile freight;
+equal factory costs). They are **not guaranteed savings**.
 
-## 14. Assumptions (all editable on Data Management / What-If)
+| Scenario | Products moved | Estimated profit impact |
+|---|---:|---:|
+| Current allocation | 0 | $0 |
+| Best alternative (forced) | 15 | +$760 |
+| Distance-based | 11 | +$1,690 |
+| Cost-focused | 11 | +$1,690 |
+| **Balanced (recommended)** | **2** | **+$8** |
 
-| Assumption | Default | Notes |
+- **Most of the potential gain is in three products.** Moving three Wonka Bar products from Lot's O' Nuts to Wicked
+  Choccy's accounts for 98.8% of the cost-focused gain.
+- **The balanced objective is cautious.** It weighs that gain against unverified risk and recommends moving only
+  Fun Dip and Laffy Taffy, two very small products.
+
+## 9. Streamlit Dashboard
+
+Entry point: `dashboard/app.py` (home page) plus eight pages in `dashboard/pages/`:
+
+| # | Page | Purpose |
 |---|---|---|
-| freight_cost_per_unit_mile | $0.0005 | Illustrative. The legacy value 0.015 (about $15/unit per 1,000 mi, 4× the selling price) is kept in the DB but unused |
-| alt_factory_cost_multiplier | 1.00 | No factory cost data |
-| transit_days_per_1000_miles | 2.0 | Rule of thumb (~500 truck miles/day); not supported by the data |
-| factory_capacity_headroom_pct | −1 (off) | No capacity data |
-| minimum_profit_threshold | $0 | A move must not reduce estimated profit |
-| reassignment_penalty_points | 2.0 | Stands in for unknown switching costs |
-| compatibility_rule | demonstrated_division | Derived from baseline assignments; unverified |
-| weights (profit/speed/risk) | 0.4 / 0.4 / 0.2 | Presets: balanced, cost_focused, speed_focused |
+| 1 | Executive Dashboard | KPIs, current allocation, optimization summary, data-quality banner |
+| 2 | Factory Optimization | One product across all five factories: eligibility, distance, cost, lead time, risk, recommendation |
+| 3 | What-If Analysis | Five scenarios with editable assumptions and weights; save runs |
+| 4 | Recommendations | Ranked recommendations, filters, rationale, review status with history |
+| 5 | Risk & Impact | Risk components, prediction uncertainty, profit vs risk, sensitivity |
+| 6 | Factory Map | Factories, demand, routes, distance matrix, coverage, demand clusters |
+| 7 | Model Analytics | Model comparison, validation vs test, importance, residuals, coverage, registry |
+| 8 | Data Management | Data-quality report, date forensics, CSV validation, integrity check, assumptions, exports |
 
-## 15. Limitations
+## 10. Technology Stack
 
-- The lead time is reconstructed from disguised dates. The rule is strongly supported but remains an inference.
-- Each product has only ever been made at one factory, so all alternative-factory effects are counterfactual estimates.
-- Distances are centroid straight lines; Canadian ones are coarse.
-- All financial figures are estimates under assumptions, not realised savings.
-- Seven products have very little history.
-- "Orders" counts Order IDs (order+product), not customer baskets.
-- Risk scores are heuristics, not calibrated probabilities.
-- Three foreign keys declared in code (`run_id` on recommendations, scenario_simulations and shipping_predictions →
-  optimization_runs) are **not enforced by the existing SQLite database**: they were added as columns by the additive
-  migration, and SQLite cannot add a foreign key to an existing column without rebuilding the table (deliberately not
-  done). They are enforced in code and monitored by `persistence.integrity_report()` (Data Management → Database:
-  currently 0 orphan rows). A database created fresh from the models enforces them.
-- The dashboard's visual layout has not been inspected in a browser by the developer tooling; interactive behaviour is
-  covered by headless tests. See FINAL_QA_REPORT.md for the manual checklist.
+Python 3.10 · pandas · NumPy · scikit-learn · SciPy (`milp` / HiGHS) · SQLAlchemy + SQLite · Streamlit · Plotly · joblib · pytest.
 
-## 16. Future improvements
+Everything runs locally and offline; no paid services or external APIs are used.
 
-- Real data: freight contracts or rate cards, factory production costs, capacities, and verified compatibility.
-- Measured ship/delivery timestamps from the WMS/TMS, to replace the derived lead time.
-- Customer-level geocoding (postal-code centroids) and road distances.
-- Multi-period demand forecasting, plus capacity planning with switching costs.
-- User authentication and audit for the recommendation workflow; migration to a server database.
+## 11. Project Structure
 
----
-Development history: `DEVELOPMENT_PROGRESS.md`. Full audit: `reports/PHASE1_AUDIT.md`. QA verification: `FINAL_QA_REPORT.md`. One-page overview: `FINAL_PROJECT_SUMMARY.md`.
+```
+data/raw/                 original dataset (read-only)
+data/nassau.db            SQLite database (15 tables)
+src/                      validation, preprocessing, geography, prediction, profit, risk, optimization, scenarios, persistence
+database/                 SQLAlchemy models, connection, additive migrations
+dashboard/                Streamlit app (app.py, common.py, pages/01–08)
+models/trained/           versioned model artifacts (active: lt-20261022-215253)
+reports/research_paper/   research paper, EDA record, figures, scripts, verification
+reports/executive_summary/ executive summary for government stakeholders
+tests/                    109 automated tests
+```
+
+**Further documentation:**
+
+| Document | Contents |
+|---|---|
+| [FINAL_PROJECT_SUMMARY.md](FINAL_PROJECT_SUMMARY.md) | One-page project summary |
+| [FINAL_QA_REPORT.md](FINAL_QA_REPORT.md) | Final QA verification and fixes |
+| [DEVELOPMENT_PROGRESS.md](DEVELOPMENT_PROGRESS.md) | Development history and decisions |
+| [reports/PHASE1_AUDIT.md](reports/PHASE1_AUDIT.md) | Original audit and date forensics |
+
+## 12. Limitations and Transparency
+
+- **Lead time:** reconstructed from disguised dates by a tested rule, not measured.
+- **Alternative factories:** each product was only ever made at one factory, so alternative-factory effects are counterfactual estimates.
+- **Assumptions:** factory costs, freight rates, transit times, capacity and compatibility are configurable assumptions, not data.
+- **Risk scores:** heuristic rules of thumb, not calibrated probabilities.
+- **Distances:** straight lines to state/province centroids; Canadian centroids are coarse.
+- **Sparse history:** seven products have very little order history.
+- **Database constraints:** three `run_id` foreign keys are enforced in code rather than by the existing database (monitored by an integrity check; currently 0 orphan records).
+
+## 13. Installation and Local Execution
+
+From the project folder, using the existing virtual environment one level up:
+
+```bash
+# Windows PowerShell:  ..\venv\Scripts\Activate.ps1      Git Bash:  source ../venv/Scripts/activate
+pip install -r requirements.txt
+
+python -m pytest -v                  # 109 tests
+streamlit run dashboard/app.py       # opens http://localhost:8501
+```
+
+Optional: rebuild the derived artifacts. Both commands are safe and never delete data.
+
+```bash
+python -m src.prediction_engine      # train a new versioned model
+python -m src.build_database         # additive schema upgrade + refresh derived columns
+```

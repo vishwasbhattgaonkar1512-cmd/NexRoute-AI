@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="252" viewBox="0 0 760 252" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Figure 6. Order lines by shipping mode">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="16.5" font-weight="600" fill="#0b0b0b">Figure 6. Order lines by shipping mode</text>
+<text x="0" y="45" font-size="12" fill="#52514e">Observed.</text>
+<line x1="122" y1="70" x2="122" y2="206" stroke="#e1e0d9"/>
+<text x="112" y="91.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Same Day</text>
+<path d="M122,76 H164.51287581699347 Q168.51287581699347,76 168.51287581699347,80 V94 Q168.51287581699347,98 164.51287581699347,98 H122 Z" fill="#2a78d6"/>
+<text x="175.51287581699347" y="91.3" font-size="12" fill="#0b0b0b">547 (5.4%)</text>
+<text x="112" y="125.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">First Class</text>
+<path d="M122,110 H249.6305882352941 Q253.6305882352941,110 253.6305882352941,114 V128 Q253.6305882352941,132 249.6305882352941,132 H122 Z" fill="#2a78d6"/>
+<text x="260.6305882352941" y="125.3" font-size="12" fill="#0b0b0b">1,548 (15.2%)</text>
+<text x="112" y="159.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Second Class</text>
+<path d="M122,144 H286.2796732026144 Q290.2796732026144,144 290.2796732026144,148 V162 Q290.2796732026144,166 286.2796732026144,166 H122 Z" fill="#2a78d6"/>
+<text x="297.2796732026144" y="159.3" font-size="12" fill="#0b0b0b">1,979 (19.4%)</text>
+<text x="112" y="193.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Standard Class</text>
+<path d="M122,178 H638.4 Q642.4,178 642.4,182 V196 Q642.4,200 638.4,200 H122 Z" fill="#2a78d6"/>
+<text x="649.4" y="193.3" font-size="12" fill="#0b0b0b">6,120 (60.0%)</text>
+<text x="0" y="240" font-size="11" fill="#898781">Source: Ship Mode column.</text></svg>

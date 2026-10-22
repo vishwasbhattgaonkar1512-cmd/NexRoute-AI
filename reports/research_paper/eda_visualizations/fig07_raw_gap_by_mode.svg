@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="252" viewBox="0 0 760 252" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Figure 7. RAW gap (Ship Date − Order Date) by shipping mode, mean days">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="16.5" font-weight="600" fill="#0b0b0b">Figure 7. RAW gap (Ship Date − Order Date) by shipping mode, mean days</text>
+<text x="0" y="45" font-size="12" fill="#52514e">The raw gap is 904–1,642 days for every mode; Same Day is not faster. It is not a lead time.</text>
+<line x1="122" y1="70" x2="122" y2="206" stroke="#e1e0d9"/>
+<text x="112" y="91.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Same Day</text>
+<path d="M122,76 H643.6682657102294 Q647.6682657102294,76 647.6682657102294,80 V94 Q647.6682657102294,98 643.6682657102294,98 H122 Z" fill="#2a78d6"/>
+<text x="654.6682657102294" y="91.3" font-size="12" fill="#0b0b0b">1,333.4 days</text>
+<text x="112" y="125.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">First Class</text>
+<path d="M122,110 H645.6 Q649.6,110 649.6,114 V128 Q649.6,132 645.6,132 H122 Z" fill="#2a78d6"/>
+<text x="656.6" y="125.3" font-size="12" fill="#0b0b0b">1,338.3 days</text>
+<text x="112" y="159.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Second Class</text>
+<path d="M122,144 H639.8836434282299 Q643.8836434282299,144 643.8836434282299,148 V162 Q643.8836434282299,166 639.8836434282299,166 H122 Z" fill="#2a78d6"/>
+<text x="650.8836434282299" y="159.3" font-size="12" fill="#0b0b0b">1,323.8 days</text>
+<text x="112" y="193.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Standard Class</text>
+<path d="M122,178 H636.1384442950011 Q640.1384442950011,178 640.1384442950011,182 V196 Q640.1384442950011,200 636.1384442950011,200 H122 Z" fill="#2a78d6"/>
+<text x="647.1384442950011" y="193.3" font-size="12" fill="#0b0b0b">1,314.3 days</text>
+<text x="0" y="240" font-size="11" fill="#898781">Ship mode explains 0.12% of the variance of the raw gap.</text></svg>

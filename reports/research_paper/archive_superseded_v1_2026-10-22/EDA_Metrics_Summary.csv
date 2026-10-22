@@ -1,0 +1,41 @@
+metric,value
+n_rows,10194
+n_order_lines,10194
+n_unique_orders,8549
+n_unique_customers,5044
+n_unique_products,15
+n_factories,5
+n_unique_states,57
+n_unique_regions,4
+n_product_divisions,3
+n_ship_modes,4
+missing_values_total,200
+duplicate_order_lines,313
+top_product_by_sales,Wonka Bar - Triple Dazzle Caramel
+top_product_sales_value,28485.0
+bottom_product_by_sales,Fun Dip
+bottom_product_sales_value,12.0
+top5_products_sales_share_pct,92.9
+division_distribution,"{""Chocolate"": 9844, ""Other"": 316, ""Sugar"": 34}"
+avg_orders_per_customer,1.69
+max_orders_single_customer,15
+top10_customers_order_share_pct,1.1
+region_distribution,"{""Pacific"": 3260, ""Atlantic"": 2988, ""Interior"": 2326, ""Gulf"": 1620}"
+lead_time_raw_min,904.0
+lead_time_raw_max,1642.0
+lead_time_raw_mean,1320.8
+lead_time_raw_std,262.4
+same_day_vs_standard_mean_gap_days,-19.1
+year_gap_distribution,"{""2"": 711, ""3"": 3075, ""4"": 4280, ""5"": 2128}"
+factory_distribution,"{""Lot's O' Nuts"": 5692, ""Wicked Choccy's"": 4152, ""Secret Factory"": 217, ""The Other Factory"": 100, ""Sugar Shack"": 33}"
+products_per_factory,"{""Lot's O' Nuts"": 3, ""Secret Factory"": 3, ""Sugar Shack"": 5, ""The Other Factory"": 2, ""Wicked Choccy's"": 2}"
+distance_vs_lead_time_correlation,0.015
+n_data_quality_issues_logged,1
+n_critical_data_quality_issues,1
+best_model,gradient_boosting
+best_model_test_r2,0.0381
+best_model_test_mae,169.02
+best_model_test_rmse,178.12
+n_products_evaluated_for_reallocation,15
+n_reallocation_recommended,0
+n_keep_current_recommended,15

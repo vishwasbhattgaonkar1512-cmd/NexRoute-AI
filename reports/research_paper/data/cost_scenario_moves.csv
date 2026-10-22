@@ -1,0 +1,12 @@
+product_name,current_factory,proposed_factory,lines,distance_impact_miles,profit_impact,lead_time_impact_days,risk_level
+Wonka Bar - Nutty Crunch Surprise,Lot's O' Nuts,Wicked Choccy's,1810,-156.85,529.78,-0.31,Medium
+Wonka Bar - Fudge Mallows,Lot's O' Nuts,Wicked Choccy's,1818,-146.49,506.41,-0.29,Medium
+Wonka Bar -Scrumdiddlyumptious,Lot's O' Nuts,Wicked Choccy's,2064,-163.5,633.0,-0.33,Medium
+Laffy Taffy,Sugar Shack,The Other Factory,10,-474.88,6.41,-0.95,Medium
+SweeTARTS,Sugar Shack,Secret Factory,10,-303.82,6.23,-0.61,Medium
+Nerds,Sugar Shack,Secret Factory,4,-310.82,1.55,-0.62,Medium
+Fun Dip,Sugar Shack,Secret Factory,3,-418.58,1.67,-0.84,Medium
+Fizzy Lifting Drinks,Sugar Shack,Secret Factory,6,-345.89,3.63,-0.69,Medium
+Everlasting Gobstopper,Secret Factory,The Other Factory,3,-137.75,0.9,-0.28,Medium
+Hair Toffee,The Other Factory,Secret Factory,4,-33.84,0.29,-0.07,Medium
+Kazookles,The Other Factory,Secret Factory,96,-2.33,0.43,-0.0,Medium

@@ -1,0 +1,19 @@
+model,feature,importance_mae_increase,importance_std
+baseline_ship_mode_mean,Ship Mode,0.9508,0.01668
+baseline_ship_mode_mean,Region,0.0,0.0
+baseline_ship_mode_mean,Division,0.0,0.0
+baseline_ship_mode_mean,current_factory,0.0,0.0
+baseline_ship_mode_mean,distance_miles,0.0,0.0
+baseline_ship_mode_mean,Units,0.0,0.0
+baseline_ship_mode_mean,Sales,0.0,0.0
+baseline_ship_mode_mean,order_month,0.0,0.0
+baseline_ship_mode_mean,order_dow_rebuilt,0.0,0.0
+linear_regression,Ship Mode,0.95041,0.0166
+linear_regression,Region,0.00032,0.00066
+linear_regression,order_month,0.00023,0.00024
+linear_regression,distance_miles,6e-05,4e-05
+linear_regression,current_factory,5e-05,0.00017
+linear_regression,order_dow_rebuilt,-4e-05,9e-05
+linear_regression,Sales,-0.00021,0.00012
+linear_regression,Units,-0.00024,7e-05
+linear_regression,Division,-0.00024,0.00018

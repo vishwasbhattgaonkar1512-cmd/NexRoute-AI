@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="490" viewBox="0 0 900 490" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Figure 14. ESTIMATED profit impact per move, cost-focused scenario (USD)">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="16.5" font-weight="600" fill="#0b0b0b">Figure 14. ESTIMATED profit impact per move, cost-focused scenario (USD)</text>
+<text x="0" y="45" font-size="12" fill="#52514e">11 moves; the top three account for 98.8% of the total.</text>
+<line x1="381" y1="70" x2="381" y2="444" stroke="#e1e0d9"/>
+<text x="371" y="91.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Wonka Bar -Scrumdiddlyumptious → Wicked Choccy&#x27;s</text>
+<path d="M381,76 H814.4000000000001 Q818.4000000000001,76 818.4000000000001,80 V94 Q818.4000000000001,98 814.4000000000001,98 H381 Z" fill="#2a78d6"/>
+<text x="825.4000000000001" y="91.3" font-size="12" fill="#0b0b0b">+$633.00</text>
+<text x="371" y="125.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Wonka Bar - Nutty Crunch Surprise → Wicked Choccy&#x27;s</text>
+<path d="M381,110 H743.0754691943127 Q747.0754691943127,110 747.0754691943127,114 V128 Q747.0754691943127,132 743.0754691943127,132 H381 Z" fill="#2a78d6"/>
+<text x="754.0754691943127" y="125.3" font-size="12" fill="#0b0b0b">+$529.78</text>
+<text x="371" y="159.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Wonka Bar - Fudge Mallows → Wicked Choccy&#x27;s</text>
+<path d="M381,144 H726.9269099526066 Q730.9269099526066,144 730.9269099526066,148 V162 Q730.9269099526066,166 726.9269099526066,166 H381 Z" fill="#2a78d6"/>
+<text x="737.9269099526066" y="159.3" font-size="12" fill="#0b0b0b">+$506.41</text>
+<text x="371" y="193.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Laffy Taffy → The Other Factory</text>
+<path d="M381,178 H383.21463981042655 Q385.4292796208531,178 385.4292796208531,180.21463981042655 V197.78536018957345 Q385.4292796208531,200 383.21463981042655,200 H381 Z" fill="#2a78d6"/>
+<text x="392.4292796208531" y="193.3" font-size="12" fill="#0b0b0b">+$6.41</text>
+<text x="371" y="227.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">SweeTARTS → Secret Factory</text>
+<path d="M381,212 H383.1524502369668 Q385.3049004739336,212 385.3049004739336,214.1524502369668 V231.8475497630332 Q385.3049004739336,234 383.1524502369668,234 H381 Z" fill="#2a78d6"/>
+<text x="392.3049004739336" y="227.3" font-size="12" fill="#0b0b0b">+$6.23</text>
+<text x="371" y="261.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Fizzy Lifting Drinks → Secret Factory</text>
+<path d="M381,246 H382.25415639810427 Q383.50831279620854,246 383.50831279620854,247.25415639810427 V266.74584360189573 Q383.50831279620854,268 382.25415639810427,268 H381 Z" fill="#2a78d6"/>
+<text x="390.50831279620854" y="261.3" font-size="12" fill="#0b0b0b">+$3.63</text>
+<text x="371" y="295.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Fun Dip → Secret Factory</text>
+<path d="M381,280 H381.57698104265404 Q382.1539620853081,280 382.1539620853081,280.57698104265404 V301.42301895734596 Q382.1539620853081,302 381.57698104265404,302 H381 Z" fill="#2a78d6"/>
+<text x="389.1539620853081" y="295.3" font-size="12" fill="#0b0b0b">+$1.67</text>
+<text x="371" y="329.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Nerds → Secret Factory</text>
+<path d="M381,314 H381.5355213270142 Q382.0710426540284,314 382.0710426540284,314.53552132701424 V335.46447867298576 Q382.0710426540284,336 381.5355213270142,336 H381 Z" fill="#2a78d6"/>
+<text x="389.0710426540284" y="329.3" font-size="12" fill="#0b0b0b">+$1.55</text>
+<text x="371" y="363.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Everlasting Gobstopper → The Other Factory</text>
+<path d="M381,348 H381.3109478672986 Q381.62189573459716,348 381.62189573459716,348.3109478672986 V369.6890521327014 Q381.62189573459716,370 381.3109478672986,370 H381 Z" fill="#2a78d6"/>
+<text x="388.62189573459716" y="363.3" font-size="12" fill="#0b0b0b">+$0.90</text>
+<text x="371" y="397.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Kazookles → Secret Factory</text>
+<path d="M381,382 H381.1485639810427 Q381.2971279620853,382 381.2971279620853,382.1485639810426 V403.8514360189574 Q381.2971279620853,404 381.1485639810427,404 H381 Z" fill="#2a78d6"/>
+<text x="388.2971279620853" y="397.3" font-size="12" fill="#0b0b0b">+$0.43</text>
+<text x="371" y="431.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Hair Toffee → Secret Factory</text>
+<path d="M381,416 H381.10019431279625 Q381.20038862559244,416 381.20038862559244,416.1001943127962 V437.8998056872038 Q381.20038862559244,438 381.10019431279625,438 H381 Z" fill="#2a78d6"/>
+<text x="388.20038862559244" y="431.3" font-size="12" fill="#0b0b0b">+$0.29</text>
+<text x="0" y="478" font-size="11" fill="#898781">Estimates; small products rest on very few order lines (see Table 9).</text></svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="252" viewBox="0 0 760 252" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Figure 5. Order lines by sales region">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="16.5" font-weight="600" fill="#0b0b0b">Figure 5. Order lines by sales region</text>
+<text x="0" y="45" font-size="12" fill="#52514e">Observed (Region column of each order line).</text>
+<line x1="90" y1="70" x2="90" y2="206" stroke="#e1e0d9"/>
+<text x="80" y="91.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Pacific</text>
+<path d="M90,76 H638.4 Q642.4,76 642.4,80 V94 Q642.4,98 638.4,98 H90 Z" fill="#2a78d6"/>
+<text x="649.4" y="91.3" font-size="12" fill="#0b0b0b">3,253 (31.9%)</text>
+<text x="80" y="125.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Atlantic</text>
+<path d="M90,110 H593.0600676298801 Q597.0600676298801,110 597.0600676298801,114 V128 Q597.0600676298801,132 593.0600676298801,132 H90 Z" fill="#2a78d6"/>
+<text x="604.0600676298801" y="125.3" font-size="12" fill="#0b0b0b">2,986 (29.3%)</text>
+<text x="80" y="159.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Interior</text>
+<path d="M90,144 H482.5121426375653 Q486.5121426375653,144 486.5121426375653,148 V162 Q486.5121426375653,166 482.5121426375653,166 H90 Z" fill="#2a78d6"/>
+<text x="493.5121426375653" y="159.3" font-size="12" fill="#0b0b0b">2,335 (22.9%)</text>
+<text x="80" y="193.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Gulf</text>
+<path d="M90,178 H361.0962188748847 Q365.0962188748847,178 365.0962188748847,182 V196 Q365.0962188748847,200 361.0962188748847,200 H90 Z" fill="#2a78d6"/>
+<text x="372.0962188748847" y="193.3" font-size="12" fill="#0b0b0b">1,620 (15.9%)</text>
+<text x="0" y="240" font-size="11" fill="#898781">Source: Region column.</text></svg>

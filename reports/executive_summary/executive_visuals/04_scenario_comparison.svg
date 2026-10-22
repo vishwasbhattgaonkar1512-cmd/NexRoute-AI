@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="320" viewBox="0 0 760 320" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="ESTIMATED profit impact by scenario (USD)">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="17" font-weight="600" fill="#0b0b0b">ESTIMATED profit impact by scenario (USD)</text>
+<text x="0" y="46" font-size="12.5" fill="#52514e">Over the historical demand period, under default analyst assumptions. Not verified real-world savings.</text>
+<line x1="200" y1="66" x2="200" y2="268" stroke="#e1e0d9" stroke-width="1"/>
+<text x="190" y="91.5" font-size="13" text-anchor="end" fill="#0b0b0b">Current allocation</text>
+<text x="208.0" y="91.5" font-size="13" fill="#0b0b0b">$0  ·  0 products moved</text>
+<text x="190" y="131.5" font-size="13" text-anchor="end" fill="#0b0b0b">Best alternative (forced)</text>
+<path d="M200,114 H340.51044675633545 Q344.51044675633545,114 344.51044675633545,118 V136 Q344.51044675633545,140 340.51044675633545,140 H200 Z" fill="#2a78d6"/>
+<text x="352.51044675633545" y="131.5" font-size="13" fill="#0b0b0b">+$760  ·  15 products moved</text>
+<text x="190" y="171.5" font-size="13" text-anchor="end" fill="#0b0b0b">Distance-based</text>
+<path d="M200,154 H517.4 Q521.4,154 521.4,158 V176 Q521.4,180 517.4,180 H200 Z" fill="#2a78d6"/>
+<text x="529.4" y="171.5" font-size="13" fill="#0b0b0b">+$1,690  ·  11 products moved</text>
+<text x="190" y="211.5" font-size="13" text-anchor="end" fill="#0b0b0b">Cost-focused</text>
+<path d="M200,194 H517.4 Q521.4,194 521.4,198 V216 Q521.4,220 517.4,220 H200 Z" fill="#2a78d6"/>
+<text x="529.4" y="211.5" font-size="13" fill="#0b0b0b">+$1,690  ·  11 products moved</text>
+<text x="190" y="251.5" font-size="13" text-anchor="end" fill="#0b0b0b">Balanced (recommended)</text>
+<path d="M200,234 H200.76865842944576 Q201.5373168588915,234 201.5373168588915,234.76865842944574 V259.23134157055426 Q201.5373168588915,260 200.76865842944576,260 H200 Z" fill="#2a78d6"/>
+<text x="209.5373168588915" y="251.5" font-size="13" fill="#0b0b0b">+$8  ·  2 products moved</text>
+<text x="0" y="308" font-size="11.5" fill="#898781">Estimates depend on an assumed freight rate of $0.0005 per unit-mile and equal factory costs.</text>
+</svg>

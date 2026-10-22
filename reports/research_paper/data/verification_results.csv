@@ -1,0 +1,61 @@
+claim,computed_value,paper_text,in_paper,exec_text,in_exec_summary
+Order lines,10194,"10,194",True,"10,194",True
+Distinct order IDs,8549,"8,549",True,"8,549",True
+Customers,5044,"5,044",True,"5,044",True
+Products,15,15 products,True,15 products,True
+Factories,5,five factories,True,5 factories,True
+Destinations,59,59 destinations,True,| Destinations | 59 |,True
+US states incl. DC,49,49 US states incl. DC,True,| 49 |,True
+Canadian provinces,10,10 Canadian provinces,True,| Canadian provinces | 10 |,True
+Chocolate lines,9844,"Chocolate 9,844",True,"9,844",True
+Other lines,310,Other 310,True,,
+Sugar lines,40,Sugar 40,True,(40 lines),True
+Chocolate share %,96.57,96.6%,True,96.6%,True
+Sales total,141783.63,"$141,783.63",True,"$141,784",True
+Gross profit total,93442.8,"$93,442.80",True,"$93,443",True
+Sparse products (<30 lines),7,Seven of the 15 products,True,7 of the 15 products,True
+Raw gap range,"[904, 1642]","904–1,642 days",True,"904 to 1,642 days",True
+Date shift,2000,"2,000 days",True,"2,000 days",True
+Ship-mode share of variance (reconstructed),67.37,67.4%,True,67%,True
+Distance correlation (all rows),0.0059,r = 0.006,True,correlation 0.006,True
+Selected model,"""baseline_ship_mode_mean""",Per-shipping-mode mean (selected),True,Average for each shipping mode (selected),True
+Validation MAE selected,0.828,**0.828**,True,,
+Final test MAE,0.806,0.806 days,True,0.806 days,True
+Final test RMSE,0.986,0.986 days,True,0.986 days,True
+Final test R²,0.698,R² 0.698,True,0.698,True
+LR test MAE,0.812,| 0.812 |,True,| Linear Regression | 0.81 |,True
+RF test MAE,0.817,| 0.817 |,True,| Random Forest | 0.82 |,True
+GB test MAE,0.819,| 0.819 |,True,| Gradient Boosting | 0.82 |,True
+Overall-mean test MAE,1.381,| 1.381 |,True,| 1.38 |,True
+Interval test coverage,1.0,measured coverage on the test set is 100%,True,every actual value fell inside its range,True
+Scenario alternative: moved,15,| Best alternative (forced) | 15 |,True,| 15 | +$760,True
+Scenario alternative: profit,760,+$760,True,+$760,True
+Scenario distance: moved/profit,"[11, 1690]","| Distance-based | 11 | +$1,690 |",True,"| 11 | +$1,690 (+2.4%)",True
+Scenario cost: moved/profit,"[11, 1690]","| Cost-focused | 11 | +$1,690 |",True,"| 11 | +$1,690 (+2.4%)",True
+Scenario balanced: moved/profit,"[2, 8]",| **2** | **+$8** |,True,| **2** | **+$8** |,True
+Cost scenario % of est. current profit,2.4,+2.4%,True,+2.4%,True
+Lead-time change distance/cost,-0.17,−0.17 days,True,−0.17 days,True
+Lead-time change alternative,-0.08,−0.08 days,True,−0.08 days,True
+Estimated current profit after freight,69390,"$69,390",True,"$69,390",True
+Top-3 share of cost-scenario gain,98.8,98.8%,True,,
+Scrumdiddlyumptious move,633.0,+$633.00,True,$633,True
+Fudge Mallows move,506.41,+$506.41,True,$506,True
+Fun Dip recommendation,1.67,+$1.67,True,+$1.67,True
+Laffy Taffy recommendation,6.41,+$6.41,True,+$6.41,True
+Keep-current count,13,keeping 13 products,True,,
+Freight doubled sensitivity,3381,"+$3,381",True,,
+Capacity +10% sensitivity,"[9, 292]",| 9 | +$292 |,True,,
+Eligible alternatives,22,22 eligible alternatives,True,,
+Freight assumption,0.0005,$0.0005 per unit-mile,True,$0.0005,True
+Transit assumption,2.0,"2 days per 1,000 miles",True,"2 days per 1,000",True
+superseded value absent: '0.038',,0.038,True,,
+superseded value absent: 'zero reallocation',,zero reallocation,True,,
+superseded value absent: 'Other 316',,Other 316,True,,
+superseded value absent: 'Sugar 34',,Sugar 34,True,,
+"superseded value absent: '3,260'",,"3,260",True,,
+superseded value absent: '57 states',,57 states,True,,
+superseded value absent: '96.9%',,96.9%,True,,
+superseded value absent: 'lead-time index',,lead-time index,True,,
+superseded value absent: 'r = 0.015',,r = 0.015,True,,
+superseded value absent: '169.02',,169.02,True,,
+superseded value absent: '178.12',,178.12,True,,

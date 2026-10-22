@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="456" viewBox="0 0 760 456" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Figure 8. Distribution of the RECONSTRUCTED lead time">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="16.5" font-weight="600" fill="#0b0b0b">Figure 8. Distribution of the RECONSTRUCTED lead time</text>
+<text x="0" y="45" font-size="12" fill="#52514e">Derived: Ship Date − 2,000 days − (Order Date with the Order ID year). Not measured delivery time.</text>
+<line x1="90" y1="70" x2="90" y2="410" stroke="#e1e0d9"/>
+<text x="80" y="91.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">0 days</text>
+<path d="M90,76 H198.45329573493126 Q202.45329573493126,76 202.45329573493126,80 V94 Q202.45329573493126,98 198.45329573493126,98 H90 Z" fill="#2a78d6"/>
+<text x="209.45329573493126" y="91.3" font-size="12" fill="#0b0b0b">523</text>
+<text x="80" y="125.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">1 days</text>
+<path d="M90,110 H165.34085301374694 Q169.34085301374694,110 169.34085301374694,114 V128 Q169.34085301374694,132 165.34085301374694,132 H90 Z" fill="#2a78d6"/>
+<text x="176.34085301374694" y="125.3" font-size="12" fill="#0b0b0b">369</text>
+<text x="80" y="159.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">2 days</text>
+<path d="M90,144 H378.8516038068382 Q382.8516038068382,144 382.8516038068382,148 V162 Q382.8516038068382,166 378.8516038068382,166 H90 Z" fill="#2a78d6"/>
+<text x="389.8516038068382" y="159.3" font-size="12" fill="#0b0b0b">1,362</text>
+<text x="80" y="193.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">3 days</text>
+<path d="M90,178 H306.60627423334506 Q310.60627423334506,178 310.60627423334506,182 V196 Q310.60627423334506,200 306.60627423334506,200 H90 Z" fill="#2a78d6"/>
+<text x="317.60627423334506" y="193.3" font-size="12" fill="#0b0b0b">1,026</text>
+<text x="80" y="227.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">4 days</text>
+<path d="M90,212 H696.0 Q700.0,212 700.0,216 V230 Q700.0,234 696.0,234 H90 Z" fill="#2a78d6"/>
+<text x="707.0" y="227.3" font-size="12" fill="#0b0b0b">2,837</text>
+<text x="80" y="261.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">5 days</text>
+<path d="M90,246 H567.2054987663024 Q571.2054987663024,246 571.2054987663024,250 V264 Q571.2054987663024,268 567.2054987663024,268 H90 Z" fill="#2a78d6"/>
+<text x="578.2054987663024" y="261.3" font-size="12" fill="#0b0b0b">2,238</text>
+<text x="80" y="295.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">6 days</text>
+<path d="M90,280 H345.09411350017626 Q349.09411350017626,280 349.09411350017626,284 V298 Q349.09411350017626,302 345.09411350017626,302 H90 Z" fill="#2a78d6"/>
+<text x="356.09411350017626" y="295.3" font-size="12" fill="#0b0b0b">1,205</text>
+<text x="80" y="329.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">7 days</text>
+<path d="M90,314 H221.4599929502996 Q225.4599929502996,314 225.4599929502996,318 V332 Q225.4599929502996,336 221.4599929502996,336 H90 Z" fill="#2a78d6"/>
+<text x="232.4599929502996" y="329.3" font-size="12" fill="#0b0b0b">630</text>
+<text x="80" y="363.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">8 days</text>
+<path d="M90,348 H90.21501586182588 Q90.43003172365175,348 90.43003172365175,348.21501586182586 V369.78498413817414 Q90.43003172365175,370 90.21501586182588,370 H90 Z" fill="#2a78d6"/>
+<text x="97.43003172365175" y="363.3" font-size="12" fill="#0b0b0b">2</text>
+<text x="80" y="397.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">11 days</text>
+<path d="M90,382 H90.21501586182588 Q90.43003172365175,382 90.43003172365175,382.21501586182586 V403.78498413817414 Q90.43003172365175,404 90.21501586182588,404 H90 Z" fill="#2a78d6"/>
+<text x="97.43003172365175" y="397.3" font-size="12" fill="#0b0b0b">2</text>
+<text x="0" y="444" font-size="11" fill="#898781">Source: lead_time_recovered_days (src/data_validation.py).</text></svg>

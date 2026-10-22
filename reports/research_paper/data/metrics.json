@@ -1,0 +1,544 @@
+{
+ "raw_rows": 10194,
+ "raw_columns": 18,
+ "missing_cells_raw": 0,
+ "rows_after_cleaning": 10194,
+ "distinct_order_ids": 8549,
+ "customers": 5044,
+ "products": 15,
+ "factories": 5,
+ "divisions": {
+  "Chocolate": 9844,
+  "Other": 310,
+  "Sugar": 40
+ },
+ "chocolate_share_pct": 96.57,
+ "destinations": 59,
+ "us_states_incl_dc": 49,
+ "canadian_provinces": 10,
+ "canadian_lines": 200,
+ "countries": {
+  "United States": 9994,
+  "Canada": 200
+ },
+ "regions": {
+  "Pacific": 3253,
+  "Atlantic": 2986,
+  "Interior": 2335,
+  "Gulf": 1620
+ },
+ "ship_modes": {
+  "Standard Class": 6120,
+  "Second Class": 1979,
+  "First Class": 1548,
+  "Same Day": 547
+ },
+ "order_date_range_as_recorded": [
+  "2024-01-02",
+  "2025-12-31"
+ ],
+ "ship_date_range_as_recorded": [
+  "2026-06-30",
+  "2030-06-28"
+ ],
+ "sales_total": 141783.63,
+ "gross_profit_total": 93442.8,
+ "gross_margin_pct": 65.91,
+ "units_total": 38654,
+ "top_product_by_sales": [
+  "Wonka Bar - Triple Dazzle Caramel",
+  28485.0
+ ],
+ "bottom_product_by_sales": [
+  "Fun Dip",
+  12.0
+ ],
+ "top5_sales_share_pct": 92.88,
+ "unit_price_constant_per_product": true,
+ "sparse_products_lt30_lines": {
+  "Everlasting Gobstopper": 3,
+  "Fun Dip": 3,
+  "Nerds": 4,
+  "Hair Toffee": 4,
+  "Fizzy Lifting Drinks": 6,
+  "SweeTARTS": 10,
+  "Laffy Taffy": 10
+ },
+ "avg_order_ids_per_customer": 1.69,
+ "max_order_ids_single_customer": 15,
+ "customers_with_one_order_id_pct": 55.7,
+ "top10_customers_order_id_share_pct": 1.15,
+ "customers_multiple_destinations": 28,
+ "top5_destinations_by_lines": {
+  "California": 2001,
+  "New York": 1128,
+  "Texas": 985,
+  "Pennsylvania": 587,
+  "Washington": 506
+ },
+ "top5_destinations_line_share_pct": 51.1,
+ "factory_lines": {
+  "Lot's O' Nuts": 5692,
+  "Wicked Choccy's": 4152,
+  "Secret Factory": 217,
+  "The Other Factory": 100,
+  "Sugar Shack": 33
+ },
+ "factory_products": {
+  "Lot's O' Nuts": 3,
+  "Wicked Choccy's": 2,
+  "Secret Factory": 3,
+  "The Other Factory": 2,
+  "Sugar Shack": 5
+ },
+ "top2_factory_line_share_pct": 96.57,
+ "raw_gap_days_min_max_mean_std": [
+  904,
+  1642,
+  1320.8,
+  262.4
+ ],
+ "raw_gap_mean_by_ship_mode": {
+  "First Class": 1338.3,
+  "Same Day": 1333.4,
+  "Second Class": 1323.8,
+  "Standard Class": 1314.3
+ },
+ "eta2_ship_mode_raw_gap_pct": 0.12,
+ "order_id_year_vs_order_date_year": {
+  "2021": {
+   "2024": 2051,
+   "2025": 0
+  },
+  "2022": {
+   "2024": 2130,
+   "2025": 0
+  },
+  "2023": {
+   "2024": 0,
+   "2025": 2634
+  },
+  "2024": {
+   "2024": 0,
+   "2025": 3379
+  }
+ },
+ "date_shift_days": 2000,
+ "recovered_lead_value_counts": {
+  "0": 523,
+  "1": 369,
+  "2": 1362,
+  "3": 1026,
+  "4": 2837,
+  "5": 2238,
+  "6": 1205,
+  "7": 630,
+  "8": 2,
+  "11": 2
+ },
+ "recovered_lead_mean_by_ship_mode": {
+  "First Class": 2.18,
+  "Same Day": 0.04,
+  "Second Class": 3.24,
+  "Standard Class": 5.0
+ },
+ "recovered_lead_range_by_ship_mode_p0_5_p99_5": {
+  "First Class": [
+   1.0,
+   3.0
+  ],
+  "Same Day": [
+   0.0,
+   1.0
+  ],
+  "Second Class": [
+   2.0,
+   5.0
+  ],
+  "Standard Class": [
+   4.0,
+   7.0
+  ]
+ },
+ "recovered_lead_mean_std": [
+  3.96,
+  1.74
+ ],
+ "eta2_ship_mode_recovered_lead_pct": 67.37,
+ "recovered_lead_mean_by_region": {
+  "Atlantic": 3.91,
+  "Gulf": 3.96,
+  "Interior": 4.05,
+  "Pacific": 3.94
+ },
+ "recovered_lead_mean_by_factory": {
+  "Lot's O' Nuts": 3.94,
+  "Secret Factory": 3.71,
+  "Sugar Shack": 4.36,
+  "The Other Factory": 3.69,
+  "Wicked Choccy's": 4.01
+ },
+ "corr_distance_recovered_lead_all": 0.0059,
+ "corr_distance_recovered_lead_us": 0.0021,
+ "corr_distance_raw_gap_all": 0.0142,
+ "corr_sales_units": 0.729,
+ "data_quality_issues": {
+  "systemic_lead_time_anomaly": [
+   "critical",
+   10194
+  ],
+  "date_fields_disguised": [
+   "critical",
+   10194
+  ],
+  "lead_time_recovered_derived": [
+   "high",
+   0
+  ],
+  "sparse_product_history": [
+   "high",
+   40
+  ],
+  "canadian_centroid_approximation": [
+   "medium",
+   200
+  ],
+  "customer_multiple_destinations": [
+   "medium",
+   199
+  ],
+  "possible_duplicate_lines": [
+   "low",
+   313
+  ],
+  "order_id_is_order_plus_product": [
+   "low",
+   3018
+  ],
+  "postal_code_leading_zero_lost": [
+   "low",
+   449
+  ],
+  "missing_values": [
+   "info",
+   0
+  ],
+  "gross_profit_consistency": [
+   "info",
+   0
+  ],
+  "no_factory_cost_capacity_compatibility_data": [
+   "info",
+   0
+  ]
+ },
+ "model_version": "lt-20261022-215253",
+ "model_selected": "baseline_ship_mode_mean",
+ "model_selection_rule": "lowest validation MAE; simpler model preferred within 1%",
+ "model_features": [
+  "Ship Mode",
+  "Region",
+  "Division",
+  "current_factory",
+  "distance_miles",
+  "Units",
+  "Sales",
+  "order_month",
+  "order_dow_rebuilt"
+ ],
+ "split": {
+  "train_rows": 7135,
+  "validation_rows": 1529,
+  "test_rows": 1530,
+  "train_period": [
+   "2021-01-03",
+   "2024-03-09"
+  ],
+  "validation_period": [
+   "2024-03-09",
+   "2024-09-11"
+  ],
+  "test_period": [
+   "2024-09-11",
+   "2024-12-30"
+  ]
+ },
+ "model_comparison": {
+  "baseline_mean": {
+   "cv_mae_mean": 1.330592,
+   "cv_mae_std": 0.058476,
+   "train_mae": 1.307346,
+   "val_mae": 1.360797,
+   "val_rmse": 1.773948,
+   "val_r2": -0.004901,
+   "test_mae": 1.381483,
+   "test_rmse": 1.79811,
+   "test_r2": -0.003498
+  },
+  "baseline_ship_mode_mean": {
+   "cv_mae_mean": 0.811151,
+   "cv_mae_std": 0.012955,
+   "train_mae": 0.797711,
+   "val_mae": 0.828407,
+   "val_rmse": 1.013834,
+   "val_r2": 0.671772,
+   "test_mae": 0.806813,
+   "test_rmse": 0.985892,
+   "test_r2": 0.698323
+  },
+  "linear_regression": {
+   "cv_mae_mean": 0.822526,
+   "cv_mae_std": 0.017135,
+   "train_mae": 0.802018,
+   "val_mae": 0.83032,
+   "val_rmse": 1.014381,
+   "val_r2": 0.671418,
+   "test_mae": 0.811937,
+   "test_rmse": 0.984494,
+   "test_r2": 0.699177
+  },
+  "random_forest": {
+   "cv_mae_mean": 0.832868,
+   "cv_mae_std": 0.013834,
+   "train_mae": 0.76148,
+   "val_mae": 0.845941,
+   "val_rmse": 1.019683,
+   "val_r2": 0.667974,
+   "test_mae": 0.816671,
+   "test_rmse": 0.988692,
+   "test_r2": 0.696607
+  },
+  "gradient_boosting": {
+   "cv_mae_mean": 0.839466,
+   "cv_mae_std": 0.020933,
+   "train_mae": 0.780611,
+   "val_mae": 0.84424,
+   "val_rmse": 1.017882,
+   "val_r2": 0.669146,
+   "test_mae": 0.819451,
+   "test_rmse": 0.989094,
+   "test_r2": 0.69636
+  }
+ },
+ "final_test": {
+  "mae": 0.8065,
+  "rmse": 0.9859,
+  "r2": 0.6983
+ },
+ "permutation_importance": {
+  "baseline_ship_mode_mean": {
+   "Ship Mode": 0.9508,
+   "Region": 0.0,
+   "Division": 0.0,
+   "current_factory": 0.0,
+   "distance_miles": 0.0,
+   "Units": 0.0,
+   "Sales": 0.0,
+   "order_month": 0.0,
+   "order_dow_rebuilt": 0.0
+  },
+  "linear_regression": {
+   "Ship Mode": 0.95041,
+   "Region": 0.00032,
+   "order_month": 0.00023,
+   "distance_miles": 6e-05,
+   "current_factory": 5e-05,
+   "order_dow_rebuilt": -4e-05,
+   "Sales": -0.00021,
+   "Units": -0.00024,
+   "Division": -0.00024
+  }
+ },
+ "interval_bounds_by_ship_mode": {
+  "First Class": [
+   1.0,
+   3.0
+  ],
+  "Same Day": [
+   0.0,
+   1.0
+  ],
+  "Second Class": [
+   2.0,
+   5.0
+  ],
+  "Standard Class": [
+   4.0,
+   7.0
+  ]
+ },
+ "interval_test_coverage": 1.0,
+ "test_mae_by_ship_mode": {
+  "First Class": 0.671,
+  "Same Day": 0.096,
+  "Second Class": 1.031,
+  "Standard Class": 0.85
+ },
+ "assumptions": {
+  "alt_factory_cost_multiplier": 1.0,
+  "freight_cost_per_unit_mile": 0.0005,
+  "transit_days_per_1000_miles": 2.0,
+  "factory_capacity_headroom_pct": -1.0,
+  "minimum_profit_threshold": 0.0,
+  "reassignment_penalty_points": 2.0,
+  "compatibility_rule": "demonstrated_division"
+ },
+ "weights": {
+  "profit_weight": 0.4,
+  "speed_weight": 0.4,
+  "risk_weight": 0.2
+ },
+ "scenarios": {
+  "current": {
+   "products_moved": 0,
+   "estimated_profit_impact": 0.0,
+   "estimated_cost_impact": 0.0,
+   "profit_impact_pct_of_current_estimated_profit": 0.0,
+   "units_weighted_lead_time_impact_days": 0.0,
+   "units_weighted_distance_impact_miles": 0.0,
+   "solver_status": "optimal"
+  },
+  "alternative": {
+   "products_moved": 15,
+   "estimated_profit_impact": 760.0039,
+   "estimated_cost_impact": -760.0039,
+   "profit_impact_pct_of_current_estimated_profit": 1.0953,
+   "units_weighted_lead_time_impact_days": -0.0786,
+   "units_weighted_distance_impact_miles": -39.3234,
+   "solver_status": "optimal"
+  },
+  "distance": {
+   "products_moved": 11,
+   "estimated_profit_impact": 1690.2946,
+   "estimated_cost_impact": -1690.2946,
+   "profit_impact_pct_of_current_estimated_profit": 2.4359,
+   "units_weighted_lead_time_impact_days": -0.1749,
+   "units_weighted_distance_impact_miles": -87.4577,
+   "solver_status": "optimal"
+  },
+  "cost": {
+   "products_moved": 11,
+   "estimated_profit_impact": 1690.2946,
+   "estimated_cost_impact": -1690.2946,
+   "profit_impact_pct_of_current_estimated_profit": 2.4359,
+   "units_weighted_lead_time_impact_days": -0.1749,
+   "units_weighted_distance_impact_miles": -87.4577,
+   "solver_status": "optimal"
+  },
+  "balanced": {
+   "products_moved": 2,
+   "estimated_profit_impact": 8.0852,
+   "estimated_cost_impact": -8.0852,
+   "profit_impact_pct_of_current_estimated_profit": 0.0117,
+   "units_weighted_lead_time_impact_days": -0.0008,
+   "units_weighted_distance_impact_miles": -0.4183,
+   "solver_status": "optimal"
+  }
+ },
+ "current_estimated_profit_after_freight": 69390.06,
+ "current_estimated_freight_cost": 24052.74,
+ "eligible_alternatives": 22,
+ "cost_scenario_moves": {
+  "Wonka Bar - Nutty Crunch Surprise": {
+   "proposed_factory": "Wicked Choccy's",
+   "profit_impact": 529.78,
+   "lines": 1810
+  },
+  "Wonka Bar - Fudge Mallows": {
+   "proposed_factory": "Wicked Choccy's",
+   "profit_impact": 506.41,
+   "lines": 1818
+  },
+  "Wonka Bar -Scrumdiddlyumptious": {
+   "proposed_factory": "Wicked Choccy's",
+   "profit_impact": 633.0,
+   "lines": 2064
+  },
+  "Laffy Taffy": {
+   "proposed_factory": "The Other Factory",
+   "profit_impact": 6.41,
+   "lines": 10
+  },
+  "SweeTARTS": {
+   "proposed_factory": "Secret Factory",
+   "profit_impact": 6.23,
+   "lines": 10
+  },
+  "Nerds": {
+   "proposed_factory": "Secret Factory",
+   "profit_impact": 1.55,
+   "lines": 4
+  },
+  "Fun Dip": {
+   "proposed_factory": "Secret Factory",
+   "profit_impact": 1.67,
+   "lines": 3
+  },
+  "Fizzy Lifting Drinks": {
+   "proposed_factory": "Secret Factory",
+   "profit_impact": 3.63,
+   "lines": 6
+  },
+  "Everlasting Gobstopper": {
+   "proposed_factory": "The Other Factory",
+   "profit_impact": 0.9,
+   "lines": 3
+  },
+  "Hair Toffee": {
+   "proposed_factory": "Secret Factory",
+   "profit_impact": 0.29,
+   "lines": 4
+  },
+  "Kazookles": {
+   "proposed_factory": "Secret Factory",
+   "profit_impact": 0.43,
+   "lines": 96
+  }
+ },
+ "cost_top3_share_pct": 98.8,
+ "recommendation_solver_status": "optimal",
+ "recommended_reallocations": {
+  "Fun Dip": {
+   "recommended_factory": "Secret Factory",
+   "estimated_profit_impact": 1.67,
+   "n_historical_lines": 3,
+   "risk_level": "Medium"
+  },
+  "Laffy Taffy": {
+   "recommended_factory": "The Other Factory",
+   "estimated_profit_impact": 6.41,
+   "n_historical_lines": 10,
+   "risk_level": "Medium"
+  }
+ },
+ "keep_current_count": 13,
+ "risk_overall_current_range": [
+  0.168,
+  0.228
+ ],
+ "risk_overall_alternative_range": [
+  0.525,
+  0.569
+ ],
+ "sensitivity_capacity10_cost": {
+  "products_moved": 9,
+  "estimated_profit_impact": 292.18
+ },
+ "sensitivity_freight_x2_cost": {
+  "products_moved": 11,
+  "estimated_profit_impact": 3380.59
+ },
+ "clustering_scores": [
+  {
+   "clustering": "destination_demand",
+   "k": 2,
+   "silhouette": 0.513
+  },
+  {
+   "clustering": "route_profile",
+   "k": 6,
+   "silhouette": 0.481
+  }
+ ],
+ "database_tables": 15
+}

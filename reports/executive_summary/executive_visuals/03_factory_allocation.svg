@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="320" viewBox="0 0 760 320" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Order lines by current factory">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="17" font-weight="600" fill="#0b0b0b">Order lines by current factory</text>
+<text x="0" y="46" font-size="12.5" fill="#52514e">Each of the 15 products is made at one factory today (observed allocation).</text>
+<line x1="170" y1="66" x2="170" y2="268" stroke="#e1e0d9" stroke-width="1"/>
+<text x="160" y="91.5" font-size="13" text-anchor="end" fill="#0b0b0b">Lot&#x27;s O&#x27; Nuts</text>
+<path d="M170,74 H621.0 Q625.0,74 625.0,78 V96 Q625.0,100 621.0,100 H170 Z" fill="#2a78d6"/>
+<text x="633.0" y="91.5" font-size="13" fill="#0b0b0b">5,692  ·  55.8%</text>
+<text x="160" y="131.5" font-size="13" text-anchor="end" fill="#0b0b0b">Wicked Choccy&#x27;s</text>
+<path d="M170,114 H497.89739985945187 Q501.89739985945187,114 501.89739985945187,118 V136 Q501.89739985945187,140 497.89739985945187,140 H170 Z" fill="#2a78d6"/>
+<text x="509.89739985945187" y="131.5" font-size="13" fill="#0b0b0b">4,152  ·  40.7%</text>
+<text x="160" y="171.5" font-size="13" text-anchor="end" fill="#0b0b0b">Secret Factory</text>
+<path d="M170,154 H183.34627547434997 Q187.34627547434997,154 187.34627547434997,158 V176 Q187.34627547434997,180 183.34627547434997,180 H170 Z" fill="#2a78d6"/>
+<text x="195.34627547434997" y="171.5" font-size="13" fill="#0b0b0b">217  ·  2.1%</text>
+<text x="160" y="211.5" font-size="13" text-anchor="end" fill="#0b0b0b">The Other Factory</text>
+<path d="M170,194 H173.99683766690092 Q177.99367533380183,194 177.99367533380183,197.99683766690092 V216.00316233309908 Q177.99367533380183,220 173.99683766690092,220 H170 Z" fill="#2a78d6"/>
+<text x="185.99367533380183" y="211.5" font-size="13" fill="#0b0b0b">100  ·  1.0%</text>
+<text x="160" y="251.5" font-size="13" text-anchor="end" fill="#0b0b0b">Sugar Shack</text>
+<path d="M170,234 H171.31895643007732 Q172.63791286015461,234 172.63791286015461,235.3189564300773 V258.6810435699227 Q172.63791286015461,260 171.31895643007732,260 H170 Z" fill="#2a78d6"/>
+<text x="180.63791286015461" y="251.5" font-size="13" fill="#0b0b0b">33  ·  0.3%</text>
+<text x="0" y="308" font-size="11.5" fill="#898781">Source: product-to-factory assignments in src/config.py applied to the order data.</text>
+</svg>

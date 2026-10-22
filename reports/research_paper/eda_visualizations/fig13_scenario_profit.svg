@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="286" viewBox="0 0 760 286" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Figure 13. ESTIMATED profit impact by scenario (USD, historical period)">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="16.5" font-weight="600" fill="#0b0b0b">Figure 13. ESTIMATED profit impact by scenario (USD, historical period)</text>
+<text x="0" y="45" font-size="12" fill="#52514e">Estimates under default analyst assumptions — not verified real-world savings.</text>
+<line x1="276" y1="70" x2="276" y2="240" stroke="#e1e0d9"/>
+<text x="266" y="91.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Current allocation — 0 moved</text>
+
+<text x="283.0" y="91.3" font-size="12" fill="#0b0b0b">$0</text>
+<text x="266" y="125.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Best alternative (forced) — 15 moved</text>
+<path d="M276,110 H456.16765777989235 Q460.16765777989235,110 460.16765777989235,114 V128 Q460.16765777989235,132 456.16765777989235,132 H276 Z" fill="#2a78d6"/>
+<text x="467.16765777989235" y="125.3" font-size="12" fill="#0b0b0b">+$760</text>
+<text x="266" y="159.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Distance-based — 11 moved</text>
+<path d="M276,144 H681.6 Q685.6,144 685.6,148 V162 Q685.6,166 681.6,166 H276 Z" fill="#2a78d6"/>
+<text x="692.6" y="159.3" font-size="12" fill="#0b0b0b">+$1,690</text>
+<text x="266" y="193.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Cost-focused — 11 moved</text>
+<path d="M276,178 H681.6 Q685.6,178 685.6,182 V196 Q685.6,200 681.6,200 H276 Z" fill="#2a78d6"/>
+<text x="692.6" y="193.3" font-size="12" fill="#0b0b0b">+$1,690</text>
+<text x="266" y="227.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Balanced (recommended) — 2 moved</text>
+<path d="M276,212 H276.97962151686454 Q277.95924303372914,212 277.95924303372914,212.97962151686457 V233.02037848313543 Q277.95924303372914,234 276.97962151686454,234 H276 Z" fill="#2a78d6"/>
+<text x="284.95924303372914" y="227.3" font-size="12" fill="#0b0b0b">+$8</text>
+<text x="0" y="274" font-size="11" fill="#898781">Freight $0.0005/unit-mile; equal production cost at every factory; capacity not limited.</text></svg>

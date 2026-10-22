@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="252" viewBox="0 0 760 252" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Figure 9. Mean RECONSTRUCTED lead time by shipping mode (days)">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="16.5" font-weight="600" fill="#0b0b0b">Figure 9. Mean RECONSTRUCTED lead time by shipping mode (days)</text>
+<text x="0" y="45" font-size="12" fill="#52514e">Derived. Ship mode explains 67.4% of the variance.</text>
+<line x1="122" y1="70" x2="122" y2="206" stroke="#e1e0d9"/>
+<text x="112" y="91.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Same Day</text>
+<path d="M122,76 H124.19680000000001 Q126.3936,76 126.3936,78.1968 V95.8032 Q126.3936,98 124.19680000000001,98 H122 Z" fill="#2a78d6"/>
+<text x="133.3936" y="91.3" font-size="12" fill="#0b0b0b">0.04 days</text>
+<text x="112" y="125.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">First Class</text>
+<path d="M122,110 H357.45120000000003 Q361.45120000000003,110 361.45120000000003,114 V128 Q361.45120000000003,132 357.45120000000003,132 H122 Z" fill="#2a78d6"/>
+<text x="368.45120000000003" y="125.3" font-size="12" fill="#0b0b0b">2.18 days</text>
+<text x="112" y="159.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Second Class</text>
+<path d="M122,144 H473.88160000000005 Q477.88160000000005,144 477.88160000000005,148 V162 Q477.88160000000005,166 473.88160000000005,166 H122 Z" fill="#2a78d6"/>
+<text x="484.88160000000005" y="159.3" font-size="12" fill="#0b0b0b">3.24 days</text>
+<text x="112" y="193.5" font-size="12.5" text-anchor="end" fill="#0b0b0b">Standard Class</text>
+<path d="M122,178 H667.2 Q671.2,178 671.2,182 V196 Q671.2,200 667.2,200 H122 Z" fill="#2a78d6"/>
+<text x="678.2" y="193.3" font-size="12" fill="#0b0b0b">5.00 days</text>
+<text x="0" y="240" font-size="11" fill="#898781">Typical ranges (0.5th–99.5th percentile): Same Day 0–1, First 1–3, Second 2–5, Standard 4–7 days.</text></svg>

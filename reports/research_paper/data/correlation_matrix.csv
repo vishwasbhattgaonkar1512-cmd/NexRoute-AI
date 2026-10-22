@@ -1,0 +1,8 @@
+,Sales,Units,Cost,Gross Profit,distance_miles,lead_time_recovered_days,lead_time_days_raw
+Sales,1.0,0.729,0.959,0.976,-0.011,0.008,-0.005
+Units,0.729,1.0,0.563,0.816,0.011,0.021,-0.007
+Cost,0.959,0.563,1.0,0.875,-0.032,0.001,-0.008
+Gross Profit,0.976,0.816,0.875,1.0,0.006,0.012,-0.003
+distance_miles,-0.011,0.011,-0.032,0.006,1.0,0.006,0.014
+lead_time_recovered_days,0.008,0.021,0.001,0.012,0.006,1.0,-0.013
+lead_time_days_raw,-0.005,-0.007,-0.008,-0.003,0.014,-0.013,1.0

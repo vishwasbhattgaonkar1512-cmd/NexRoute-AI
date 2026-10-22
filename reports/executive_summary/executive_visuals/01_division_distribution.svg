@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="240" viewBox="0 0 760 240" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Order lines by product division">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="17" font-weight="600" fill="#0b0b0b">Order lines by product division</text>
+<text x="0" y="46" font-size="12.5" fill="#52514e">10,194 order lines (observed). One division dominates the history.</text>
+<line x1="210" y1="66" x2="210" y2="188" stroke="#e1e0d9" stroke-width="1"/>
+<text x="200" y="91.5" font-size="13" text-anchor="end" fill="#0b0b0b">Chocolate</text>
+<path d="M210,74 H621.0 Q625.0,74 625.0,78 V96 Q625.0,100 621.0,100 H210 Z" fill="#2a78d6"/>
+<text x="633.0" y="91.5" font-size="13" fill="#0b0b0b">9,844  ·  96.6%</text>
+<text x="200" y="131.5" font-size="13" text-anchor="end" fill="#0b0b0b">Other</text>
+<path d="M210,114 H219.06887444128404 Q223.06887444128404,114 223.06887444128404,118 V136 Q223.06887444128404,140 219.06887444128404,140 H210 Z" fill="#2a78d6"/>
+<text x="231.06887444128404" y="131.5" font-size="13" fill="#0b0b0b">310  ·  3.0%</text>
+<text x="200" y="171.5" font-size="13" text-anchor="end" fill="#0b0b0b">Sugar</text>
+<path d="M210,154 H210.84315318976024 Q211.68630637952052,154 211.68630637952052,154.84315318976027 V179.15684681023973 Q211.68630637952052,180 210.84315318976024,180 H210 Z" fill="#2a78d6"/>
+<text x="219.68630637952052" y="171.5" font-size="13" fill="#0b0b0b">40  ·  0.4%</text>
+<text x="0" y="228" font-size="11.5" fill="#898781">Source: data/raw/nassau_candy_distributor.csv (Division column).</text>
+</svg>

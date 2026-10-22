@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="280" viewBox="0 0 760 280" font-family='system-ui, -apple-system, "Segoe UI", Arial, sans-serif' role="img" aria-label="Order lines by shipping mode">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="0" y="24" font-size="17" font-weight="600" fill="#0b0b0b">Order lines by shipping mode</text>
+<text x="0" y="46" font-size="12.5" fill="#52514e">Labels show the average RECONSTRUCTED lead time for each mode (derived, not measured).</text>
+<line x1="150" y1="66" x2="150" y2="228" stroke="#e1e0d9" stroke-width="1"/>
+<text x="140" y="91.5" font-size="13" text-anchor="end" fill="#0b0b0b">Same Day</text>
+<path d="M150,74 H179.8567973856209 Q183.8567973856209,74 183.8567973856209,78 V96 Q183.8567973856209,100 179.8567973856209,100 H150 Z" fill="#2a78d6"/>
+<text x="191.8567973856209" y="91.5" font-size="13" fill="#0b0b0b">547 lines  ·  avg 0.0 days</text>
+<text x="140" y="131.5" font-size="13" text-anchor="end" fill="#0b0b0b">First Class</text>
+<path d="M150,114 H241.81411764705882 Q245.81411764705882,114 245.81411764705882,118 V136 Q245.81411764705882,140 241.81411764705882,140 H150 Z" fill="#2a78d6"/>
+<text x="253.81411764705882" y="131.5" font-size="13" fill="#0b0b0b">1,548 lines  ·  avg 2.2 days</text>
+<text x="140" y="171.5" font-size="13" text-anchor="end" fill="#0b0b0b">Second Class</text>
+<path d="M150,154 H268.491045751634 Q272.491045751634,154 272.491045751634,158 V176 Q272.491045751634,180 268.491045751634,180 H150 Z" fill="#2a78d6"/>
+<text x="280.491045751634" y="171.5" font-size="13" fill="#0b0b0b">1,979 lines  ·  avg 3.2 days</text>
+<text x="140" y="211.5" font-size="13" text-anchor="end" fill="#0b0b0b">Standard Class</text>
+<path d="M150,194 H524.8 Q528.8,194 528.8,198 V216 Q528.8,220 524.8,220 H150 Z" fill="#2a78d6"/>
+<text x="536.8" y="211.5" font-size="13" fill="#0b0b0b">6,120 lines  ·  avg 5.0 days</text>
+<text x="0" y="268" font-size="11.5" fill="#898781">Lead times reconstructed from disguised dates by a stated rule; see the Data Verification file.</text>
+</svg>

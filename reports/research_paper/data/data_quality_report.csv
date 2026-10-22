@@ -1,0 +1,13 @@
+issue_type,issue_description,affected_records,severity
+systemic_lead_time_anomaly,Ship Date - Order Date is 904-1642 days for every row and ship mode explains only 0.1% of its variance. This raw gap is NOT a delivery lead time and is never used as one.,10194,critical
+date_fields_disguised,"The Order ID year (2021-2024) is the original order year: Order Date years were relabelled (two original years per new year) and Ship Date is the original ship date shifted by a constant 2000 days. Dates in this file are therefore synthetic/disguised and calendar values (year, weekday) of Order Date and Ship Date must not be interpreted literally.",10194,critical
+lead_time_recovered_derived,"lead_time_recovered_days = Ship Date - shift - (Order Date with Order ID year). It is a DERIVED value under a testable rule (ship mode explains 67% of its variance; Same Day rows are ~0 days), not a measured delivery duration. 10194 rows recovered; 0 set to missing.",0,high
+sparse_product_history,"7 products have fewer than 30 order lines: Laffy Taffy (10), SweeTARTS (10), Fizzy Lifting Drinks (6), Nerds (4), Hair Toffee (4), Everlasting Gobstopper (3), Fun Dip (3). Estimates for these products rest on very little data.",40,high
+canadian_centroid_approximation,"Canadian rows use approximate province geographic centres; for large provinces these can be hundreds of miles from customers' cities, so their distances are less reliable than US state-centroid distances.",200,medium
+customer_multiple_destinations,"28 customers ship to more than one state/province. Geography is taken from each order line, not from the customer record.",199,medium
+possible_duplicate_lines,"Rows identical in every column except Row ID. They may be genuine repeat lines or duplicates; the source gives no way to tell, so they are kept and flagged, not removed.",313,low
+order_id_is_order_plus_product,"Order ID embeds Customer ID and Product ID, so it identifies an order line group, not a basket: 8549 distinct Order IDs for 10194 lines (3018 lines share an ID). 'Orders' counts in this system mean distinct Order IDs.",3018,low
+postal_code_leading_zero_lost,"US postal codes with 4 digits (leading zero lost, e.g. New England). Postal codes are not used for distance, so this does not affect calculations.",449,low
+missing_values,0 missing or blank cells across 18 columns.,0,info
+gross_profit_consistency,Gross Profit = Sales - Cost holds for 10194 of 10194 rows.,0,info
+no_factory_cost_capacity_compatibility_data,"The source has no factory-specific production cost, freight rate, factory capacity or product-factory compatibility data. Unit cost is constant per product. All such inputs are configurable analyst assumptions.",0,info
