@@ -14,20 +14,21 @@ recommendation comes with an explanation, a risk rating and the assumptions behi
 
 ## Official Project Submission Links
 
-The submission form requires four public HTTPS links. Current status (verified 2026-10-22, details in
+The submission form requires four public HTTPS links. Current status (verified 2026-10-22 after publishing, details in
 [SUBMISSION_README_VERIFICATION.md](SUBMISSION_README_VERIFICATION.md)):
 
 | # | Submission field | Status | Public HTTPS URL |
 |---|---|---|---|
-| 1 | GitHub Repository Link | ⏳ **Repository created, not yet pushed** — publishing on hold until dataset redistribution permission is confirmed | https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI (currently empty) |
-| 2 | Research Paper Link | ⏳ **Pending** — paper complete locally; not committed or hosted; not published | *Not available yet* |
+| 1 | GitHub Repository Link | ✅ **Ready** — public, pushed and verified | https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI |
+| 2 | Research Paper Link | ✅ **Link ready** — PDF publicly hosted in the repository (not formally published or approved) | https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI/blob/main/reports/research_paper/NexRoute_AI_Research_Paper.pdf |
 | 3 | Deployed Project Link | ⏳ **Not yet deployed** — dashboard runs locally only | *Not available yet* |
 | 4 | Project Feedback Video Link | ⏳ **Not yet completed** — no video found | *Not available yet* |
 
 ### 1. GitHub Repository
 
-- **URL:** https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI. It exists and is public, but it is **still empty**: nothing has been pushed yet.
-- **Status:** publishing is on hold. The project history contains the original dataset, and permission to redistribute it is not yet confirmed. See [GITHUB_PRE_PUSH_SECURITY_AUDIT.md](GITHUB_PRE_PUSH_SECURITY_AUDIT.md) for details and options.
+- **URL:** https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI
+- **Status:** public, with the full development history (branch `main`). The dataset is included with the owner's confirmed
+  permission. See [GITHUB_PRE_PUSH_SECURITY_AUDIT.md](GITHUB_PRE_PUSH_SECURITY_AUDIT.md) and [GITHUB_PUBLISHING_VERIFICATION.md](GITHUB_PUBLISHING_VERIFICATION.md).
 - **What the repository contains:**
   - the full source code (`src/`, `database/`, `dashboard/`);
   - 109 automated tests;
@@ -35,8 +36,8 @@ The submission form requires four public HTTPS links. Current status (verified 2
   - the SQLite database;
   - documentation and the research deliverables.
 
-> ⚠️ **Data notice.** The repository includes the Nassau Candy dataset and a database built from it. Confirm you are
-> allowed to publish this data before making the repository public.
+> **Data notice.** The repository includes the Nassau Candy dataset and a database built from it. They are published
+> with the repository owner's confirmed permission.
 
 ### 2. Research Paper
 
@@ -53,9 +54,7 @@ The submission form requires four public HTTPS links. Current status (verified 2
 
 - **Publication / approval status:** **not published, not approved, and not peer-reviewed.** No evidence of
   publication or approval exists in the project.
-- **Public link:** pending. These files are **not yet pushed**. After publishing, the PDF will be at
-  `https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI/blob/main/reports/research_paper/NexRoute_AI_Research_Paper.pdf`.
-  This link does not work until the push happens.
+- **Public link:** https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI/blob/main/reports/research_paper/NexRoute_AI_Research_Paper.pdf. Verified: it opens, and the file is byte-identical to the local copy.
 - **EDA notebook:** an executed EDA notebook (`notebooks/09_NexRoute_AI_EDA_Research.ipynb` and its `.html`) was
   referred to earlier but **does not exist** in the project. The EDA is reproduced by the scripts linked above instead.
 
@@ -64,7 +63,6 @@ The submission form requires four public HTTPS links. Current status (verified 2
 - **Deployment status:** **NOT YET DEPLOYED.** No public URL exists, and no deployment configuration is present.
 - **Runs locally:** `streamlit run dashboard/app.py` → http://localhost:8501. This is local only and is *not* a submission link.
 - **Required before a link can be submitted:**
-  - push the repository to GitHub;
   - deploy `dashboard/app.py` (for example on Streamlit Community Cloud, with Python 3.10 and `requirements.txt`);
   - confirm the resulting `https://…` URL opens all pages.
 

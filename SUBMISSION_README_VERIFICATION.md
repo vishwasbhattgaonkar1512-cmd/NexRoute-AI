@@ -7,12 +7,16 @@ Only `README.md` and this file were created or changed. No commits, pushes, depl
 
 | Official submission field | Status | Verified HTTPS URL | Remaining action |
 |---|---|---|---|
-| GitHub Repository Link | ❌ **Not available** | None. No git remote is configured. | Create a GitHub repository, add it as `origin`, commit the `reports/` deliverables and push. Make it public (after confirming data-publication rights). |
-| Research Paper Link | ⚠️ **Document ready; no public link** | None. The files are not committed, pushed or hosted. Publication or approval is **not verified**. | After pushing, use the GitHub file URL of `reports/research_paper/NexRoute_AI_Research_Paper.pdf`. Do not describe it as published or approved without evidence. |
+| GitHub Repository Link | ✅ **Ready** (updated after publishing) | https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI | None. Pushed 2026-10-22 (14 commits, head `07d2aba`); verified as public. |
+| Research Paper Link | ✅ **Link ready**; not formally published or approved | https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI/blob/main/reports/research_paper/NexRoute_AI_Research_Paper.pdf | None for the link. Do not describe the paper as published or approved without evidence. |
 | Deployed Project Link | ❌ **Not deployed** | None. The app runs only locally (`http://localhost:8501`, not a valid submission link). | Push the repository, then deploy `dashboard/app.py` (e.g. Streamlit Community Cloud), and verify that the `https://` URL loads all pages. |
 | Project Feedback Video Link | ❌ **Not completed** | None. No video file or video URL exists. | Record the video (outline in section 6), upload it publicly, and verify that the `https://` link opens without sign-in. |
 
-**Overall status: NOT READY FOR SUBMISSION.** None of the four mandatory fields has a valid public HTTPS URL yet. The
+**Overall status: NOT READY FOR SUBMISSION.** Updated after publishing: fields 1 and 2 now have verified public
+HTTPS URLs. Fields 3 (deployment) and 4 (video) still have none. Sections 2 and 3 below describe the state *before* the push;
+see `GITHUB_PUBLISHING_VERIFICATION.md` for the post-push verification.
+
+*Original pre-publication note:* none of the four mandatory fields had a valid public HTTPS URL yet. The
 project content itself (code, tests, research paper, executive summary, dashboard) is complete and verified locally.
 
 ## 2. Field 1 — GitHub Repository
