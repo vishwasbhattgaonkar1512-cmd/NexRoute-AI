@@ -1,49 +1,49 @@
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-import streamlit as st
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from common import setup_page, require_database, lead_time_warning, estimate_note  # noqa: E402
 
-st.set_page_config(page_title="Nassau Candy — Factory Reallocation System", layout="wide", page_icon="🏭")
+import streamlit as st  # noqa: E402
 
-st.title("🏭 Nassau Candy Distributor — Factory Reallocation & Shipping Optimization")
-st.caption("Decision-support system — see sidebar for modules.")
-
-st.warning(
-    "⚠️ **Critical data-quality finding**: the source file's Ship Date − Order Date field spans "
-    "900–1,640+ days and does not vary meaningfully by Ship Mode (e.g. 'Same Day' shows the same "
-    "multi-year gap as 'Standard Class'). This is not a valid real-world delivery-time signal. "
-    "All lead-time predictions in this app are a **de-trended relative index**, not calendar days, "
-    "and every recommendation is labeled with its actual model confidence. "
-    "Full explanation: `DEVELOPMENT_PROGRESS.md` in the project root.",
-    icon="⚠️",
-)
+setup_page("NexRoute AI", "🏭",
+           "Intelligent factory reallocation & shipping optimization — Nassau Candy Distributor")
+require_database()
 
 st.markdown("""
-### Modules (left sidebar)
-1. **Executive Dashboard** — current operations at a glance
-2. **Factory Optimization Simulator** — pick a product + destination, compare all 5 factories
-3. **What-If Analysis** — custom scenario comparison with adjustable assumptions
-4. **Recommendations** — ranked reallocation recommendations across all 15 products
-5. **Risk & Impact Panel** — data-quality and reliability warnings
-6. **Factory Map** — geographic view of factories and routes
-7. **Model Analytics** — ML model comparison, residuals, feature importance, clustering
-
-Run `python src/build_database.py --rebuild` then `python src/prediction_engine.py` before first use
-if `data/nassau.db` or `models/trained/` don't exist yet.
+NexRoute AI helps decide **which of the five factories should make each of the 15 products**, using
+historical orders, factory-to-destination geography, a lead-time model, transparent cost estimates,
+risk scoring and constrained optimization.
 """)
 
-from database.connection import get_session
-from database.models import Order, OrderItem, Product, Factory, Customer
-import os
+c1, c2 = st.columns(2)
+with c1:
+    lead_time_warning()
+with c2:
+    estimate_note()
 
-if os.path.exists("data/nassau.db"):
-    session = get_session()
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Orders", session.query(Order).count())
-    c2.metric("Order lines", session.query(OrderItem).count())
-    c3.metric("Products", session.query(Product).count())
-    c4.metric("Factories", session.query(Factory).count())
-    session.close()
-else:
-    st.error("Database not found. Run `python src/build_database.py --rebuild` first.")
+st.subheader("What the data can and cannot tell us")
+st.markdown("""
+| | Status |
+|---|---|
+| Orders, products, sales, units, cost, destinations | **Observed** in the source file |
+| Ship Date − Order Date (904–1,642 days) | **Unusable** — dates are disguised; never shown as a lead time |
+| Lead time 0–8 days by ship mode | **Derived** with a stated, tested rule (Data Management → Date forensics) |
+| Effect of distance / factory on lead time | **Not measurable** in the data (correlation ≈ 0.002) |
+| Freight rates, factory costs, capacity, compatibility | **Not in the data** — editable analyst assumptions |
+| Distances | **Approximate**: straight line to state/province centroids |
+""")
+
+st.subheader("Pages")
+st.markdown("""
+1. **Executive Dashboard** — KPIs, current allocation, optimization summary, data-quality warnings
+2. **Factory Optimization** — one product across all five factories: eligibility, distance, cost, recommendation
+3. **What-If Analysis** — five scenarios with adjustable assumptions, before/after comparison
+4. **Recommendations** — ranked, explained recommendations with a review status workflow
+5. **Risk & Impact** — operational, data-quality and model risk; financial impact
+6. **Factory Map** — factories, destinations, distance matrix, coverage, demand clusters
+7. **Model Analytics** — model comparison, validation vs test, importance, residuals, registry
+8. **Data Management** — dataset, database, data-quality report, validation, assumptions
+""")
+st.caption("First-time setup: `python -m src.prediction_engine` then `python -m src.build_database`. "
+           "See README.md.")

@@ -1,60 +1,98 @@
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-import streamlit as st
-import pandas as pd
-import plotly.express as px
-from src.config import PRODUCT_FACTORY_BASELINE, STATE_CENTROIDS
-from src.scenario_simulator import simulate_product_scenario
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from common import (setup_page, require_database, guard, current_assumptions, current_weights, evaluate,  # noqa: E402
+                    recommend_cached, style, show, usd, risk_badge, FACTORY_COLORS, lead_time_warning, estimate_note,
+                    DECISION_LABELS)
 
-st.set_page_config(page_title="Factory Optimization Simulator", layout="wide")
-st.title("🔧 Factory Optimization Simulator")
+import plotly.express as px  # noqa: E402
+import streamlit as st  # noqa: E402
 
-product_names = [p["product_name"] for p in PRODUCT_FACTORY_BASELINE]
-states = sorted(STATE_CENTROIDS.keys())
+from src.config import PRODUCT_FACTORY_BASELINE, COMPATIBILITY_RULES  # noqa: E402
+from src.optimization_engine import score_candidates  # noqa: E402
 
-c1, c2, c3, c4 = st.columns(4)
-product = c1.selectbox("Product", product_names)
-state = c2.selectbox("Destination State", states, index=states.index("California") if "California" in states else 0)
-region = c3.selectbox("Destination Region", ["Interior", "East", "West", "Central", "South"])
-ship_mode = c4.selectbox("Ship Mode", ["Standard Class", "Second Class", "First Class", "Same Day"])
+setup_page("Factory Optimization", "🔧", "One product, all five factories — eligibility, distance, cost, lead time, risk")
+require_database()
 
-c5, c6, c7 = st.columns(3)
-units = c5.number_input("Units", min_value=1, max_value=20, value=3)
-sales = c6.number_input("Sales ($)", min_value=1.0, max_value=500.0, value=12.0)
-cost = c7.number_input("Cost ($)", min_value=0.5, max_value=300.0, value=4.5)
+a, w = current_assumptions(), current_weights()
+products = [p["product_name"] for p in PRODUCT_FACTORY_BASELINE]
+product = st.selectbox("Product", products, help="Each product is evaluated against its full historical demand.")
 
-if st.button("Run Simulation", type="primary"):
-    result = simulate_product_scenario(product, state, region, ship_mode, units=units, sales=sales, cost=cost)
+ev = guard(evaluate, a, what="factory options")
+ev = ev.copy()
+ev["score"] = score_candidates(ev, w, a)
+g = ev[ev["product_name"] == product].copy()
+rec = next(r for r in guard(recommend_cached, a, w, what="recommendation")["recommendations"]
+           if r["product_name"] == product)
+cur = g[g["is_current"]].iloc[0]
 
-    st.subheader(f"Current factory: **{result['current_factory']}**")
+k = st.columns(4)
+k[0].metric("Current factory", cur["factory_name"])
+k[1].metric("Recommendation", DECISION_LABELS[rec["decision"]],
+            None if rec["decision"] != "REALLOCATE" else f"→ {rec['recommended_factory']}", delta_color="off")
+k[2].metric("Historical order lines", f"{int(cur['lines']):,}",
+            help="Fewer than 30 lines = weakly supported estimates.")
+k[3].metric("Demand-weighted distance now", f"{cur['weighted_distance_miles']:,.0f} mi",
+            help="Straight-line miles to state/province centroids, weighted by units.")
 
-    rows = []
-    for s in result["scenarios"]:
-        rows.append({
-            "Factory": s["factory_name"] + (" (current)" if s["is_current"] else ""),
-            "Compatibility": s["compatibility"],
-            "Distance (mi, straight-line)": s["distance_miles"],
-            "Predicted Lead-Time Index": s["predicted_lead_time_index"],
-            "95% Interval": f"{s['prediction_interval_95'][0]} to {s['prediction_interval_95'][1]}",
-            "Lead-Time Improvement": s["lead_time_improvement"],
-            "Improvement %": s["lead_time_reduction_pct"],
-            "Profit Impact ($)": s["profit"]["profit_impact"],
-            "Confidence": s["confidence"]["label"],
-            "Risk Status": s["risk_status"],
-        })
-    table = pd.DataFrame(rows)
-    st.dataframe(table, use_container_width=True, hide_index=True)
+st.markdown(f"**Why:** {rec['recommendation_reason']}")
+if cur["lines"] < 30:
+    st.warning(f"Only {int(cur['lines'])} historical order lines for this product — treat all estimates as weak.")
 
-    fig = px.bar(table, x="Factory", y="Predicted Lead-Time Index", color="Risk Status",
-                 title="Predicted lead-time index by factory (lower = faster, relative index not days)")
-    st.plotly_chart(fig, use_container_width=True)
+st.subheader("All five factories")
+table = g[["factory_name", "is_current", "compatible", "compatibility_basis", "weighted_distance_miles",
+           "distance_impact_miles", "freight_cost", "total_cost", "profit_impact", "estimated_lead_days",
+           "lead_time_impact_days", "risk_level", "confidence", "score"]].copy()
+table["risk_level"] = table["risk_level"].map(risk_badge)
+st.dataframe(table, hide_index=True, width="stretch", column_config={
+    "factory_name": "Factory", "is_current": "Current", "compatible": "Eligible",
+    "compatibility_basis": st.column_config.TextColumn("Eligibility basis", width="large"),
+    "weighted_distance_miles": st.column_config.NumberColumn("Distance (mi)", format="%.0f"),
+    "distance_impact_miles": st.column_config.NumberColumn("Δ distance (mi)", format="%+.0f"),
+    "freight_cost": st.column_config.NumberColumn("Est. freight", format="$%.2f"),
+    "total_cost": st.column_config.NumberColumn("Est. total cost", format="$%.2f"),
+    "profit_impact": st.column_config.NumberColumn("Est. profit impact", format="$%+.2f"),
+    "estimated_lead_days": st.column_config.NumberColumn("Est. lead time (d)", format="%.2f"),
+    "lead_time_impact_days": st.column_config.NumberColumn("Δ lead time (d)", format="%+.2f"),
+    "risk_level": "Risk", "confidence": "Confidence",
+    "score": st.column_config.NumberColumn("Score", format="%+.2f", help="Balanced objective; current = 0."),
+})
+st.caption(f"Eligibility rule: **{a.compatibility_rule}** — {COMPATIBILITY_RULES[a.compatibility_rule]} "
+           "Ineligible factories are never recommended.")
 
-    for s in result["scenarios"]:
-        if not s["is_current"]:
-            with st.expander(f"Why this confidence/risk level — {s['factory_name']}"):
-                st.write(s["confidence"]["reason"])
-                st.write(s["profit"]["note"])
-                for a in s["profit"].get("assumptions_used", []):
-                    st.caption(f"**{a['name']}** = {a['value']} — {a['source']}")
+c1, c2 = st.columns(2)
+with c1:
+    fig = px.bar(g, x="factory_name", y="weighted_distance_miles", color="factory_name",
+                 color_discrete_map=FACTORY_COLORS, pattern_shape="compatible",
+                 pattern_shape_map={True: "", False: "/"},
+                 labels={"factory_name": "", "weighted_distance_miles": "Demand-weighted miles"},
+                 hover_data={"compatible": True, "compatibility_basis": True})
+    show(style(fig, 340, "Distance to this product's customers (hatched = not eligible)", legend=False))
+with c2:
+    fig = px.bar(g, x="factory_name", y=["production_cost", "freight_cost"], barmode="stack",
+                 labels={"factory_name": "", "value": "Estimated cost (USD)", "variable": ""},
+                 color_discrete_sequence=["#2a78d6", "#eb6834"])
+    show(style(fig, 340, "Estimated cost breakdown by factory"))
+
+st.subheader("Lead time")
+lead_time_warning()
+lt = g[["factory_name", "processing_lead_days", "processing_low", "processing_high", "transit_days_assumed",
+        "estimated_lead_days"]]
+fig = px.bar(lt, x="factory_name", y=["processing_lead_days", "transit_days_assumed"], barmode="stack",
+             labels={"factory_name": "", "value": "Days", "variable": ""},
+             color_discrete_sequence=["#2a78d6", "#eb6834"])
+fig.for_each_trace(lambda t: t.update(name={"processing_lead_days": "Processing (model, derived target)",
+                                             "transit_days_assumed": "Transit (assumption)"}[t.name]))
+show(style(fig, 320, "Estimated lead time = processing + assumed transit"), lt)
+
+with st.expander("Risk breakdown per factory"):
+    for _, r in g.iterrows():
+        st.markdown(f"**{r['factory_name']}** — overall {r['overall_risk']:.2f} ({r['risk_level']}), "
+                    f"confidence {r['confidence']}")
+        for comp in ["model_uncertainty", "data_quality_risk", "missing_info_risk", "compatibility_risk",
+                     "operational_risk"]:
+            st.caption(f"{comp.replace('_', ' ')}: **{r[comp]:.2f}** — {r[comp + '_explanation']}")
+    st.caption(g["score_note"].iloc[0])
+
+estimate_note()

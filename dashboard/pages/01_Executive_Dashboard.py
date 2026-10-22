@@ -1,77 +1,100 @@
 import sys
 from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent))
 
-import streamlit as st
-import pandas as pd
-import plotly.express as px
-from database.connection import get_session
-from database.models import Order, OrderItem, Product, Customer, DataQualityLog
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from common import (setup_page, require_database, guard, load_pipeline, current_assumptions, current_weights,  # noqa: E402
+                    recommend_cached, scenarios, style, show, usd, FACTORY_COLORS, DECISION_LABELS, ESTIMATE_NOTE)
 
-st.set_page_config(page_title="Executive Dashboard", layout="wide")
-st.title("📊 Executive Dashboard")
+import pandas as pd  # noqa: E402
+import plotly.express as px  # noqa: E402
+import streamlit as st  # noqa: E402
 
-session = get_session()
+setup_page("Executive Dashboard", "📊", "Current operations, allocation and estimated optimization impact")
+require_database()
 
-q = (session.query(Order.order_id, Order.ship_mode, Customer.region, Customer.state_province,
-                    Product.division, Product.product_name,
-                    OrderItem.sales, OrderItem.units, OrderItem.gross_profit, OrderItem.cost,
-                    OrderItem.lead_time_days_raw, OrderItem.lead_time_index)
-     .join(OrderItem, OrderItem.order_id == Order.order_id)
-     .join(Product, Product.product_id == OrderItem.product_id)
-     .join(Customer, Customer.customer_id == Order.customer_id))
-df = pd.DataFrame(q.all(), columns=["order_id", "ship_mode", "region", "state", "division", "product_name",
-                                     "sales", "units", "gross_profit", "cost", "lead_time_raw", "lead_time_index"])
+df, issues = guard(load_pipeline, what="the dataset")
+a, w = current_assumptions(), current_weights()
+rec = guard(recommend_cached, a, w, what="recommendations")
+sim = guard(scenarios, a, w, what="scenarios")
 
-dq_logs = session.query(DataQualityLog).all()
-session.close()
+# ---- data-quality banner
+crit = [i for i in issues if i["severity"] == "critical"]
+high = [i for i in issues if i["severity"] == "high"]
+st.error(f"**{len(crit)} critical and {len(high)} high data-quality findings.** The source dates are disguised, "
+         "so lead times are derived rather than measured, and 7 products have fewer than 30 order lines. "
+         "See Risk & Impact and Data Management.", icon="🛑")
 
-# --- KPI row ---
-c1, c2, c3, c4, c5 = st.columns(5)
-c1.metric("Total Orders", f"{df['order_id'].nunique():,}")
-c2.metric("Total Order Lines", f"{len(df):,}")
-c3.metric("Total Sales", f"${df['sales'].sum():,.0f}")
-c4.metric("Total Gross Profit", f"${df['gross_profit'].sum():,.0f}")
-c5.metric("Products", df["product_name"].nunique())
+# ---- KPIs (observed)
+st.subheader("Historical business (observed)")
+k = st.columns(5)
+k[0].metric("Order lines", f"{len(df):,}")
+k[1].metric("Distinct Order IDs", f"{df['Order ID'].nunique():,}",
+            help="Order IDs in this file embed the product, so this counts order+product groups, not baskets.")
+k[2].metric("Sales", usd(df["Sales"].sum()))
+k[3].metric("Gross profit", usd(df["Gross Profit"].sum()), help="Sales − Cost as given in the source (excludes freight).")
+k[4].metric("Products · Factories", f"{df['Product Name'].nunique()} · 5")
 
-st.markdown("---")
+k = st.columns(4)
+k[0].metric("Customers", f"{df['Customer ID'].nunique():,}")
+k[1].metric("Destinations", f"{df['State/Province'].nunique()} states/provinces")
+k[2].metric("Mean derived lead time", f"{df['lead_time_recovered_days'].mean():.1f} days",
+            help="Derived from disguised dates by a stated rule. Not a measured delivery time.")
+k[3].metric("Gross margin", f"{100 * df['Gross Profit'].sum() / df['Sales'].sum():.1f}%")
 
-for log in dq_logs:
-    if log.severity == "critical":
-        st.error(f"**{log.issue_type}**: {log.issue_description}")
+st.divider()
 
-col1, col2 = st.columns(2)
-with col1:
-    raw_mean = df["lead_time_raw"].mean()
-    st.metric("Average RAW lead time (days)", f"{raw_mean:,.0f}",
-              help="Raw field — NOT validated as real delivery duration. See data-quality warning above.")
-with col2:
-    idx_mean = df["lead_time_index"].mean()
-    st.metric("Average lead-time INDEX (de-trended)", f"{idx_mean:,.1f}",
-              help="Relative index used by the ML model. Not calendar days.")
-
-st.markdown("---")
-st.subheader("Historical business performance (actual, from source data)")
-
-c1, c2 = st.columns(2)
+# ---- current allocation
+st.subheader("Current allocation")
+c1, c2 = st.columns([3, 2])
+by_prod = (df.groupby(["Product Name", "current_factory"], as_index=False)
+             .agg(units=("Units", "sum"), sales=("Sales", "sum"), lines=("Units", "size"))
+             .sort_values("sales"))
 with c1:
-    sales_by_region = df.groupby("region", as_index=False)["sales"].sum()
-    st.plotly_chart(px.bar(sales_by_region, x="region", y="sales", title="Sales by Region"), use_container_width=True)
+    fig = px.bar(by_prod, x="sales", y="Product Name", color="current_factory", orientation="h",
+                 color_discrete_map=FACTORY_COLORS, labels={"sales": "Sales (USD)", "Product Name": "",
+                                                             "current_factory": "Factory"},
+                 hover_data={"units": ":,", "lines": ":,"})
+    show(style(fig, 460, "Sales by product, coloured by current factory"),
+         by_prod.rename(columns={"current_factory": "factory"}))
 with c2:
-    profit_by_div = df.groupby("division", as_index=False)["gross_profit"].sum()
-    st.plotly_chart(px.bar(profit_by_div, x="division", y="gross_profit", title="Gross Profit by Division"), use_container_width=True)
+    by_f = df.groupby("current_factory", as_index=False).agg(units=("Units", "sum"), sales=("Sales", "sum"),
+                                                              products=("Product Name", "nunique"))
+    by_f["share of units %"] = (100 * by_f["units"] / by_f["units"].sum()).round(1)
+    fig = px.bar(by_f.sort_values("units"), x="units", y="current_factory", orientation="h",
+                 color="current_factory", color_discrete_map=FACTORY_COLORS,
+                 labels={"units": "Units shipped", "current_factory": ""})
+    show(style(fig, 300, "Units by factory", legend=False), by_f)
+    st.caption("Lot's O' Nuts and Wicked Choccy's make the five Wonka Bars, which are 97% of order lines.")
 
-c3, c4 = st.columns(2)
-with c3:
-    orders_by_mode = df["ship_mode"].value_counts().reset_index()
-    orders_by_mode.columns = ["ship_mode", "count"]
-    st.plotly_chart(px.pie(orders_by_mode, names="ship_mode", values="count", title="Orders by Ship Mode"), use_container_width=True)
-with c4:
-    product_perf = df.groupby("product_name", as_index=False)["sales"].sum().sort_values("sales", ascending=True)
-    st.plotly_chart(px.bar(product_perf, x="sales", y="product_name", orientation="h", title="Sales by Product"), use_container_width=True)
+st.divider()
 
-st.markdown("---")
-st.subheader("Raw lead-time distribution (flagged unreliable — shown for transparency only)")
-st.plotly_chart(px.histogram(df, x="lead_time_raw", nbins=60,
-                              title="Raw Ship Date − Order Date (days) — NOT a validated delivery-time signal"),
-                use_container_width=True)
+# ---- optimization summary
+st.subheader("Optimization summary (estimates)")
+st.caption(ESTIMATE_NOTE)
+recs = pd.DataFrame(rec["recommendations"])
+s = sim["summary"].set_index("scenario")
+k = st.columns(4)
+k[0].metric("Recommended reallocations", int((recs["decision"] == "REALLOCATE").sum()),
+            help="Balanced objective: profit, lead time and risk, with reassignment penalty.")
+k[1].metric("Est. profit impact — recommendations", usd(s.loc["balanced", "estimated_profit_impact"], True),
+            help="Sum over the historical demand period, under current assumptions.")
+k[2].metric("Est. profit impact — cost-focused", usd(s.loc["cost", "estimated_profit_impact"], True),
+            help="If every product moved to its cheapest compatible factory (ignores risk).")
+k[3].metric("Optimizer status", rec["run"]["solver_status"].title())
+
+tbl = recs[["recommendation_rank", "product_name", "current_factory", "decision", "recommended_factory",
+            "estimated_profit_impact", "lead_time_impact_days", "risk_level"]].copy()
+tbl["decision"] = tbl["decision"].map(DECISION_LABELS)
+st.dataframe(tbl, hide_index=True, width="stretch", column_config={
+    "recommendation_rank": "Rank", "product_name": "Product", "current_factory": "Current factory",
+    "decision": "Decision", "recommended_factory": "Recommended",
+    "estimated_profit_impact": st.column_config.NumberColumn("Est. profit impact", format="$%.2f"),
+    "lead_time_impact_days": st.column_config.NumberColumn("Est. lead-time change (d)", format="%+.2f"),
+    "risk_level": "Risk"})
+
+summary = sim["summary"][["scenario_name", "products_moved", "estimated_profit_impact",
+                          "units_weighted_lead_time_impact_days"]]
+fig = px.bar(summary, x="scenario_name", y="estimated_profit_impact",
+             labels={"scenario_name": "", "estimated_profit_impact": "Est. profit impact (USD)"},
+             color_discrete_sequence=["#2a78d6"], hover_data={"products_moved": True})
+show(style(fig, 320, "Estimated profit impact by scenario (historical period)", legend=False), summary)
