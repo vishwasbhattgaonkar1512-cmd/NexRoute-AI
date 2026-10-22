@@ -137,3 +137,10 @@ reports/research_paper/archive_superseded_v1_2026-10-22/
 - Added the safe `.gitignore` entries from section 8, and updated `README.md` with the verified repository URL
   (marked as not yet pushed). `GITHUB_PUBLISHING_VERIFICATION.md` will be created only after a successful push.
 - **Not done:** no push, no history change, no file removal, no change to data, models, code or the dashboard.
+
+## 10. Decision (2026-10-22)
+
+The repository owner **confirmed that the Nassau Candy dataset may be redistributed publicly** and chose **Option A**:
+push the existing `main` branch with its full history, without force or history rewriting. The data-permission blocker
+is therefore resolved by the owner's confirmation. The other audit findings are unchanged: no credentials, no oversized
+files, and the commit author email is visible on GitHub.
