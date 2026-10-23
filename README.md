@@ -1,5 +1,16 @@
 # NexRoute AI — Factory Reallocation & Shipping Optimization Recommendation System for Nassau Candy Distributor
 
+## 🚀 Live Demo
+
+**NexRoute AI is live and deployed on [Streamlit Community Cloud](https://streamlit.io/cloud).** Explore the full
+interactive dashboard — no installation required:
+
+[![Launch NexRoute AI Dashboard](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://nexroute-ai-icgkbcjmtdr7hklb45tvqc.streamlit.app/)
+
+**➡️ [Launch NexRoute AI Dashboard](https://nexroute-ai-icgkbcjmtdr7hklb45tvqc.streamlit.app/)**
+
+---
+
 NexRoute AI is a decision-support prototype that answers one question for Nassau Candy Distributor: **which of the
 five factories should make each of the 15 products?** It combines historical order analysis, data-quality forensics,
 lead-time prediction, geographic distance analysis, scenario simulation and mathematical optimization. Every
@@ -21,7 +32,7 @@ The submission form requires four public HTTPS links. Current status (verified 2
 |---|---|---|---|
 | 1 | GitHub Repository Link | ✅ **Ready** — public, pushed and verified | https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI |
 | 2 | Research Paper Link | ✅ **Link ready** — PDF publicly hosted in the repository (not formally published or approved) | https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI/blob/main/reports/research_paper/NexRoute_AI_Research_Paper.pdf |
-| 3 | Deployed Project Link | ⏳ **Not yet deployed** — dashboard runs locally only | *Not available yet* |
+| 3 | Deployed Project Link | ✅ **Live** — deployed on Streamlit Community Cloud | https://nexroute-ai-icgkbcjmtdr7hklb45tvqc.streamlit.app/ |
 | 4 | Project Feedback Video Link | ⏳ **Not yet completed** — no video found | *Not available yet* |
 
 ### 1. GitHub Repository
@@ -60,13 +71,14 @@ The submission form requires four public HTTPS links. Current status (verified 2
 
 ### 3. Deployed Project
 
-- **Deployment status:** **NOT YET DEPLOYED.** No public URL exists, and no deployment configuration is present.
-- **Runs locally:** `streamlit run dashboard/app.py` → http://localhost:8501. This is local only and is *not* a submission link.
-- **Required before a link can be submitted:**
-  - deploy `dashboard/app.py` (for example on Streamlit Community Cloud, with Python 3.10 and `requirements.txt`);
-  - confirm the resulting `https://…` URL opens all pages.
+- **Deployment status:** ✅ **DEPLOYED.** Live and publicly accessible on Streamlit Community Cloud.
+- **Live URL:** https://nexroute-ai-icgkbcjmtdr7hklb45tvqc.streamlit.app/
+- **Also runs locally:** `streamlit run dashboard/app.py` → http://localhost:8501, for development and testing.
+- **Deployment details:**
+  - deployed from `dashboard/app.py` on Streamlit Community Cloud, with Python 3.10 and `requirements.txt`;
+  - the live URL opens all pages.
 
-  The app needs the committed `data/nassau.db` and `models/trained/` files.
+  The app uses the committed `data/nassau.db` and `models/trained/` files.
 - **Dashboard:** a home page plus eight pages. See [Streamlit Dashboard](#9-streamlit-dashboard).
 
 ### 4. Project Feedback Video
