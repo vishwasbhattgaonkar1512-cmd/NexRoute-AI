@@ -33,7 +33,7 @@ The submission form requires four public HTTPS links. Current status (verified 2
 | 1 | GitHub Repository Link | ✅ **Ready** — public, pushed and verified | https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI |
 | 2 | Research Paper Link | ✅ **Link ready** — PDF publicly hosted in the repository (not formally published or approved) | https://github.com/vishwasbhattgaonkar1512-cmd/NexRoute-AI/blob/main/reports/research_paper/NexRoute_AI_Research_Paper.pdf |
 | 3 | Deployed Project Link | ✅ **Live** — deployed on Streamlit Community Cloud | https://nexroute-ai-icgkbcjmtdr7hklb45tvqc.streamlit.app/ |
-| 4 | Project Feedback Video Link | ⏳ **Not yet completed** — no video found | *Not available yet* |
+| 4 | Project Feedback Video Link | ✅ **Completed** — 3-minute video recorded and shared via Google Drive | https://drive.google.com/file/d/1x4HrpHssRq5lHyFxSYNu3b99D_xzzEPQ/view?usp=sharing |
 
 ### 1. GitHub Repository
 
@@ -83,10 +83,14 @@ The submission form requires four public HTTPS links. Current status (verified 2
 
 ### 4. Project Feedback Video
 
-- **Status:** **NOT YET COMPLETED.** No video file or video URL exists in the project.
-- **Required action:** record the video, upload it to a public platform (for example YouTube or Google Drive with
-  link sharing), and enter its `https://` URL here.
-- A suggested outline is in [SUBMISSION_README_VERIFICATION.md](SUBMISSION_README_VERIFICATION.md).
+- **Status:** ✅ **COMPLETED.** A 3-minute project feedback video has been recorded and shared via Google Drive.
+
+[![Watch Video](https://img.shields.io/badge/▶️_Watch-Project_Feedback_Video-red?style=flat)](https://drive.google.com/file/d/1x4HrpHssRq5lHyFxSYNu3b99D_xzzEPQ/view?usp=sharing)
+
+**▶ [Watch NexRoute AI – 3-Minute Project Feedback Video](https://drive.google.com/file/d/1x4HrpHssRq5lHyFxSYNu3b99D_xzzEPQ/view?usp=sharing)**
+
+The video covers the project overview, problem statement, solution approach, technology stack, a live dashboard
+demonstration, optimization results, and conclusion.
 
 ---
 
